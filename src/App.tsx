@@ -1,198 +1,162 @@
-import './App.css'
+import "./App.css";
+import "./index.css";
 
 function App() {
-
   return (
-    <div className="bg-white text-base text-secondary antialiased" >
-        <header className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-secondary-300">
-          <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
-            <h1 className="text-2xl font-bold text-primary">Tailwind v4 Config Smoke Test</h1>
+    <>
+      <header className="fixed top-0 inset-x-0 z-50 bg-white border-b border-[#E5E7EB]">
+        <div className="mx-auto w-full max-w-7xl h-16 md:h-20 px-4 sm:px-6 lg:px-10 flex items-center">
+          <a href="/" className="flex items-center gap-3 shrink-0">
+            <img
+              src="../public/icon/logo_concept-1.png"
+              alt="MOVE EDUCATION"
+              className="w-10 h-auto md:w-[72px]"
+            />
+            <span className="font-extrabold text-blue-700 leading-none tracking-tight text-lg md:text-[22px]">
+              MOVE
+              <br className="hidden md:block" />
+              EDUCATION
+            </span>
+          </a>
 
-            <label className="ml-auto inline-flex items-center gap-2 text-sm">
-              <span className="text-secondary-700">Select (appearance none)</span>
-              <div className="relative">
-                <select name='brrr' className="pl-3 pr-8 py-1.5 rounded-lg bg-primary-300 text-black border border-primary-700 cursor-pointer">
-                  <option>Option A</option>
-                  <option>Option B</option>
-                  <option>Option C</option>
-                </select>
-                <svg className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 size-4 text-secondary-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path d="M5.5 7.5 10 12l4.5-4.5" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-            </label>
+          <div className="ml-auto flex items-center gap-3 sm:gap-4">
+            <button className="px-4 md:px-6 py-2 md:py-3 rounded bg-blue-700 text-white text-sm md:text-[18px] font-semibold shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40">
+              Đăng nhập
+            </button>
+            <button className="px-4 md:px-6 py-2 md:py-3 rounded border border-slate-300 text-sm md:text-[18px] font-semibold text-slate-700 hover:bg-slate-50">
+              Menu
+            </button>
           </div>
-        </header>
+        </div>
+      </header>
 
-        <main className="max-w-6xl mx-auto px-4 py-8 space-y-10">
-          <section className="card">
-            <h2 className="text-xl font-semibold mb-3">Fonts</h2>
-            <p className="mb-2">
-              Body uses <span className="chip border-secondary-700 text-secondary-700 bg-secondary-300/40">Baloo Chettan 2 stack</span>
-            </p>
-            <p className="mb-4">The quick brown fox jumps over the lazy dog — ÁĂÂÊÔƠƯ ăâêôơư</p>
-          <pre className="overflow-x-auto rounded-xl bg-tertiary-300/30 p-3">
-            <code>{`const greet = (name) => {
-  console.log(\`Hello, \${name}!\`);
-};
-greet("Tailwind v4");`}</code>
-          </pre>
-          </section>
+      <main className="pt-16 md:pt-20"></main>
 
-          <section className="card">
-            <h2 className="text-xl font-semibold mb-4">Project Colors</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <div className="swatch bg-primary text-black border border-primary-700">bg-primary (#fbd905)</div>
-                <div className="swatch bg-primary-300 text-black border border-primary-700">bg-primary-300 (#ffee82)</div>
-                <div className="swatch bg-primary-700 text-black border border-primary">bg-primary-700 (#f9af18)</div>
-                <div className="swatch border-2 border-primary text-secondary">border-primary</div>
-                <div className="swatch text-primary border border-secondary-300">text-primary</div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="swatch bg-secondary text-white border border-secondary-700">bg-secondary</div>
-                <div className="swatch bg-secondary-300 text-black border border-secondary-700">bg-secondary-300</div>
-                <div className="swatch bg-secondary-700 text-white border border-secondary">bg-secondary-700</div>
-                <div className="swatch border-2 border-secondary text-secondary-700">border-secondary</div>
-                <div className="swatch text-secondary border border-secondary-300">text-secondary</div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="swatch bg-tertiary text-white border border-tertiary-700">bg-tertiary</div>
-                <div className="swatch bg-tertiary-300 text-black border border-tertiary-700">bg-tertiary-300</div>
-                <div className="swatch bg-tertiary-700 text-white border border-tertiary">bg-tertiary-700</div>
-                <div className="swatch border-2 border-tertiary text-tertiary-700">border-tertiary</div>
-                <div className="swatch text-tertiary border border-secondary-300">text-tertiary</div>
-              </div>
+      <footer className="bg-gradient-to-r from-blue-700 to-blue-600 text-white/90 border-t border-white/10 w-full absolute bottom-0">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 py-10 sm:py-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            <div>
+              <h3 className="!text-yellow-400 font-semibold mb-3">
+                Thông tin liên hệ
+              </h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a className="text-white transition" href="tel:0392360785">
+                    0392360785
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="text-white transition"
+                    href="mailto:thanhluancongviec123@gmail.com"
+                  >
+                    thanhluancongviec123@gmail.com
+                  </a>
+                </li>
+                <li>Việt Nam</li>
+              </ul>
             </div>
-          </section>
 
-          <section className="card">
-            <h2 className="text-xl font-semibold mb-4">Custom Drop Shadows</h2>
-            <div className="grid sm:grid-cols-3 gap-6">
-              <div className="h-24 grid place-items-center bg-white border border-secondary-300 rounded-xl drop-shadow-secondary-1">
-                <span>drop-shadow-secondary-1</span>
-              </div>
-              <div className="h-24 grid place-items-center bg-white border border-secondary-300 rounded-xl drop-shadow-secondary-2">
-                <span>drop-shadow-secondary-2</span>
-              </div>
-              <div className="h-24 grid place-items-center bg-white border border-secondary-300 rounded-xl drop-shadow-secondary-4">
-                <span>drop-shadow-secondary-4</span>
-              </div>
+            <div>
+              <h3 className="!text-yellow-400 font-semibold mb-3">Khoá học</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a className="text-white" href="#">
+                    Danh sách khoá học
+                  </a>
+                </li>
+                <li>
+                  <a className="text-white" href="#">
+                    Lịch khai giảng
+                  </a>
+                </li>
+                <li>
+                  <a className="text-white" href="#">
+                    Hỗ trợ học viên
+                  </a>
+                </li>
+              </ul>
             </div>
-          </section>
 
-          <section className="card">
-            <h2 className="text-xl font-semibold mb-4">Animations & Keyframes</h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div className="h-24 grid place-items-center rounded-xl border border-secondary-300 bg-primary/20 animate-floating">
-                <span>animate-floating (token)</span>
+            <div>
+              <h3 className="!text-yellow-400 font-semibold mb-3">
+                Kết nối với thầy Luân
+              </h3>
+              <div className="flex gap-3 mb-4">
+                <a
+                  href="#"
+                  aria-label="Facebook"
+                  className="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center hover:bg-white hover:text-blue-700 transition"
+                >
+                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                    <path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.4V12h2.4V9.7c0-2.4 1.4-3.7 3.6-3.7 1 0 2 .2 2 .2v2.2h-1.1c-1.1 0-1.5.7-1.5 1.4V12h2.6l-.4 2.9h-2.2v7A10 10 0 0 0 22 12z" />
+                  </svg>
+                </a>
+                <a
+                  href="#"
+                  aria-label="Messenger"
+                  className="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center hover:bg-white hover:text-blue-700 transition"
+                >
+                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                    <path d="M12 2C6.5 2 2 6 2 10.7c0 2.8 1.6 5.2 4.1 6.7v3.6l3.8-2.1c.7.1 1.4.2 2.1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm5 7.8-3.2 3.4-2.5-2.6-4.8 2.6 3.2-3.4 2.5 2.6L17 9.8z" />
+                  </svg>
+                </a>
+                <a
+                  href="#"
+                  aria-label="TikTok"
+                  className="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center hover:bg-white hover:text-blue-700 transition"
+                >
+                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                    <path d="M21 8.1a6.7 6.7 0 0 1-4.2-1.4v6.6a6 6 0 1 1-5.7-6v2.6a3.4 3.4 0 1 0 2.7 3.3V2h2.5a4.2 4.2 0 0 0 4.2 4.1v2z" />
+                  </svg>
+                </a>
+                <a
+                  href="#"
+                  aria-label="YouTube"
+                  className="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center hover:bg-white hover:text-blue-700 transition"
+                >
+                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                    <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.6 3.5 12 3.5 12 3.5s-7.6 0-9.4.6A3 3 0 0 0 .5 6.2 31.8 31.8 0 0 0 0 12a31.8 31.8 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.8.6 9.4.6 9.4.6s7.6 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.8 31.8 0 0 0 24 12a31.8 31.8 0 0 0-.5-5.8zM9.8 15.5V8.5L15.8 12l-6 3.5z" />
+                  </svg>
+                </a>
               </div>
-
-              <div className="h-24 grid place-items-center rounded-xl border border-secondary-300 bg-primary-300/30 animate-[fade-in-out_3s_ease-in-out_infinite]">
-                <span>animate-[fade-in-out_3s...]</span>
-              </div>
-              <div className="h-24 grid place-items-center rounded-xl border border-secondary-300 bg-tertiary-300/30 animate-[fadeIn_800ms_ease-in-out_infinite]">
-                <span>animate-[fadeIn_800ms...]</span>
-              </div>
-              <div className="h-24 grid place-items-center rounded-xl border border-secondary-300 bg-secondary-300/30 animate-[fadeOut_1500ms_ease-in-out_infinite]">
-                <span>animate-[fadeOut_1.5s...]</span>
-              </div>
-              <div className="h-24 grid place-items-center rounded-xl border border-secondary-300 bg-primary-300/30 animate-[slideInFromLeft_.7s_ease-out_infinite]">
-                <span>animate-[slideInFromLeft_.7s...]</span>
-              </div>
-              <div className="h-24 grid place-items-center rounded-xl border border-secondary-300 bg-primary-300/30 animate-[slideInFromRight_.7s_ease-out_infinite]">
-                <span>animate-[slideInFromRight_.7s...]</span>
-              </div>
-              <div className="h-24 grid place-items-center rounded-xl border border-secondary-300 bg-secondary-300/30 animate-[float_2s_ease-in-out_infinite]">
-                <span>animate-[float_2s...]</span>
-              </div>
-              <div className="h-24 grid place-items-center rounded-xl border border-secondary-300 bg-tertiary-300/30 animate-[float1_2s_ease-in-out_infinite]">
-                <span>animate-[float1_2s...]</span>
-              </div>
+              <p className="text-sm">
+                Đối tác: <span className="font-medium">Fessior Community</span>
+              </p>
             </div>
-          </section>
 
-          <section className="card">
-            <h2 className="text-xl font-semibold mb-4">Grid Rows (grid-rows-16)</h2>
-            <div className="grid grid-cols-1 grid-rows-16 gap-1 h-96 border border-secondary-300 rounded-xl overflow-hidden">
-              <div className="bg-primary/20 flex items-center justify-center text-xs">Row 1</div>
-              <div className="bg-primary-300/30 flex items-center justify-center text-xs">Row 2</div>
-              <div className="bg-primary/20 flex items-center justify-center text-xs">Row 3</div>
-              <div className="bg-primary-300/30 flex items-center justify-center text-xs">Row 4</div>
-              <div className="bg-primary/20 flex items-center justify-center text-xs">Row 5</div>
-              <div className="bg-primary-300/30 flex items-center justify-center text-xs">Row 6</div>
-              <div className="bg-primary/20 flex items-center justify-center text-xs">Row 7</div>
-              <div className="bg-primary-300/30 flex items-center justify-center text-xs">Row 8</div>
-              <div className="bg-primary/20 flex items-center justify-center text-xs">Row 9</div>
-              <div className="bg-primary-300/30 flex items-center justify-center text-xs">Row 10</div>
-              <div className="bg-primary/20 flex items-center justify-center text-xs">Row 11</div>
-              <div className="bg-primary-300/30 flex items-center justify-center text-xs">Row 12</div>
-              <div className="bg-primary/20 flex items-center justify-center text-xs">Row 13</div>
-              <div className="bg-primary-300/30 flex items-center justify-center text-xs">Row 14</div>
-              <div className="bg-primary/20 flex items-center justify-center text-xs">Row 15</div>
-              <div className="bg-primary-300/30 flex items-center justify-center text-xs">Row 16</div>
+            {/* Cột 4 */}
+            <div>
+              <h3 className="!text-yellow-400 font-semibold mb-3">
+                Về chúng tôi
+              </h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a className="text-white" href="#">
+                    Giới thiệu
+                  </a>
+                </li>
+                <li>
+                  <a className="text-white" href="#">
+                    Điều khoản & Bảo mật
+                  </a>
+                </li>
+                <li>
+                  <a className="text-white" href="#">
+                    Tuyển dụng
+                  </a>
+                </li>
+              </ul>
             </div>
-          </section>
+          </div>
 
-          <section className="card">
-            <h2 className="text-xl font-semibold mb-4">Breakpoints</h2>
-            <p className="mb-3">Resize the window — the visible chip shows the <em>current</em> breakpoint.</p>
-            <div className="flex flex-wrap gap-2">
-              <span className="chip bg-secondary-300/40 border-secondary-700 inline 2xs:hidden">below 2xs (&lt;360px)</span>
-              <span className="chip bg-secondary-300/40 border-secondary-700 hidden 2xs:inline xs:hidden">2xs (≥360px)</span>
-              <span className="chip bg-secondary-300/40 border-secondary-700 hidden xs:inline sm:hidden">xs (≥480px)</span>
-              <span className="chip bg-secondary-300/40 border-secondary-700 hidden sm:inline md:hidden">sm (≥640px)</span>
-              <span className="chip bg-secondary-300/40 border-secondary-700 hidden md:inline lg:hidden">md (≥760px)</span>
-              <span className="chip bg-secondary-300/40 border-secondary-700 hidden lg:inline xl:hidden">lg (≥960px)</span>
-              <span className="chip bg-secondary-300/40 border-secondary-700 hidden xl:inline 2xl:hidden">xl (≥1240px)</span>
-              <span className="chip bg-secondary-300/40 border-secondary-700 hidden 2xl:inline 3xl:hidden">2xl (≥1536px)</span>
-              <span className="chip bg-secondary-300/40 border-secondary-700 hidden 3xl:inline 4xl:hidden">3xl (≥1728px)</span>
-              <span className="chip bg-secondary-300/40 border-secondary-700 hidden 4xl:inline">4xl (≥1920px)</span>
-            </div>
-          </section>
-
-          <section className="card">
-            <h2 className="text-xl font-semibold mb-4">Hidden Scrollbars</h2>
-            <div className="h-40 overflow-y-scroll rounded-xl border border-secondary-300 bg-secondary-300/20 p-3">
-              <p className="mb-2">This box overflows vertically, but scrollbars should be hidden (WebKit + Firefox + body rules).</p>
-              <div className="space-y-2">
-                <p>Line 1 — Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                <p>Line 2 — Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <p>Line 3 — Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-                <p>Line 4 — Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
-                <p>Line 5 — Cillum dolore eu fugiat nulla pariatur.</p>
-                <p>Line 6 — Excepteur sint occaecat cupidatat non proident.</p>
-                <p>Line 7 — Sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                <p>Line 8 — More filler text…</p>
-                <p>Line 9 — More filler text…</p>
-                <p>Line 10 — More filler text…</p>
-                <p>Line 11 — More filler text…</p>
-                <p>Line 12 — More filler text…</p>
-              </div>
-            </div>
-          </section>
-
-          <section className="card">
-            <h2 className="text-xl font-semibold mb-4">Icon Font className</h2>
-            <p className="mb-2">
-              If your <code>icomoon</code> font is loaded, the spans below should render icons. Otherwise they
-              just show the className name (still testing font-smoothing & font-family override):
-            </p>
-            <div className="flex flex-wrap gap-4 text-2xl">
-              <span className="icon-home" title="icon-home">icon-home</span>
-              <span className="icon-user" title="icon-user">icon-user</span>
-              <span className="icon-star" title="icon-star">icon-star</span>
-            </div>
-          </section>
-        </main>
-
-        <footer className="max-w-6xl mx-auto px-4 pb-12 pt-4 text-sm text-secondary-700">
-          <div>Made for testing <span className="font-semibold">Tailwind v4 @theme</span> tokens & utilities.</div>
-        </footer>
-    </div>
-  )
+          <div className="mt-10 pt-5 border-t border-white/10 text-xs text-white/60 flex justify-center">
+            <p>Made with ❤️ by Move Education</p>
+          </div>
+        </div>
+      </footer>
+    </>
+  );
 }
 
-export default App
+export default App;
