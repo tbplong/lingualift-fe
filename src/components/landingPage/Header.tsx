@@ -1,5 +1,5 @@
-import "../index.css";
-import "./App.css";
+import "../../index.css";
+import "../../App.css";
 import { useEffect, useState } from "react";
 
 export function Header() {
@@ -27,25 +27,28 @@ export function Header() {
   }, [menuOpen]);
   return (
     <header className="fixed top-0 inset-x-0 z-50 bg-white border-b border-[#E5E7EB] shadow-xl">
-      <div className="mx-auto w-full max-w-7xl h-16 md:h-20 px-4 sm:px-6 lg:px-10 flex items-center">
-        <a href="/" className="flex items-center gap-3 shrink-0">
-          <span className="font-extrabold text-primary leading-none tracking-tight text-lg md:text-[28px]">
+      <div className="mx-auto w-full max-w-7xl h-16 md:h-24 px-4 sm:px-6 lg:px-10 flex items-center">
+        <a
+          href="/"
+          className="flex items-center gap-3 shrink-0 absolute left-125"
+        >
+          <span className="font-extrabold text-primary leading-none tracking-tight text-lg md:text-[35px]">
             MOVE
             <br className="hidden md:block" />
             EDUCATION
           </span>
         </a>
 
-        <div className="ml-auto flex items-center gap-3 sm:gap-4">
+        <div className="ml-auto flex items-center gap-3 sm:gap-4 absolute right-120">
           <button
-            className="px-4 md:px-6 py-2 md:py-3 rounded bg-primary text-white text-sm md:text-[18px] font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 shadow-md hover:shadow-lg
+            className="px-10 md:px-10 py-4 md:py-4 rounded bg-primary text-white text-sm md:text-[25px] font-semibold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 shadow-md hover:shadow-lg
 "
           >
             Đăng nhập
           </button>
           <button
             onClick={() => setMenuOpen(true)}
-            className="px-10 py-3 border border-blue-600 text-blue-600 font-bold rounded-l-full rounded-br-full hover:bg-primary hover:text-white shadow-md hover:shadow-lg"
+            className="px-12 py-4 border border-blue-600 text-blue-600 font-bold rounded-l-full rounded-br-full hover:bg-primary hover:text-white shadow-md hover:shadow-lg md:text-[25px]   "
             aria-haspopup="dialog"
             aria-expanded={menuOpen}
             aria-controls="slide-menu"
