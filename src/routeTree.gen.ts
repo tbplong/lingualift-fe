@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from "./routes/__root";
 import { Route as AboutRouteImport } from "./routes/about";
 import { Route as IndexRouteImport } from "./routes/index";
+import { Route as Char126loginChar126indexRouteImport } from "./routes/~login/~index";
 
 const AboutRoute = AboutRouteImport.update({
   id: "/about",
@@ -22,31 +23,41 @@ const IndexRoute = IndexRouteImport.update({
   path: "/",
   getParentRoute: () => rootRouteImport,
 } as any);
+const Char126loginChar126indexRoute =
+  Char126loginChar126indexRouteImport.update({
+    id: "/~login/~index",
+    path: "/~login/~index",
+    getParentRoute: () => rootRouteImport,
+  } as any);
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
   "/about": typeof AboutRoute;
+  "/~login/~index": typeof Char126loginChar126indexRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
   "/about": typeof AboutRoute;
+  "/~login/~index": typeof Char126loginChar126indexRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   "/": typeof IndexRoute;
   "/about": typeof AboutRoute;
+  "/~login/~index": typeof Char126loginChar126indexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/about";
+  fullPaths: "/" | "/about" | "/~login/~index";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/about";
-  id: "__root__" | "/" | "/about";
+  to: "/" | "/about" | "/~login/~index";
+  id: "__root__" | "/" | "/about" | "/~login/~index";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
   AboutRoute: typeof AboutRoute;
+  Char126loginChar126indexRoute: typeof Char126loginChar126indexRoute;
 }
 
 declare module "@tanstack/react-router" {
@@ -65,12 +76,20 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof IndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/~login/~index": {
+      id: "/~login/~index";
+      path: "/~login/~index";
+      fullPath: "/~login/~index";
+      preLoaderRoute: typeof Char126loginChar126indexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  Char126loginChar126indexRoute: Char126loginChar126indexRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
