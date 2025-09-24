@@ -55,7 +55,7 @@ export function Header() {
               shadow-md hover:shadow-lg whitespace-nowrap
             "
           >
-            Đăng nhập
+            Sign in
           </button>
 
           <button
