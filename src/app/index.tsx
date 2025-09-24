@@ -2,9 +2,9 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 
 import "react-toastify/dist/ReactToastify.css";
-import { routeTree } from "../routeTree.gen";
 import { useAuthStore } from "../stores";
 import { GOOGLE_OAUTH_CLIENT_ID } from "../config/env";
+import { routeTree } from "@/routeTree.gen";
 
 // Create a new router instance
 const router = createRouter({
