@@ -1,6 +1,7 @@
+import Marquee from "../../components/landingPage/Marquee";
 const CoreValue = () => {
   return (
-    <section className="h-dvh flex flex-col items-center bg-[url(/bg.png)]">
+    <section className="h-dvh flex flex-col items-center">
       <div className="mt-16 text-secondary text-5xl font-bold">
         <span className="text-primary">Our Core</span> Values
       </div>
@@ -14,7 +15,7 @@ const CoreValue = () => {
         community support with exam-focused practice and personalised feedback
         to help students aim for a 9+.
       </p>
-      <div className="flex gap-8 p-6">
+      <div className="flex gap-8 p-6 mb-42">
         <div className="card rounded-2xl bg-white w-120 h-160 shadow-lg text-tertiary border-2 border-[#00CAC7]">
           <figure className="h-4/5 w-full p-4 rounded-2xl">
             <img className="h-full rounded-xl" src="/exam.jpg" />
@@ -53,6 +54,8 @@ const CoreValue = () => {
           </div>
         </div>
       </div>
+
+      <Marquee />
     </section>
   );
 };

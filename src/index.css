@@ -95,8 +95,12 @@
   /* Project Theme */
   /* Primary */
   --color-primary: #0329e9;
+  --color-primary-100: #d1e4fb;
+  --color-primary-200: #007def;
   --color-primary-300: #6c89f3;
+  --color-primary-600: #2563eb;
   --color-primary-700: #021ba8;
+  --color-primary-1200: #0b2a6f;
 
   /* Secondary */
   --color-secondary: #f9ba08;
