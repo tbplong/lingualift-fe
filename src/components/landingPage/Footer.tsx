@@ -1,118 +1,119 @@
 import "../../index.css";
 import "../../App.css";
+import { YoutubeColor, YoutubeWhite } from "../icons";
+import { MessengerColor, MessengerWhite } from "../icons";
+import { FacebookColor } from "../icons";
+import { TiktokColor, TiktokWhite } from "../icons";
+
 export function Footer() {
   return (
-    <footer className="bg-gradient-to-r bg-primary to-blue-600 text-white/90 border-t border-white/10 w-full absolute bottom-0">
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 py-10 sm:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-          <div>
-            <h3 className="!text-yellow-400 font-semibold mb-3">
+    <footer
+      role="contentinfo"
+      className="bg-primary text-white/90 border-t border-white/10 w-full "
+    >
+      <div className="mx-auto w-full max-w-[102rem] px-4 sm:px-6 lg:px-10 py-12 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-30">
+          {/* Column 1: Contact */}
+          <div className="min-w-0">
+            <h3 className="text-yellow-400 font-bold mb-4 text-3xl">
               Thông tin liên hệ
             </h3>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-3 text-lg leading-relaxed">
               <li>
-                <a className="text-white transition" href="tel:0392360785">
+                <a
+                  className="text-white transition hover:text-yellow-300 text-2xl"
+                  href="tel:0392360785"
+                >
                   0392360785
                 </a>
               </li>
               <li>
-                <a
-                  className="text-white transition"
-                  href="mailto:thanhluancongviec123@gmail.com"
-                >
+                <a className="text-white transition hover:text-yellow-300 block max-w-full break-all text-xl">
                   thanhluancongviec123@gmail.com
                 </a>
               </li>
-              <li>Việt Nam</li>
             </ul>
           </div>
 
+          {/* Column 2: Courses */}
           <div>
-            <h3 className="!text-yellow-400 font-semibold mb-3">Khoá học</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a className="text-white" href="#">
-                  Danh sách khoá học
-                </a>
-              </li>
-              <li>
-                <a className="text-white" href="#">
-                  Lịch khai giảng
-                </a>
-              </li>
-              <li>
-                <a className="text-white" href="#">
-                  Hỗ trợ học viên
-                </a>
-              </li>
-            </ul>
+            <h3 className="text-yellow-400 font-bold mb-4 text-3xl">
+              Thông tin khoá học
+            </h3>
+            <a className="text-white hover:text-yellow-300 text-2xl" href="#">
+              Danh sách khoá học
+            </a>
           </div>
 
-          <div>
-            <h3 className="!text-yellow-400 font-semibold mb-3">
+          {/* Column 3: Social */}
+          <div className="flex flex-col sm:col-span-2 md:col-span-1">
+            <h3 className="text-yellow-400 font-bold mb-4 text-3xl">
               Kết nối với thầy Luân
             </h3>
-            <div className="flex gap-3 mb-4">
+            <div className="flex flex-wrap gap-4 mb-6">
+              {/* Facebook */}
               <a
                 href="#"
                 aria-label="Facebook"
-                className="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center hover:bg-white hover:text-blue-700 transition"
+                className="group relative size-12 aspect-square shrink-0 leading-none rounded-full border border-white/70 bg-primary inline-flex items-center justify-center transition-colors duration-200 hover:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
               >
-                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-                  <path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.4V12h2.4V9.7c0-2.4 1.4-3.7 3.6-3.7 1 0 2 .2 2 .2v2.2h-1.1c-1.1 0-1.5.7-1.5 1.4V12h2.6l-.4 2.9h-2.2v7A10 10 0 0 0 22 12z" />
-                </svg>
+                <YoutubeWhite className="absolute inset-0 m-auto block size-6 text-white opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+                <FacebookColor className="absolute inset-0 m-auto block size-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </a>
+
+              {/* Messenger */}
               <a
                 href="#"
                 aria-label="Messenger"
-                className="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center hover:bg-white hover:text-blue-700 transition"
+                className="group relative size-12 aspect-square shrink-0 leading-none rounded-full border border-white/70 bg-primary inline-flex items-center justify-center transition-colors duration-200 hover:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
               >
-                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-                  <path d="M12 2C6.5 2 2 6 2 10.7c0 2.8 1.6 5.2 4.1 6.7v3.6l3.8-2.1c.7.1 1.4.2 2.1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm5 7.8-3.2 3.4-2.5-2.6-4.8 2.6 3.2-3.4 2.5 2.6L17 9.8z" />
-                </svg>
+                <MessengerWhite className="absolute inset-0 m-auto block size-6 text-white opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+                <MessengerColor className="absolute inset-0 m-auto block size-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </a>
+
+              {/* TikTok */}
               <a
                 href="#"
                 aria-label="TikTok"
-                className="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center hover:bg-white hover:text-blue-700 transition"
+                className="group relative size-12 aspect-square shrink-0 leading-none rounded-full border border-white/70 bg-primary inline-flex items-center justify-center transition-colors duration-200 hover:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
               >
-                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-                  <path d="M21 8.1a6.7 6.7 0 0 1-4.2-1.4v6.6a6 6 0 1 1-5.7-6v2.6a3.4 3.4 0 1 0 2.7 3.3V2h2.5a4.2 4.2 0 0 0 4.2 4.1v2z" />
-                </svg>
+                <TiktokWhite className="absolute inset-0 m-auto block size-6 text-white opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+                <TiktokColor className="absolute inset-0 m-auto block size-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </a>
+
+              {/* YouTube */}
               <a
                 href="#"
                 aria-label="YouTube"
-                className="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center hover:bg-white hover:text-blue-700 transition"
+                className="group relative size-12 aspect-square shrink-0 leading-none rounded-full border border-white/70 bg-primary inline-flex items-center justify-center transition-colors duration-200 hover:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
               >
-                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-                  <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.6 3.5 12 3.5 12 3.5s-7.6 0-9.4.6A3 3 0 0 0 .5 6.2 31.8 31.8 0 0 0 0 12a31.8 31.8 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.8.6 9.4.6 9.4.6s7.6 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.8 31.8 0 0 0 24 12a31.8 31.8 0 0 0-.5-5.8zM9.8 15.5V8.5L15.8 12l-6 3.5z" />
-                </svg>
+                <YoutubeWhite className="absolute inset-0 m-auto block size-6 text-white opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+                <YoutubeColor className="absolute inset-0 m-auto block size-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </a>
             </div>
-            <p className="text-sm">
-              Đối tác: <span className="font-medium">Fessior Community</span>
+            <p className="text-lg">
+              Đối tác: <span className="font-semibold">Fessior Community</span>
             </p>
           </div>
 
-          {/* Cột 4 */}
+          {/* Column 4: About */}
           <div>
-            <h3 className="!text-yellow-400 font-semibold mb-3">
+            <h3 className="text-yellow-400 font-bold mb-4 text-3xl">
               Về chúng tôi
             </h3>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-3 text-lg leading-relaxed">
               <li>
-                <a className="text-white" href="#">
+                <a className="text-white hover:text-yellow-300" href="#">
                   Giới thiệu
                 </a>
               </li>
               <li>
-                <a className="text-white" href="#">
+                <a className="text-white hover:text-yellow-300" href="#">
                   Điều khoản & Bảo mật
                 </a>
               </li>
               <li>
-                <a className="text-white" href="#">
+                <a className="text-white hover:text-yellow-300" href="#">
                   Tuyển dụng
                 </a>
               </li>
@@ -120,8 +121,10 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 pt-5 border-t border-white/10 text-xs text-white/60 flex justify-center">
-          <p>Made with ❤️ by Move Education</p>
+        <div className="mt-12 pt-6 border-t border-white/10 text-base text-white/70 flex justify-center">
+          <p>
+            Made with <span aria-hidden>❤️</span> by Move Education
+          </p>
         </div>
       </div>
     </footer>

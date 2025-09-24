@@ -1,20 +1,18 @@
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { createRootRoute } from "@tanstack/react-router";
+// import { Header } from "../components/landingPage/Header";
+// import { Footer } from "../components/landingPage/Footer";
+// import { Connect } from "../components/landingPage/Body";
+// import { FooterBadgeRow } from "../components/landingPage/FooterBadge";
+// import DashboardSection from "../components/landingPage/Dashboard";
 
 const RootLayout = () => (
-  <>
-    <div className="p-2 flex gap-2">
-      <Link to="/" className="[&.active]:font-bold">
-        Home
-      </Link>{" "}
-      <Link to="/about" className="[&.active]:font-bold">
-        About
-      </Link>
-    </div>
-    <hr />
-    <Outlet />
-    <TanStackRouterDevtools />
-  </>
+  <div className="min-h-screen flex flex-col">
+    {/* <Header/> */}
+    {/* <DashboardSection/> */}
+    {/* <Connect  />
+      <FooterBadgeRow />
+      <Footer /> */}
+  </div>
 );
 
 export const Route = createRootRoute({ component: RootLayout });

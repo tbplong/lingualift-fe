@@ -69,8 +69,8 @@ const LogoWhiteText = ({ className }: { className?: string }) => {
         fill="white"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M130.612 145.8V113.8L52.2446 113.8V161.8L117.551 161.8L130.612 145.8Z"
         fill="white"
       />
