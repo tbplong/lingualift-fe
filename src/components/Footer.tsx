@@ -1,9 +1,7 @@
-import "../../index.css";
-import "../../App.css";
-import { YoutubeColor, YoutubeWhite } from "../icons";
-import { MessengerColor, MessengerWhite } from "../icons";
-import { FacebookColor } from "../icons";
-import { TiktokColor, TiktokWhite } from "../icons";
+import { YoutubeColor, YoutubeWhite } from "./icons";
+import { MessengerColor, MessengerWhite } from "./icons";
+import { FacebookColor } from "./icons";
+import { TiktokColor, TiktokWhite } from "./icons";
 
 export function Footer() {
   return (
