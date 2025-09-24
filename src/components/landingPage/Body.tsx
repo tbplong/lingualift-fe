@@ -1,21 +1,23 @@
-import { YoutubeColor } from "./icons";
-import { YoutubeWhite } from "./icons";
+import "../../index.css";
+import "../../App.css";
+import { YoutubeColor } from "../icons";
+import { YoutubeWhite } from "../icons";
 
-import { MessengerColor } from "./icons";
-import { MessengerWhite } from "./icons";
+import { MessengerColor } from "../icons";
+import { MessengerWhite } from "../icons";
 
-import { FacebookColor } from "./icons";
+import { FacebookColor } from "../icons";
 
-import { TiktokColor } from "./icons";
-import { TiktokWhite } from "./icons";
+import { TiktokColor } from "../icons";
+import { TiktokWhite } from "../icons";
 
 export function Connect() {
   return (
-    <section className="flex flex-col items-center py-10 mt-5 mb-8">
+    <section className="flex flex-col items-center py-10 mt-0 mb-8">
       <h2 className="px-4 text-center font-bold leading-tight text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl">
         <span className="text-secondary">KẾT NỐI</span>{" "}
         <span className="text-gray-700">VỚI</span>{" "}
-        <span className="text-primary">THẦY LUÂN</span>
+        <span className="text-primary">THẦY NAM</span>
       </h2>
 
       <div className="relative mt-6 sm:mt-8 w-[92vw] max-w-[1400px] mx-auto flex justify-center">
@@ -37,14 +39,11 @@ export function Connect() {
         flex items-center justify-center rounded-xl
       "
               >
-                {/* border nền mờ */}
                 <span className="absolute inset-0 rounded-xl border border-white/90 bg-primary-600" />
-                {/* dải quét */}
                 <span className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
                   <span className="absolute -left-full top-0 h-full w-1/2 bg-white/10 skew-x-[-20deg] transition-transform duration-500 group-hover:translate-x-[200%]" />
                 </span>
 
-                {/* Nút tròn chứa icon */}
                 <div className="relative size-[60%] sm:size-[62%] md:size-[64%] rounded-full border border-white/70 bg-primary flex items-center justify-center transition-colors duration-200 group-hover:bg-white">
                   <W className="absolute inset-0 m-auto block size-[55%] text-white opacity-100 transition-opacity duration-200 group-hover:opacity-0" />
                   <C className="absolute inset-0 m-auto block size-[55%] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />

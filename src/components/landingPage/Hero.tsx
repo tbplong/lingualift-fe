@@ -24,7 +24,7 @@ export default function Hero() {
               </span>{" "}
               <br />
               with <br />
-              <span className="text-primary-200">MoveEducation</span>
+              <span className="text-primary-200">LINGUALIFT</span>
             </p>
             <p className="mt-6 max-w-prose text-balance text-slate-600 text-2xl ">
               World‑class training and <br /> development programs developed{" "}
@@ -74,8 +74,8 @@ export default function Hero() {
           </div>
           <div className="w-full relative  items-center flex justify-center pb-8 ">
             <img
-              src="/ChatGPT Image 13_21_23 24 thg 9, 2025.png"
-              className="w-[60%]"
+              src="/ChatGPT_Image_17_17_43_24_thg_9__2025-removebg-preview.png"
+              className="w-[60%] "
             />
             <div
               aria-hidden
@@ -136,7 +136,7 @@ export default function Hero() {
           <div className="relative"></div>
         </div>
         <div className="relative">
-          <div className="absolute left-0 right-0 bottom-6 z-30">
+          <div className="absolute left-0 right-0 bottom-4 z-30">
             <MoveProTicker />
           </div>
         </div>
