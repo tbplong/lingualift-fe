@@ -1,15 +1,13 @@
-import "../../index.css";
-import "../../App.css";
-import { YoutubeColor } from "../icons";
-import { YoutubeWhite } from "../icons";
+import { YoutubeColor } from "./icons";
+import { YoutubeWhite } from "./icons";
 
-import { MessengerColor } from "../icons";
-import { MessengerWhite } from "../icons";
+import { MessengerColor } from "./icons";
+import { MessengerWhite } from "./icons";
 
-import { FacebookColor } from "../icons";
+import { FacebookColor } from "./icons";
 
-import { TiktokColor } from "../icons";
-import { TiktokWhite } from "../icons";
+import { TiktokColor } from "./icons";
+import { TiktokWhite } from "./icons";
 
 export function Connect() {
   return (

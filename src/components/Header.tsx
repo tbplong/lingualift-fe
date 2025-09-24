@@ -1,10 +1,8 @@
-import "../../index.css";
-import "../../App.css";
 import { useEffect, useState } from "react";
-import { YoutubeColor, YoutubeWhite } from "../icons";
-import { MessengerColor, MessengerWhite } from "../icons";
-import { FacebookColor } from "../icons";
-import { TiktokColor, TiktokWhite } from "../icons";
+import { YoutubeColor, YoutubeWhite } from "./icons";
+import { MessengerColor, MessengerWhite } from "./icons";
+import { FacebookColor } from "./icons";
+import { TiktokColor, TiktokWhite } from "./icons";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
