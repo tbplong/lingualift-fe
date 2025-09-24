@@ -109,6 +109,7 @@
   --color-tertiary-300: #7c86a3;
   --color-tertiary-700: #242c3f;
   --color-tertiary-100: #afb9ca;
+  --color-tertiary-000: #ebeff3;
 
   /* Shadow */
   --drop-shadow-secondary-1: 4px 4px 0px rgba(249, 186, 8, 1);
