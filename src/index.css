@@ -102,11 +102,13 @@
   --color-secondary: #f9ba08;
   --color-secondary-300: #fcd75e;
   --color-secondary-700: #c18706;
+  --color-secondary-100: #fef3c7;
 
   /* Tertiary */
   --color-tertiary: #3d4863;
   --color-tertiary-300: #7c86a3;
   --color-tertiary-700: #242c3f;
+  --color-tertiary-100: #afb9ca;
 
   /* Shadow */
   --drop-shadow-secondary-1: 4px 4px 0px rgba(249, 186, 8, 1);
