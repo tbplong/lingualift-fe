@@ -1,9 +1,7 @@
-import "../../index.css";
-import "../../App.css";
-import { YoutubeColor, YoutubeWhite } from "../icons";
-import { MessengerColor, MessengerWhite } from "../icons";
-import { FacebookColor } from "../icons";
-import { TiktokColor, TiktokWhite } from "../icons";
+import { YoutubeColor, YoutubeWhite } from "./icons";
+import { MessengerColor, MessengerWhite } from "./icons";
+import { FacebookColor } from "./icons";
+import { TiktokColor, TiktokWhite } from "./icons";
 
 export function Footer() {
   return (
@@ -92,7 +90,7 @@ export function Footer() {
               </a>
             </div>
             <p className="text-lg">
-              Đối tác: <span className="font-semibold">Fessior Community</span>
+              Đối tác: <span className="font-semibold">404 NOT FOUND</span>
             </p>
           </div>
 
@@ -121,11 +119,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-white/10 text-base text-white/70 flex justify-center">
+        {/* <div className="mt-12 pt-6 border-t border-white/10 text-base text-white/70 flex justify-center">
           <p>
             Made with <span aria-hidden>❤️</span> by Move Education
           </p>
-        </div>
+        </div> */}
       </div>
     </footer>
   );
