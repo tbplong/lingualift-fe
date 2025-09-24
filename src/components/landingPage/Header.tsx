@@ -1,8 +1,10 @@
+import "../../index.css";
+import "../../App.css";
 import { useEffect, useState } from "react";
-import { YoutubeColor, YoutubeWhite } from "./icons";
-import { MessengerColor, MessengerWhite } from "./icons";
-import { FacebookColor } from "./icons";
-import { TiktokColor, TiktokWhite } from "./icons";
+import { YoutubeColor, YoutubeWhite } from "../icons";
+import { MessengerColor, MessengerWhite } from "../icons";
+import { FacebookColor } from "../icons";
+import { TiktokColor, TiktokWhite } from "../icons";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -36,9 +38,7 @@ export function Header() {
       >
         <a href="/" className="flex items-center gap-3 shrink-0">
           <span className="font-extrabold text-primary leading-none tracking-tight text-lg md:text-[40px] ml-20">
-            MOVE
-            <br className="hidden md:block" />
-            EDUCATION
+            LINGUALIFT
           </span>
         </a>
 
@@ -202,7 +202,7 @@ export function Header() {
 
                     <div className="mt-8">
                       <h4 className="text-lg font-semibold text-slate-800 mb-4">
-                        Kết nối với thầy Luân
+                        Kết nối với thầy Nam
                       </h4>
                       <div className="flex flex-wrap gap-4 mb-6">
                         <a
