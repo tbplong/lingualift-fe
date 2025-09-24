@@ -1,7 +1,9 @@
-import { YoutubeColor, YoutubeWhite } from "./icons";
-import { MessengerColor, MessengerWhite } from "./icons";
-import { FacebookColor } from "./icons";
-import { TiktokColor, TiktokWhite } from "./icons";
+import "../../index.css";
+import "../../App.css";
+import { YoutubeColor, YoutubeWhite } from "../icons";
+import { MessengerColor, MessengerWhite } from "../icons";
+import { FacebookColor } from "../icons";
+import { TiktokColor, TiktokWhite } from "../icons";
 
 export function Footer() {
   return (
@@ -46,7 +48,7 @@ export function Footer() {
           {/* Column 3: Social */}
           <div className="flex flex-col sm:col-span-2 md:col-span-1">
             <h3 className="text-yellow-400 font-bold mb-4 text-3xl">
-              Kết nối với thầy Luân
+              Kết nối với thầy Nam
             </h3>
             <div className="flex flex-wrap gap-4 mb-6">
               {/* Facebook */}

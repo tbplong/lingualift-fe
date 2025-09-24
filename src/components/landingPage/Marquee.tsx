@@ -1,13 +1,17 @@
 export default function MoveProTicker() {
-  const items = Array.from({ length: 30 }, () => "MOVE PRO");
+  // Tạo mảng chữ (ít nhất 12–16 để kín chiều ngang)
+  const items = Array.from({ length: 30 }, () => "LINGUALIFT");
 
   return (
     <div className="relative h-18 w-full overflow-hidden bg-primary text-white">
+      {/* Track 1 */}
       <div className="marquee absolute left-0 top-0 flex h-full w-[200%] items-center">
         <Row items={items} />
         <Row items={items} />
       </div>
+      {/* Track 2 (lệch pha để liền mạch) */}
 
+      {/* CSS cho hiệu ứng */}
       <style>{`
         @keyframes scroll-left {
           0%   { transform: translateX(0); }

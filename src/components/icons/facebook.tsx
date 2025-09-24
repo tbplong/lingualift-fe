@@ -8,10 +8,10 @@ const FacebookIcon = ({ className }: { className?: string }) => {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      <g clip-path="url(#clip0_19015_13712)">
+      <g clipPath="url(#clip0_19015_13712)">
         <mask
           id="mask0_19015_13712"
-          style={{ maskType: 'luminance' }}
+          style={{ maskType: "luminance" }}
           maskUnits="userSpaceOnUse"
           x="-3"
           y="-3"

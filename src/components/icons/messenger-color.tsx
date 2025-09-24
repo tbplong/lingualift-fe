@@ -8,7 +8,7 @@ const MessengerColor = ({ className }: { className?: string }) => {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      <g clip-path="url(#clip0_18095_30979)">
+      <g clipPath="url(#clip0_18095_30979)">
         <path
           d="M80 0C34.94 0 0 33.02 0 77.6C0 100.92 9.56 121.08 25.12 135C26.42 136.16 27.22 137.8 27.26 139.56L27.7 153.8C27.732 154.848 28.0209 155.872 28.5413 156.782C29.0617 157.692 29.7977 158.46 30.6844 159.019C31.5712 159.578 32.5818 159.91 33.6272 159.987C34.6726 160.064 35.7209 159.883 36.68 159.46L52.56 152.46C53.9 151.86 55.42 151.76 56.84 152.14C64.14 154.14 71.9 155.22 80 155.22C125.06 155.22 160 122.2 160 77.62C160 33.04 125.06 0 80 0Z"
           fill="url(#paint0_radial_18095_30979)"
@@ -28,9 +28,9 @@ const MessengerColor = ({ className }: { className?: string }) => {
           gradientTransform="translate(26.8 160) scale(176 176)"
         >
           <stop stopColor="#0099FF" />
-          <stop offset="0.6" stop-color="#A033FF" />
-          <stop offset="0.9" stop-color="#FF5280" />
-          <stop offset="1" stop-color="#FF7061" />
+          <stop offset="0.6" stopColor="#A033FF" />
+          <stop offset="0.9" stopColor="#FF5280" />
+          <stop offset="1" stopColor="#FF7061" />
         </radialGradient>
         <clipPath id="clip0_18095_30979">
           <rect width="160" height="160" fill="white" />
