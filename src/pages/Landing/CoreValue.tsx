@@ -1,4 +1,4 @@
-import Marquee from "../../components/landingPage/Marquee";
+import Marquee from "./Marquee";
 const CoreValue = () => {
   return (
     <section className="h-dvh flex flex-col items-center">
