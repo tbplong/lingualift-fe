@@ -1,20 +1,48 @@
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
+import React, { Suspense } from "react";
+import Loading from "../components/ui/loading";
+import { PRODUCTION } from "../config/env";
+import { useGlobalLoadingStore } from "../stores";
 
-const RootLayout = () => (
-  <>
-    <div className="p-2 flex gap-2">
-      <Link to="/" className="[&.active]:font-bold">
-        Home
-      </Link>{" "}
-      <Link to="/about" className="[&.active]:font-bold">
-        About
-      </Link>
-    </div>
-    <hr />
-    <Outlet />
-    <TanStackRouterDevtools />
-  </>
-);
+const TanStackRouterDevtools = PRODUCTION
+  ? () => null
+  : React.lazy(() =>
+      import("@tanstack/router-devtools").then((res) => ({
+        default: res.TanStackRouterDevtools,
+      })),
+    );
 
-export const Route = createRootRoute({ component: RootLayout });
+type RouterContext = {
+  authContext: { isAuthenticated: boolean; isManager: boolean };
+};
+
+export const Route = createRootRouteWithContext<RouterContext>()({
+  component: RootComponent,
+  notFoundComponent: () => {
+    return <div>Not found</div>;
+  },
+});
+
+function RootComponent() {
+  // const { isAuthenticated } = useAuthStore();
+  const { globalLoading } = useGlobalLoadingStore();
+  // const router = useRouter();
+
+  // useEffect(() => {
+  //   router.invalidate();
+  // }, [isAuthenticated, router]);
+
+  return (
+    <>
+      <Outlet />
+      <Suspense>
+        <TanStackRouterDevtools />
+      </Suspense>
+      {globalLoading && (
+        <div className="relative flex h-screen w-screen items-center justify-center bg-white">
+          <Loading className="relative size-20" loop />
+        </div>
+      )}
+    </>
+  );
+}
