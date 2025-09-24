@@ -23,11 +23,11 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { z } from "zod";
-import Waves from "../waves";
+import Waves from "../../components/icons/waves";
 
 import EducationAnimation from "../../assets/animations/education.json";
 
-export const Route = createFileRoute("/login/index")({
+export const Route = createFileRoute("/~login/~index")({
   // beforeLoad: async ({ context }) => {
   //   if (context.authContext.isAuthenticated) {
   //     throw redirect({ to: "/" });
