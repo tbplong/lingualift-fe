@@ -29,7 +29,7 @@ export function Footer() {
               </li>
               <li>
                 <a className="text-white transition hover:text-yellow-300 block max-w-full break-all text-xl">
-                  thanhluancongviec123@gmail.com
+                  sang.truong2005@hcmut.edu.vn
                 </a>
               </li>
             </ul>
@@ -48,7 +48,7 @@ export function Footer() {
           {/* Column 3: Social */}
           <div className="flex flex-col sm:col-span-2 md:col-span-1">
             <h3 className="text-yellow-400 font-bold mb-4 text-3xl">
-              Kết nối với thầy Nam
+              Kết nối với Chúng Tôi
             </h3>
             <div className="flex flex-wrap gap-4 mb-6">
               {/* Facebook */}

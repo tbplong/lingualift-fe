@@ -8,7 +8,7 @@ export function FooterBadgeRow() {
         >
           <span className="text-sm font-semibold tracking-wide">
             Powered by{" "}
-            <span className="font-extrabold text-3xl">Fessior Community</span>
+            <span className="font-extrabold text-3xl">404 NOT FOUND</span>
           </span>
         </a>
       </div>

@@ -17,7 +17,7 @@ export function Connect() {
       <h2 className="px-4 text-center font-bold leading-tight text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl">
         <span className="text-secondary">KẾT NỐI</span>{" "}
         <span className="text-gray-700">VỚI</span>{" "}
-        <span className="text-primary">THẦY NAM</span>
+        <span className="text-primary">Chúng Tôi</span>
       </h2>
 
       <div className="relative mt-6 sm:mt-8 w-[92vw] max-w-[1400px] mx-auto flex justify-center">
