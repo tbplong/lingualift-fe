@@ -178,10 +178,10 @@ export function Header() {
                           />
                         </svg>
                         <a
-                          href="mailto:thanhluancongviec123@gmail.com"
+                          href="mailto:sang.truong2005@hcmut.edu.vn"
                           className="truncate hover:text-blue-700"
                         >
-                          thanhluancongviec123@gmail.com
+                          sang.truong2005@hcmut.edu.vn
                         </a>
                       </li>
                       <li className="flex items-center gap-3">
@@ -202,7 +202,7 @@ export function Header() {
 
                     <div className="mt-8">
                       <h4 className="text-lg font-semibold text-slate-800 mb-4">
-                        Kết nối với thầy Nam
+                        Kết nối với Chúng Tôi
                       </h4>
                       <div className="flex flex-wrap gap-4 mb-6">
                         <a
