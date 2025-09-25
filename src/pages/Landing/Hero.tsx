@@ -106,7 +106,6 @@ export default function Hero() {
       2xl:[--R:clamp(22rem,min(60vw,90%),54rem)] /* desktop lớn: cap nhỏ hơn */
     "
                 >
-                  <div className="absolute rounded-full border-4 border-primary-100 size-[var(--R)]" />
                   <div className="absolute rounded-full border-4 border-primary-100 size-[calc(var(--R)*0.78)]" />
                   <div className="absolute rounded-full border-4 border-primary-100 size-[calc(var(--R)*0.63)]" />
                   <div className="absolute rounded-full border-4 border-primary-100 size-[calc(var(--R)*0.48)]" />
@@ -121,10 +120,10 @@ export default function Hero() {
 
                 {/* Active Students */}
                 <div
-                  className="absolute left-[4%] top-[6%] sm:left-[6%] sm:top-[4%]
-                    2xl:left-[6%] 2xl:top-[8%]
+                  className="absolute left-[4%] top-[6%] sm:left-[6%] sm:top-[30%]
+                    2xl:left-[6%] 2xl:top-[24%]
                     bg-white px-3 py-2 sm:px-4 sm:py-2.5 2xl:px-5 2xl:py-3
-                    rounded-xl shadow text-xs sm:text-sm 2xl:text-base"
+                    rounded-xl shadow text-xs sm:text-sm 2xl:text-xl"
                 >
                   180K+ <span className="text-slate-500">Active Students</span>
                 </div>
