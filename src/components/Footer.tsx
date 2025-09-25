@@ -89,9 +89,6 @@ export function Footer() {
                 <YoutubeColor className="absolute inset-0 m-auto block size-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </a>
             </div>
-            <p className="text-lg">
-              Đối tác: <span className="font-semibold">404 NOT FOUND</span>
-            </p>
           </div>
 
           {/* Column 4: About */}
@@ -99,7 +96,7 @@ export function Footer() {
             <h3 className="text-yellow-400 font-bold mb-4 text-3xl">
               Về chúng tôi
             </h3>
-            <ul className="space-y-3 text-lg leading-relaxed">
+            <ul className="space-y-3 leading-relaxed text-xl">
               <li>
                 <a className="text-white hover:text-yellow-300" href="#">
                   Giới thiệu
