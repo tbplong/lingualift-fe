@@ -7,7 +7,7 @@ export function FooterBadgeRow() {
           className="absolute left-1/2 -translate-x-1/2 inline-flex items-center gap-3 rounded-sm bg-primary-1200 px-14 py-5 text-white shadow-lg transition-transform hover:-translate-y-0.5"
         >
           <span className="text-sm font-semibold tracking-wide">
-            <span className="font-extrabold text-3xl">404 NOT FOUND</span>
+            <span className="font-extrabold text-3xl">Back to top</span>
           </span>
         </a>
       </div>
