@@ -9,55 +9,58 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from "./routes/__root";
-import { Route as AboutRouteImport } from "./routes/about";
 import { Route as IndexRouteImport } from "./routes/index";
+import { Route as LoginIndexRouteImport } from "./routes/login/index";
+import { Route as AboutIndexRouteImport } from "./routes/about/index";
 
-const AboutRoute = AboutRouteImport.update({
-  id: "/about",
-  path: "/about",
-  getParentRoute: () => rootRouteImport,
-} as any);
 const IndexRoute = IndexRouteImport.update({
   id: "/",
   path: "/",
   getParentRoute: () => rootRouteImport,
 } as any);
+const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: "/login/",
+  path: "/login/",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const AboutIndexRoute = AboutIndexRouteImport.update({
+  id: "/about/",
+  path: "/about/",
+  getParentRoute: () => rootRouteImport,
+} as any);
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
+  "/about": typeof AboutIndexRoute;
+  "/login": typeof LoginIndexRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
+  "/about": typeof AboutIndexRoute;
+  "/login": typeof LoginIndexRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
+  "/about/": typeof AboutIndexRoute;
+  "/login/": typeof LoginIndexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/about";
+  fullPaths: "/" | "/about" | "/login";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/about";
-  id: "__root__" | "/" | "/about";
+  to: "/" | "/about" | "/login";
+  id: "__root__" | "/" | "/about/" | "/login/";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
-  AboutRoute: typeof AboutRoute;
+  AboutIndexRoute: typeof AboutIndexRoute;
+  LoginIndexRoute: typeof LoginIndexRoute;
 }
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    "/about": {
-      id: "/about";
-      path: "/about";
-      fullPath: "/about";
-      preLoaderRoute: typeof AboutRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
     "/": {
       id: "/";
       path: "/";
@@ -65,12 +68,27 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof IndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/login/": {
+      id: "/login/";
+      path: "/login";
+      fullPath: "/login";
+      preLoaderRoute: typeof LoginIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/about/": {
+      id: "/about/";
+      path: "/about";
+      fullPath: "/about";
+      preLoaderRoute: typeof AboutIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  AboutIndexRoute: AboutIndexRoute,
+  LoginIndexRoute: LoginIndexRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
