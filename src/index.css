@@ -74,9 +74,26 @@
     display: none;
   }
 }
+@keyframes orbit {
+  from {
+    transform: rotate(0deg) translateX(9rem) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(9rem) rotate(-360deg);
+  }
+}
+.animate-orbit {
+  animation: orbit 9s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-orbit {
+    animation: none;
+  }
+}
 
 @theme {
   /* Screens */
+  --breakpoint-3xs: 280px;
   --breakpoint-2xs: 360px;
   --breakpoint-xs: 480px;
   --breakpoint-sm: 640px;

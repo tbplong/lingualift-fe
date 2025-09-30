@@ -2,7 +2,6 @@ export default function Hero() {
   return (
     <section className="min-h-dvh bg-primary-100/20 text-slate-900 pt-20 sm:pt-24 2xl:pt-28">
       <div className="relative isolate">
-        {/* dotted background */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10 opacity-[0.5]"
@@ -14,14 +13,12 @@ export default function Hero() {
           }}
         />
 
-        {/* constrained container prevents horizontal scrollbars */}
         <div className="mx-auto w-full max-w-screen-2xl 2xl:max-w-[2000px] px-4 sm:px-6 2xl:px-8">
           <div
             className="relative grid grid-cols-1 items-center 2xl:items-start
                  gap-8 sm:gap-10 2xl:grid-cols-12 2xl:gap-12 
                  py-11 2xl:py-16"
           >
-            {/* LEFT (copy + stats) */}
             <div className="order-1 2xl:order-2 2xl:col-span-5 2xl:col-start-2">
               <h1
                 className="text-center 2xl:text-left font-extrabold leading-tight
@@ -42,17 +39,17 @@ export default function Hero() {
                             text-lg sm:text-xl 2xl:text-2xl
                             text-center 2xl:text-left mx-auto"
               >
-                World-class training and development programs developed by top
-                teachers.
+                World-class training <br /> and development programs <br />{" "}
+                developed <br className="md:hidden" /> by top teachers.
               </p>
 
-              <div className="mt-7 flex flex-wrap items-center gap-6 2xl:gap-8 pt-8 justify-center 2xl:justify-start">
+              <div className="mt-7 2xs:mt-0 flex flex-wrap items-center gap-6 2xl:gap-8 pt-8 justify-center 2xl:justify-start">
                 <a
                   href="#"
                   className="inline-flex items-center rounded-full bg-primary text-white font-medium shadow-sm
                              px-5 py-3 text-sm
-                             sm:px-6 sm:py-3.5 sm:text-base
-                             2xl:px-8 2xl:py-4 2xl:text-lg
+                             sm:px-6 sm:py-3.5 sm:text-lg
+                             2xl:px-8 2xl:py-4 2xl:text-2xl
                              hover:bg-primary-700
                              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60
                              active:scale-[0.99] transition whitespace-nowrap"
@@ -61,25 +58,24 @@ export default function Hero() {
                 </a>
                 <a
                   href="#"
-                  className="text-blue-700 underline-offset-4 hover:underline text-base sm:text-lg 2xl:text-xl"
+                  className="text-blue-700 underline-offset-4 hover:underline text-base sm:text-lg 2xl:text-2xl"
                 >
                   Schedule a Call
                 </a>
               </div>
 
-              {/* STATS */}
-              <div className="order-3 2xl:order-3 2xl:col-span-6 2xl:col-start-1 2xl:self-start">
-                <dl className="mt-6 grid grid-cols-1 gap-6 max-w-xl mx-auto 2xl:mx-0 2xl:max-w-none">
-                  <div className="rounded-2xl bg-white p-6 sm:p-8 shadow-sm ring-1 ring-slate-950/5">
-                    <dt className="text-slate-500 text-xl sm:text-2xl 2xl:text-3xl">
+              <div className="mt-6 sm:mt-8 md:mt-15 2xl:mt-20 2xl:col-span-6 2xl:col-start-1 2xl:self-start text-center">
+                <dl className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-xl mx-auto 2xl:mx-0 2xl:max-w-none">
+                  <div className="rounded-2xl bg-white p-5 sm:p-8 shadow-sm ring-1 ring-slate-950/5">
+                    <dt className="text-slate-500 text-lg sm:text-2xl 2xl:text-3xl">
                       Courses Available
                     </dt>
                     <dd className="mt-1 sm:mt-2 text-2xl sm:text-3xl 2xl:text-4xl font-bold">
                       26,000+
                     </dd>
                   </div>
-                  <div className="rounded-2xl bg-white p-6 sm:p-8 shadow-sm ring-1 ring-slate-950/5">
-                    <dt className="text-slate-500 text-xl sm:text-2xl 2xl:text-3xl">
+                  <div className="rounded-2xl bg-white p-5 sm:p-8 shadow-sm ring-1 ring-slate-950/5">
+                    <dt className="text-slate-500 text-lg sm:text-2xl 2xl:text-3xl">
                       Better Enhanced Programs
                     </dt>
                     <dd className="mt-1 sm:mt-2 text-2xl sm:text-3xl 2xl:text-4xl font-bold">
@@ -90,14 +86,11 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* RIGHT (figure) */}
-            <div className="order-2 2xl:order-2 2xl:col-span-6 2xl:col-start-7 relative w-full py-6 sm:py-8 2xl:py-12 mx-auto 2xl:ml-auto 2xl:mr-0 items-center">
-              {/* wrapper: thêm overflow-hidden để không tràn */}
+            <div className="order-2 2xl:order-2 2xl:col-span-6 2xl:col-start-7 relative w-full py-6 sm:py-0 2xl:py-12 mx-auto 2xl:ml-auto 2xl:mr-0 items-center">
               <div
                 className="relative mx-auto aspect-[4.8/5] w-full
      max-w-[800px] xl:max-w-[880px] 2xl:max-w-[1020px] overflow-hidden"
               >
-                {/* background rings – responsive theo cột + viewport */}
                 <div
                   aria-hidden
                   className="
@@ -111,32 +104,29 @@ export default function Hero() {
                   <div className="absolute rounded-full border-4 border-primary-100 size-[calc(var(--R)*0.48)]" />
                 </div>
 
-                {/* avatar */}
                 <img
                   src="/ChatGPT Image 13_21_23 24 thg 9, 2025.png"
                   alt="Tutor"
-                  className="absolute inset-x-0 mx-auto top-0 w-[60%] sm:w-[60%] xl:w-[60%]"
+                  className="absolute inset-x-0 mx-auto top-0 w-[60%] sm:w-[60%] xl:w-[70%] 2xl:translate-y-[-50px]"
                 />
 
-                {/* Active Students */}
                 <div
-                  className="absolute left-[4%] top-[6%] sm:left-[6%] sm:top-[30%]
+                  className="absolute left-[4%] top-[0%] 2xs:left-[0%] 2xs:top-[0] 2xs sm:left-[6%] sm:top-[30%]
                     2xl:left-[6%] 2xl:top-[24%]
                     bg-white px-3 py-2 sm:px-4 sm:py-2.5 2xl:px-5 2xl:py-3
                     rounded-xl shadow text-xs sm:text-sm 2xl:text-xl"
                 >
-                  180K+ <span className="text-slate-500">Active Students</span>
+                  180K+ <span className="text-slate-500 ">Active Students</span>
                 </div>
 
-                {/* What's EduVate? */}
                 <a
                   href="#"
-                  className="absolute right-[1%] xl:right-[2%] 2xl:right-[3%]
-                           top-50 -translate-x-3 flex items-center gap-2 text-slate-800"
+                  className="absolute right-[0%] top-[25%] 2xs:right-[3%] 2xs:top-[25%] md:right-[10%] lg:right-[3%] xl:right-[2%] 2xl:right-[3%]
+                          flex items-center gap-2 text-slate-800"
                 >
                   <span className="relative shrink-0">
                     <span className="absolute inset-0 rounded-full bg-blue-500/20 animate-ping" />
-                    <span className="relative grid size-10 sm:size-12 place-items-center rounded-full bg-blue-600 ring-4 ring-blue-200/60 shadow">
+                    <span className="relative grid size-8 md:size-14 lg:size-16 xl:size-18 place-items-center rounded-full bg-primary ring-4 ring-blue-200/60 shadow">
                       <svg
                         viewBox="0 0 24 24"
                         fill="white"
@@ -151,7 +141,6 @@ export default function Hero() {
                   </span>
                 </a>
 
-                {/* trust badge */}
                 <div className="absolute bottom-[15%] left-1/2 -translate-x-1/2">
                   <div
                     className="relative rounded-xl bg-primary-600 px-4 py-2 sm:px-6 sm:py-3 text-white text-center shadow
