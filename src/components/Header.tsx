@@ -28,28 +28,32 @@ export function Header() {
     <header className="fixed top-0 inset-x-0 z-50 bg-white border-b border-[#E5E7EB] shadow-xl">
       <div
         className="
-          w-full h-16 md:h-24
-          flex items-center justify-between
-          px-4 sm:px-6 lg:px-10
-          xl:pl-[200px] xl:pr-[200px]
-        "
+      w-full h-14 sm:h-16 md:h-24
+      flex items-center justify-between
+      px-4 sm:px-6 lg:px-10
+      xl:pl-[250px] xl:pr-[200px]
+    "
       >
-        <a href="/" className="flex items-center gap-3 shrink-0">
-          <span className="font-extrabold text-primary leading-none tracking-tight text-lg md:text-[40px] ml-20">
+        {/* Logo */}
+        <a href="/" className="flex items-center gap-2 min-w-0 shrink-0">
+          <span className="font-extrabold text-primary leading-none tracking-tight text-2xl sm:text-3xl md:text-[40px]">
             LINGUALIFT
           </span>
         </a>
 
-        <div className="ml-auto flex items-center gap-3 sm:gap-4">
+        {/* Actions */}
+        <div className="ml-auto flex items-center gap-2 sm:gap-4">
+          {/* Ẩn Sign in ở màn rất nhỏ để đủ chỗ */}
           <button
             className="
-              px-5 py-2 text-sm
-              sm:px-7 sm:py-3 sm:text-base
-              md:px-10 md:py-4 md:text-[25px]
-              rounded bg-primary text-white font-semibold
-              hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 
-              shadow-md hover:shadow-lg whitespace-nowrap
-            "
+          sm:inline-flex
+          px-5 py-2 text-sm
+          sm:px-7 sm:py-3 sm:text-base
+          md:px-10 md:py-4 md:text-[25px]
+          rounded bg-primary text-white font-semibold
+          hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 
+          shadow-md hover:shadow-lg whitespace-nowrap
+        "
           >
             Sign in
           </button>
@@ -57,14 +61,14 @@ export function Header() {
           <button
             onClick={() => setMenuOpen(true)}
             className="
-              px-6 py-2 text-sm font-bold
-              sm:px-8 sm:py-3 sm:text-base
-              md:px-12 md:py-4 md:text-[25px]
-              border border-blue-600 text-blue-600
-              rounded-l-full rounded-br-full  
-              hover:bg-primary hover:text-white
-              shadow-md hover:shadow-lg whitespace-nowrap
-            "
+          px-4 py-2 text-sm font-bold
+          sm:px-6 sm:py-3 sm:text-base
+          md:px-10 md:py-4 md:text-[25px]
+          border border-blue-600 text-blue-600
+          rounded-l-full rounded-br-full
+          hover:bg-primary hover:text-white
+          shadow-md hover:shadow-lg whitespace-nowrap
+        "
             aria-haspopup="dialog"
             aria-expanded={menuOpen}
             aria-controls="slide-menu"
