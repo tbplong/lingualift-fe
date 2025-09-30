@@ -27,7 +27,7 @@ const WhyChoose = () => {
         </div>
         <div className="flex-2 w-full flex flex-row max-md:grid max-md:grid-cols-2 max-md:gap-3 justify-between items-center gap-5">
           <div className="md:hidden bg-primary-300 rounded-2xl h-7/8 max-md:h-full max-md:aspect-square">
-            <div className="card-body pl-5 pr-2">
+            <div className="card-body py-4 pl-5 pr-2">
               <h2 className="card-title sm:text-5xl text-2xl text-secondary-300 block">
                 Why <span className="block">Choose</span> LinguaLift
               </h2>

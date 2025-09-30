@@ -1,3 +1,4 @@
+import CoreValueCard from "./CoreValueCard";
 import Marquee from "./Marquee";
 const CoreValue = () => {
   return (
@@ -16,18 +17,12 @@ const CoreValue = () => {
         to help students aim for a 9+.
       </p>
       <div className="flex gap-8 p-6 mb-42">
-        <div className="card rounded-2xl bg-white w-120 h-160 shadow-lg text-tertiary border-2 border-[#00CAC7]">
-          <figure className="h-4/5 w-full p-4 rounded-2xl">
-            <img className="h-full rounded-xl" src="/exam.jpg" />
-          </figure>
-          <div className="card-body p-4 pt-2 gap-0">
-            <h2 className="card-title text-2xl ">Mock Exams</h2>
-            <p className="text-lg leading-6">
-              Real exam-style tests that build confidence and show you exactly
-              where to improve.
-            </p>
-          </div>
-        </div>
+        <CoreValueCard
+          className="border-[#00CAC7]"
+          img="/exam.jpg"
+          title="Mock Exams"
+          content="Real exam-style tests that build confidence and show you exactly where to improve."
+        />
         <div className="card rounded-2xl bg-white w-120 h-160 shadow-lg text-tertiary border-2 border-[#FDDED9]">
           <figure className="h-4/5 w-full p-4 rounded-2xl">
             <img className="h-full rounded-xl" src="/planner.jpg" />
