@@ -6,7 +6,7 @@ import { YoutubeWhite } from "../../components/icons";
 import { MessengerColor } from "../../components/icons";
 import { MessengerWhite } from "../../components/icons";
 
-import { FacebookColor } from "../../components/icons";
+import { FacebookColor, FacebookWhite } from "../../components/icons";
 
 import { TiktokColor } from "../../components/icons";
 import { TiktokWhite } from "../../components/icons";
@@ -26,7 +26,7 @@ export function Connect() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 w-full">
             {[
-              { W: YoutubeWhite, C: FacebookColor },
+              { W: FacebookWhite, C: FacebookColor },
               { W: MessengerWhite, C: MessengerColor },
               { W: TiktokWhite, C: TiktokColor },
               { W: YoutubeWhite, C: YoutubeColor },

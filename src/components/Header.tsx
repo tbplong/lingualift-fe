@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { YoutubeColor, YoutubeWhite } from "./icons";
 import { MessengerColor, MessengerWhite } from "./icons";
-import { FacebookColor } from "./icons";
+import { FacebookColor, FacebookWhite } from "./icons";
 import { TiktokColor, TiktokWhite } from "./icons";
 
 export function Header() {
@@ -212,7 +212,7 @@ export function Header() {
                           aria-label="Facebook"
                           className="group relative size-12 aspect-square shrink-0 leading-none rounded-full border border-white/70 bg-primary inline-flex items-center justify-center transition-colors duration-200 hover:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
                         >
-                          <YoutubeWhite className="absolute inset-0 m-auto block size-6 text-white opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
+                          <FacebookWhite className="absolute inset-0 m-auto block size-6 text-white opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
                           <FacebookColor className="absolute inset-0 m-auto block size-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                         </a>
 
