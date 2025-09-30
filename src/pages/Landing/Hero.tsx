@@ -4,7 +4,7 @@ export default function Hero() {
       <div className="relative isolate">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 opacity-[0.5]"
+          className="pointer-events-none absolute inset-0 -z-10 opacity-[0.65]"
           style={{
             backgroundImage:
               "radial-gradient(currentColor 1px, transparent 1px)",
