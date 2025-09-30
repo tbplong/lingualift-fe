@@ -16,9 +16,7 @@ const WhyChooseCard = ({ title, content, icon }: CardProps) => {
         <h2 className="card-title xl:text-2xl md:text-xl sm:text-2xl text-sm max-md:mt-3 max-sm:mt-0">
           {title}
         </h2>
-        <p className="xl:text-lg md:text-base sm:text-xl text-xs mb-6">
-          {content}
-        </p>
+        <p className="xl:text-lg md:text-base sm:text-xl text-xs">{content}</p>
       </div>
     </div>
   );
