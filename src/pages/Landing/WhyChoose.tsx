@@ -2,7 +2,7 @@ import WhyChooseCard from "./WhyChooseCard";
 
 const WhyChoose = () => {
   return (
-    <section className="flex flex-col items-center justify-center h-194 my-10">
+    <section className="flex flex-col items-center justify-center h-194 my-40">
       <div className="flex flex-col h-full w-4/5 max-md:aspect-square max-md:h-auto">
         <div className="flex-4 relative bg-tertiary-300 w-full rounded-4xl overflow-hidden max-md:hidden">
           <img

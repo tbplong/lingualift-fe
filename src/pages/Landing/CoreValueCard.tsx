@@ -1,13 +1,15 @@
 const CoreValueCard = ({
   className,
-  img,
   title,
   content,
+  img,
+  comp,
 }: {
   className: string;
-  img: string;
   title: string;
   content: string;
+  img?: string;
+  comp?: React.ReactNode;
 }) => {
   return (
     <div
@@ -17,7 +19,7 @@ const CoreValueCard = ({
       }
     >
       <figure className="h-4/5 w-full p-4 rounded-2xl">
-        <img className="h-full rounded-xl" src={img} />
+        {(img && <img className="h-full rounded-xl" src={img} />) || comp}
       </figure>
       <div className="card-body p-4 pt-2 gap-0">
         <h2 className="card-title text-2xl ">{title}</h2>
