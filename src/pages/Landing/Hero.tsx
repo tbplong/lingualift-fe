@@ -146,7 +146,7 @@ export default function Hero() {
                     className="relative rounded-xl bg-primary-600 px-4 py-2 sm:px-6 sm:py-3 text-white text-center shadow
                       text-xs sm:text-sm 2xl:text-2xl"
                   >
-                    <p className="opacity-90">We are Trusted by</p>
+                    <p className="opacity-90">We are Trusted by </p>
                     <p className="font-semibold">1000+ Companies Worldwide</p>
                   </div>
                 </div>
