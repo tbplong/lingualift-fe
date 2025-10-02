@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from "./routes/__root";
 import { Route as IndexRouteImport } from "./routes/index";
 import { Route as LoginIndexRouteImport } from "./routes/login/index";
+import { Route as LandingIndexRouteImport } from "./routes/landing/index";
 import { Route as AboutIndexRouteImport } from "./routes/about/index";
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +24,11 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   path: "/login/",
   getParentRoute: () => rootRouteImport,
 } as any);
+const LandingIndexRoute = LandingIndexRouteImport.update({
+  id: "/landing/",
+  path: "/landing/",
+  getParentRoute: () => rootRouteImport,
+} as any);
 const AboutIndexRoute = AboutIndexRouteImport.update({
   id: "/about/",
   path: "/about/",
@@ -32,30 +38,34 @@ const AboutIndexRoute = AboutIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
   "/about": typeof AboutIndexRoute;
+  "/landing": typeof LandingIndexRoute;
   "/login": typeof LoginIndexRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
   "/about": typeof AboutIndexRoute;
+  "/landing": typeof LandingIndexRoute;
   "/login": typeof LoginIndexRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   "/": typeof IndexRoute;
   "/about/": typeof AboutIndexRoute;
+  "/landing/": typeof LandingIndexRoute;
   "/login/": typeof LoginIndexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/about" | "/login";
+  fullPaths: "/" | "/about" | "/landing" | "/login";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/about" | "/login";
-  id: "__root__" | "/" | "/about/" | "/login/";
+  to: "/" | "/about" | "/landing" | "/login";
+  id: "__root__" | "/" | "/about/" | "/landing/" | "/login/";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
   AboutIndexRoute: typeof AboutIndexRoute;
+  LandingIndexRoute: typeof LandingIndexRoute;
   LoginIndexRoute: typeof LoginIndexRoute;
 }
 
@@ -75,6 +85,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof LoginIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/landing/": {
+      id: "/landing/";
+      path: "/landing";
+      fullPath: "/landing";
+      preLoaderRoute: typeof LandingIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     "/about/": {
       id: "/about/";
       path: "/about";
@@ -88,6 +105,7 @@ declare module "@tanstack/react-router" {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutIndexRoute: AboutIndexRoute,
+  LandingIndexRoute: LandingIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
 };
 export const routeTree = rootRouteImport

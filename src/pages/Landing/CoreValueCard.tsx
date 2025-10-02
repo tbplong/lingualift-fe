@@ -20,7 +20,9 @@ const CoreValueCard = ({
     >
       <figure
         className={
-          `h-4/5 w-auto m-4 border-none border-white rounded-2xl bg-` + color
+          `h-4/5 w-auto m-4 border-none border-white rounded-2xl ` +
+          `bg-` +
+          color
         }
       >
         {(img && <img className="h-full rounded-xl" src={img} />) || comp}

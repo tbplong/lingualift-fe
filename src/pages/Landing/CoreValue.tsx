@@ -1,5 +1,4 @@
 import CoreValueCard from "./CoreValueCard";
-import Marquee from "./Marquee";
 import "./CoreValue.css";
 import { useEffect, useRef } from "react";
 import { autoScroll } from "./autoScroll";
@@ -142,8 +141,6 @@ const CoreValue = () => {
           }
         />
       </div>
-
-      <Marquee />
     </section>
   );
 };
