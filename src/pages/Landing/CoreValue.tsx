@@ -1,8 +1,8 @@
-import CoreValueCard from "./CoreValueCard.tsx";
+import CoreValueCard from "./CoreValueCard";
 import Marquee from "./Marquee";
 import "./CoreValue.css";
 import { useEffect, useRef } from "react";
-import { autoScroll } from "./autoScroll.ts";
+import { autoScroll } from "./autoScroll";
 const CoreValue = () => {
   const trackRef = useRef<HTMLDivElement>(null);
 
