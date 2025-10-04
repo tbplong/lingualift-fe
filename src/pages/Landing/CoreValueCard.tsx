@@ -1,11 +1,13 @@
 const CoreValueCard = ({
-  color,
+  bg,
+  border,
   title,
   content,
   img,
   comp,
 }: {
-  color: string;
+  bg: string;
+  border: string;
   title: string;
   content: string;
   img?: string;
@@ -13,17 +15,10 @@ const CoreValueCard = ({
 }) => {
   return (
     <div
-      className={
-        `card grow-0 shrink-0 xl:basis-85 lg:basis-60 basis-full aspect-[476.8/636.8] snap-center rounded-2xl bg-white shadow-lg text-tertiary border-2 border-` +
-        color
-      }
+      className={`card grow-0 shrink-0 xl:basis-85 lg:basis-60 basis-full aspect-[476.8/636.8] snap-center rounded-2xl bg-white shadow-lg text-tertiary border-2 ${border}`}
     >
       <figure
-        className={
-          `h-4/5 w-auto m-4 border-none border-white rounded-2xl ` +
-          `bg-` +
-          color
-        }
+        className={`h-4/5 w-auto m-4 border-none border-white rounded-2xl ${bg}`}
       >
         {(img && <img className="h-full rounded-xl" src={img} />) || comp}
       </figure>
