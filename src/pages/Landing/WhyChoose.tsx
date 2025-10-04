@@ -2,9 +2,9 @@ import WhyChooseCard from "./WhyChooseCard";
 
 const WhyChoose = () => {
   return (
-    <section className="flex flex-col items-center justify-center lg:h-220 h-fit my-10">
+    <section className="flex flex-col items-center justify-center 2xl:h-220 xl:h-180 lg:h-160 h-fit my-10">
       <div className="flex flex-col h-full w-4/5 max-lg:aspect-square max-lg:h-auto">
-        <div className="flex-4 relative bg-tertiary-300 w-full rounded-4xl overflow-hidden max-lg:hidden">
+        <div className="2xl:flex-4 flex-5 relative bg-tertiary-300 w-full rounded-4xl overflow-hidden max-lg:hidden">
           <img
             src="/hocbai.png"
             className="2xl:w-full 2xl:object-cover w-444 h-full object-none absolute bottom-0 object-bottom inset-shadow-sm"
@@ -25,7 +25,7 @@ const WhyChoose = () => {
             </span>
           </div>
         </div>
-        <div className="flex-2 w-full flex flex-row max-lg:grid max-lg:grid-cols-2 max-lg:gap-3 justify-between items-center gap-5">
+        <div className="2xl:flex-2 flex-3 w-full flex flex-row max-lg:grid max-lg:grid-cols-2 max-lg:gap-3 justify-between items-center gap-5">
           <div className="lg:hidden bg-primary-300 rounded-2xl h-7/8 max-lg:h-full max-lg:aspect-square">
             <div className="card-body xs:pl-5 xs:pr-2 p-4 pr-0">
               <h2 className="card-title sm:text-5xl text-2xl text-secondary-300 block">
