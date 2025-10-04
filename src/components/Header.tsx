@@ -3,6 +3,7 @@ import { YoutubeColor, YoutubeWhite } from "./icons";
 import { MessengerColor, MessengerWhite } from "./icons";
 import { FacebookColor, FacebookWhite } from "./icons";
 import { TiktokColor, TiktokWhite } from "./icons";
+import { Link } from "@tanstack/react-router";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -44,7 +45,8 @@ export function Header() {
         {/* Actions */}
         <div className="ml-auto flex items-center gap-2 sm:gap-4">
           {/* Ẩn Sign in ở màn rất nhỏ để đủ chỗ */}
-          <button
+          <Link
+            to="/login"
             className="
           sm:inline-flex
           px-5 py-2 text-sm
@@ -52,11 +54,11 @@ export function Header() {
           md:px-10 md:py-4 md:text-[25px]
           rounded bg-primary text-white font-semibold
           hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 
-          shadow-md hover:shadow-lg whitespace-nowrap
+          shadow-md hover:shadow-lg whitespace-nowrap cursor-pointer
         "
           >
             Sign in
-          </button>
+          </Link>
 
           <button
             onClick={() => setMenuOpen(true)}
@@ -67,7 +69,7 @@ export function Header() {
           border border-blue-600 text-blue-600
           rounded-l-full rounded-br-full
           hover:bg-primary hover:text-white
-          shadow-md hover:shadow-lg whitespace-nowrap
+          shadow-md hover:shadow-lg whitespace-nowrap cursor-pointer
         "
             aria-haspopup="dialog"
             aria-expanded={menuOpen}
@@ -115,13 +117,13 @@ export function Header() {
                       { label: "ĐỐI TÁC", href: "/partners" },
                     ].map((item) => (
                       <li key={item.label} className="group">
-                        <a
-                          href={item.href}
+                        <Link
+                          to={item.href}
                           className="relative block text-[40px] md:text-6xl font-extrabold tracking-tight text-slate-800 leading-tight"
                         >
                           {item.label}
                           <span className="absolute left-0 -bottom-2 h-[3px] w-0 bg-primary transition-all duration-300 group-hover:w-full"></span>
-                        </a>
+                        </Link>
                         <p className="mt-2 text-slate-500 text-base md:text-lg opacity-0 group-hover:opacity-100 transition">
                           {item.label === "KHOÁ HỌC" &&
                             "Danh mục, lịch khai giảng, học phí"}
