@@ -31,19 +31,22 @@ const CoreValue = () => {
         className="carousel flex lg:gap-8 gap-4 2xl:w-4/5 xl:w-9/10 lg:w-9/10 w-8/10 lg:aspect-[1504/666.725] p-6 overflow-x-auto snap-x snap-mandatory"
       >
         <CoreValueCard
-          color="[#00CAC7]"
+          bg="bg-[#00CAC7]"
+          border="border-[#00CAC7]"
           img="/exam.jpg"
           title="Mock Exams"
           content="Real exam-style tests that build confidence and show you exactly where to improve."
         />
         <CoreValueCard
-          color="[#FDDED9]"
+          bg="bg-[#FDDED9]"
+          border="border-[#FDDED9]"
           img="/planner.jpg"
           title="Study Planner"
           content="Set goals, follow a daily plan, and stay on track until exam day with confidence."
         />
         <CoreValueCard
-          color="[#DEE2FF]"
+          bg="bg-[#DEE2FF]"
+          border="border-[#DEE2FF]"
           title="Flashcards"
           content="Easy “remember cards” to review words, phrases, and grammar on the go."
           comp={
@@ -53,19 +56,22 @@ const CoreValue = () => {
           }
         />
         <CoreValueCard
-          color="[#00CAC7]"
+          bg="bg-[#00CAC7]"
+          border="border-[#00CAC7]"
           img="/exam.jpg"
           title="Mock Exams"
           content="Real exam-style tests that build confidence and show you exactly where to improve."
         />
         <CoreValueCard
-          color="[#FDDED9]"
+          bg="bg-[#FDDED9]"
+          border="border-[#FDDED9]"
           img="/planner.jpg"
           title="Study Planner"
           content="Set goals, follow a daily plan, and stay on track until exam day with confidence."
         />
         <CoreValueCard
-          color="[#DEE2FF]"
+          bg="bg-[#DEE2FF]"
+          border="border-[#DEE2FF]"
           title="Flashcards"
           content="Easy “remember cards” to review words, phrases, and grammar on the go."
           comp={
@@ -75,19 +81,22 @@ const CoreValue = () => {
           }
         />
         <CoreValueCard
-          color="[#00CAC7]"
+          bg="bg-[#00CAC7]"
+          border="border-[#00CAC7]"
           img="/exam.jpg"
           title="Mock Exams"
           content="Real exam-style tests that build confidence and show you exactly where to improve."
         />
         <CoreValueCard
-          color="[#FDDED9]"
+          bg="bg-[#FDDED9]"
+          border="border-[#FDDED9]"
           img="/planner.jpg"
           title="Study Planner"
           content="Set goals, follow a daily plan, and stay on track until exam day with confidence."
         />
         <CoreValueCard
-          color="[#DEE2FF]"
+          bg="bg-[#DEE2FF]"
+          border="border-[#DEE2FF]"
           title="Flashcards"
           content="Easy “remember cards” to review words, phrases, and grammar on the go."
           comp={
@@ -97,41 +106,22 @@ const CoreValue = () => {
           }
         />
         <CoreValueCard
-          color="[#00CAC7]"
+          bg="bg-[#00CAC7]"
+          border="border-[#00CAC7]"
           img="/exam.jpg"
           title="Mock Exams"
           content="Real exam-style tests that build confidence and show you exactly where to improve."
         />
         <CoreValueCard
-          color="[#FDDED9]"
+          bg="bg-[#FDDED9]"
+          border="border-[#FDDED9]"
           img="/planner.jpg"
           title="Study Planner"
           content="Set goals, follow a daily plan, and stay on track until exam day with confidence."
         />
         <CoreValueCard
-          color="[#DEE2FF]"
-          title="Flashcards"
-          content="Easy “remember cards” to review words, phrases, and grammar on the go."
-          comp={
-            <div className=" w-full h-full flex items-center justify-center rounded-xl">
-              <img className="h-1/2 rounded-xl" src="/flash.png" />
-            </div>
-          }
-        />
-        <CoreValueCard
-          color="[#00CAC7]"
-          img="/exam.jpg"
-          title="Mock Exams"
-          content="Real exam-style tests that build confidence and show you exactly where to improve."
-        />
-        <CoreValueCard
-          color="[#FDDED9]"
-          img="/planner.jpg"
-          title="Study Planner"
-          content="Set goals, follow a daily plan, and stay on track until exam day with confidence."
-        />
-        <CoreValueCard
-          color="[#DEE2FF]"
+          bg="bg-[#DEE2FF]"
+          border="border-[#DEE2FF]"
           title="Flashcards"
           content="Easy “remember cards” to review words, phrases, and grammar on the go."
           comp={
