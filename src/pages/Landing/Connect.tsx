@@ -14,13 +14,13 @@ import { TiktokWhite } from "../../components/icons";
 export function Connect() {
   return (
     <section className="flex flex-col items-center py-10 mt-0 mb-8">
-      <h2 className="px-4 text-center font-bold leading-tight text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl">
+      <h2 className="px-4 text-center font-bold leading-tight text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
         <span className="text-secondary">KẾT NỐI</span>{" "}
         <span className="text-gray-700">VỚI</span>{" "}
         <span className="text-primary">Chúng Tôi</span>
       </h2>
 
-      <div className="relative mt-6 sm:mt-8 w-[92vw] max-w-[1400px] mx-auto flex justify-center">
+      <div className="relative mt-6 sm:mt-8 w-[75vw] max-w-[1400px] mx-auto flex justify-center">
         <div className="relative bg-primary rounded-md px-4 sm:px-6 md:px-10 py-6 sm:py-10 md:py-14 w-full">
           <div className="absolute inset-0 translate-x-2 translate-y-2 sm:translate-x-4 sm:translate-y-4 bg-secondary rounded-md -z-10"></div>
 
