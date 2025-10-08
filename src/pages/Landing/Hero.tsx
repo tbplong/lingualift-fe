@@ -88,7 +88,7 @@ export default function Hero() {
 
             <div className="order-2 2xl:order-2 2xl:col-span-6 2xl:col-start-7 relative w-full py-6 sm:py-0 2xl:py-12 mx-auto 2xl:ml-auto 2xl:mr-0 items-center">
               <div
-                className="relative mx-auto aspect-[4.9/5] w-full
+                className="relative mx-auto aspect-[5/5] w-full
      max-w-[800px] xl:max-w-[880px] 2xl:max-w-[1020px]"
               >
                 <div
@@ -107,7 +107,7 @@ export default function Hero() {
                 <img
                   src="/ChatGPT Image 13_21_23 24 thg 9, 2025.png"
                   alt="Tutor"
-                  className="absolute inset-x-0 mx-auto top-0 w-[60%] sm:w-[60%] xl:w-[75%] xl:translate-y-[-140px]"
+                  className="absolute inset-x-0 mx-auto top-0 w-[60%] sm:w-[60%] lg:w-[60%] 2xl:w-[75%]  2xl:translate-y-[-160px] "
                 />
 
                 <div
