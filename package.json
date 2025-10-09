@@ -13,6 +13,7 @@
     "commitlint": "commitlint --edit"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@react-oauth/google": "^0.12.2",
     "@tailwindcss/vite": "^4.1.14",
     "@tanstack/react-router": "^1.65.0",

@@ -10,12 +10,30 @@
 
 import { Route as rootRouteImport } from "./routes/__root";
 import { Route as IndexRouteImport } from "./routes/index";
+import { Route as TermsIndexRouteImport } from "./routes/terms/index";
+import { Route as SignupIndexRouteImport } from "./routes/signup/index";
+import { Route as PrivacyIndexRouteImport } from "./routes/privacy/index";
 import { Route as LoginIndexRouteImport } from "./routes/login/index";
 import { Route as AboutIndexRouteImport } from "./routes/about/index";
 
 const IndexRoute = IndexRouteImport.update({
   id: "/",
   path: "/",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const TermsIndexRoute = TermsIndexRouteImport.update({
+  id: "/terms/",
+  path: "/terms/",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const SignupIndexRoute = SignupIndexRouteImport.update({
+  id: "/signup/",
+  path: "/signup/",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const PrivacyIndexRoute = PrivacyIndexRouteImport.update({
+  id: "/privacy/",
+  path: "/privacy/",
   getParentRoute: () => rootRouteImport,
 } as any);
 const LoginIndexRoute = LoginIndexRouteImport.update({
@@ -33,30 +51,49 @@ export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
   "/about": typeof AboutIndexRoute;
   "/login": typeof LoginIndexRoute;
+  "/privacy": typeof PrivacyIndexRoute;
+  "/signup": typeof SignupIndexRoute;
+  "/terms": typeof TermsIndexRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
   "/about": typeof AboutIndexRoute;
   "/login": typeof LoginIndexRoute;
+  "/privacy": typeof PrivacyIndexRoute;
+  "/signup": typeof SignupIndexRoute;
+  "/terms": typeof TermsIndexRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   "/": typeof IndexRoute;
   "/about/": typeof AboutIndexRoute;
   "/login/": typeof LoginIndexRoute;
+  "/privacy/": typeof PrivacyIndexRoute;
+  "/signup/": typeof SignupIndexRoute;
+  "/terms/": typeof TermsIndexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/about" | "/login";
+  fullPaths: "/" | "/about" | "/login" | "/privacy" | "/signup" | "/terms";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/about" | "/login";
-  id: "__root__" | "/" | "/about/" | "/login/";
+  to: "/" | "/about" | "/login" | "/privacy" | "/signup" | "/terms";
+  id:
+    | "__root__"
+    | "/"
+    | "/about/"
+    | "/login/"
+    | "/privacy/"
+    | "/signup/"
+    | "/terms/";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
   AboutIndexRoute: typeof AboutIndexRoute;
   LoginIndexRoute: typeof LoginIndexRoute;
+  PrivacyIndexRoute: typeof PrivacyIndexRoute;
+  SignupIndexRoute: typeof SignupIndexRoute;
+  TermsIndexRoute: typeof TermsIndexRoute;
 }
 
 declare module "@tanstack/react-router" {
@@ -66,6 +103,27 @@ declare module "@tanstack/react-router" {
       path: "/";
       fullPath: "/";
       preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/terms/": {
+      id: "/terms/";
+      path: "/terms";
+      fullPath: "/terms";
+      preLoaderRoute: typeof TermsIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/signup/": {
+      id: "/signup/";
+      path: "/signup";
+      fullPath: "/signup";
+      preLoaderRoute: typeof SignupIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/privacy/": {
+      id: "/privacy/";
+      path: "/privacy";
+      fullPath: "/privacy";
+      preLoaderRoute: typeof PrivacyIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/login/": {
@@ -89,6 +147,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutIndexRoute: AboutIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
+  PrivacyIndexRoute: PrivacyIndexRoute,
+  SignupIndexRoute: SignupIndexRoute,
+  TermsIndexRoute: TermsIndexRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

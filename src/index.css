@@ -18,6 +18,12 @@
     font-display: block;
   }
 
+  input:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px white inset !important;
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+    -webkit-text-fill-color: #000 !important;
+  }
+
   [class^="icon-"],
   [class*=" icon-"] {
     /* use !important to prevent issues with browser extensions that change fonts */
@@ -51,8 +57,10 @@
     color: #3d4863;
 
     /* Hide scrollbar for IE, Edge, and Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 
   /* li
@@ -147,6 +155,7 @@
     100% {
       opacity: 0;
     }
+
     10%,
     90% {
       opacity: 1;
@@ -157,6 +166,7 @@
     0% {
       opacity: 0;
     }
+
     100% {
       opacity: 1;
     }
@@ -166,9 +176,11 @@
     0% {
       transform: translateY(0px);
     }
+
     50% {
       transform: translateY(-20px);
     }
+
     100% {
       transform: translateY(0px);
     }
@@ -178,9 +190,11 @@
     0% {
       transform: translateY(0px) rotate(-12deg);
     }
+
     50% {
       transform: translateY(-20px) rotate(-12deg);
     }
+
     100% {
       transform: translateY(0px) rotate(-12deg);
     }
@@ -190,10 +204,12 @@
     0% {
       opacity: 1;
     }
+
     50% {
       opacity: 0;
       translate: 0;
     }
+
     100% {
       opacity: 0;
       translate: -999999;
@@ -204,6 +220,7 @@
     0% {
       transform: translateX(-150%);
     }
+
     100% {
       transform: translateX(0%);
     }
@@ -213,6 +230,7 @@
     0% {
       transform: translateX(150%);
     }
+
     100% {
       transform: translateX(0%);
     }
@@ -223,18 +241,23 @@
 /* .card {
   @apply rounded-2xl border border-secondary-300 p-4 bg-white;
 }
+
 .chip {
   @apply text-xs px-2 py-0.5 rounded-full border;
 }
+
 .swatch {
   @apply rounded-lg p-3 text-sm font-medium;
 }
+
 .icon-home::before {
   content: "\e900";
 }
+
 .icon-user::before {
   content: "\e971";
 }
+
 .icon-star::before {
   content: "\e9d7";
 } */
