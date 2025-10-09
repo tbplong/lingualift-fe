@@ -17,7 +17,7 @@ const AdventurerBadge = ({ className }: { className?: string }) => {
         stroke-width="2"
       />
       <g
-        clip-path="url(#paint0_diamond_24823_27696_clip_path)"
+        clipPath="url(#paint0_diamond_24823_27696_clip_path)"
         data-figma-skip-parse="true"
       >
         <g transform="matrix(0 0.008 -0.008 0 12 12)">

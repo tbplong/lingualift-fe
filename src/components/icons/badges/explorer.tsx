@@ -17,7 +17,7 @@ const ExplorerBadge = ({ className }: { className?: string }) => {
         stroke-width="2"
       />
       <g
-        clip-path="url(#paint0_diamond_24823_27694_clip_path)"
+        clipPath="url(#paint0_diamond_24823_27694_clip_path)"
         data-figma-skip-parse="true"
       >
         <g transform="matrix(0 0.006 -0.006 0 12 12)">

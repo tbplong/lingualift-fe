@@ -18,7 +18,7 @@ const EnlightenedBadge = ({ className }: { className?: string }) => {
       />
       <g filter="url(#filter0_d_24823_27703)">
         <g
-          clip-path="url(#paint2_diamond_24823_27703_clip_path)"
+          clipPath="url(#paint2_diamond_24823_27703_clip_path)"
           data-figma-skip-parse="true"
         >
           <g transform="matrix(0 0.008 -0.008 0 12 12)">
