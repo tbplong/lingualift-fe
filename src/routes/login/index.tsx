@@ -1,220 +1,258 @@
-import { Visibility, VisibilityOff } from "@/components/icons";
+// src/routes/login/index.tsx
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import CustomGoogleButton from "@/components/ui/button/custom-google-button";
-import Loading from "@/components/ui/loading";
-import { EMAIL_REGEX, PASSWORD_REGEX } from "@/constants";
-import handleAxiosError from "@/helpers/handle-axios-error";
-import { useAuthStore } from "@/stores";
-import {
-  createFileRoute,
-  // redirect,
-  // Link,
-  useNavigate,
-  // useSearch,
-} from "@tanstack/react-router";
-import { useFormik } from "formik";
-import { useEffect, useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "react-toastify";
-import * as Yup from "yup";
-import { z } from "zod";
 
 export const Route = createFileRoute("/login/")({
-  // beforeLoad: async ({ context }) => {
-  //   if (context.authContext.isAuthenticated) {
-  //     throw redirect({ to: "/" });
-  //   }
-  // },
-  validateSearch: z.object({
-    next: z.string().optional(),
-  }),
   component: RouteComponent,
 });
 
+type FormValues = {
+  email: string;
+  password: string;
+};
+
+type Errors = Partial<Record<keyof FormValues, string>>;
+
 function RouteComponent() {
-  // const { setToken, isAuthenticated, setIsAuthenticated, setActiveTokenCount } =
-  const { isAuthenticated, setIsAuthenticated } = useAuthStore();
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
-  const login = async (email: string, password: string) => {
-    try {
-      setLoading(true);
-      console.log({
-        email: email,
-        password: password,
-      });
-      // const { accessToken, activeTokenCount } = (
-      //   await AuthService.login(email, password)
-      // ).data;
-      // storage.setItem("token", accessToken);
-      // setToken(accessToken);
-      setIsAuthenticated(true);
-    } catch (error: unknown) {
-      handleAxiosError(error, (message: string) => {
-        toast.error(message);
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loginWithGoogle = async (credentialResponse: string) => {
-    try {
-      console.log("credentialResponse", credentialResponse);
-      setLoading(true);
-      // const { accessToken, activeTokenCount } = (
-      //   await AuthService.loginWithGoogle(credentialResponse)
-      // ).data;
-      // storage.setItem("token", accessToken);
-      // setToken(accessToken);
-      setIsAuthenticated(true);
-      // setActiveTokenCount(activeTokenCount);
-    } catch (error: unknown) {
-      handleAxiosError(error, (message: string) => {
-        toast.error(message);
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: Yup.object({
-      email: Yup.string()
-        .matches(EMAIL_REGEX, "Thông tin chưa đúng định dạng email!")
-        .required("Vui lòng nhập email!"),
-      password: Yup.string()
-        .matches(PASSWORD_REGEX, "Mật khẩu phải có từ 8 đến 255 kí tự!")
-        .required("Vui lòng nhập mật khẩu!"),
-    }),
-    onSubmit: async (values, { resetForm }) => {
-      await login(values.email, values.password);
-      resetForm();
-    },
+  const [values, setValues] = useState<FormValues>({
+    email: "",
+    password: "",
   });
 
-  const toggleVisibility = () => {
-    const passwordInputElement = document.getElementById("password") as
-      | HTMLInputElement
-      | undefined;
-    if (!passwordInputElement) {
-      toast.error("There is no password element inside the page!");
-      return;
-    }
+  const [errors, setErrors] = useState<Errors>({});
+  const [touched, setTouched] = useState<
+    Partial<Record<keyof FormValues, boolean>>
+  >({});
 
-    if (passwordInputElement.type === "password") {
-      passwordInputElement.type = "text";
-      setPasswordVisible(true);
-    } else {
-      passwordInputElement.type = "password";
-      setPasswordVisible(false);
+  function validateField(
+    field: keyof FormValues,
+    vals: FormValues,
+  ): string | undefined {
+    if (field === "email") {
+      const v = vals.email.trim();
+      if (!v) return "Email is required.";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v))
+        return "Please enter a valid email address.";
     }
-  };
+    if (field === "password") {
+      const v = vals.password.trim();
+      if (!v) return "Password is required.";
+      if (v.length < 6) return "Password must be at least 6 characters.";
+    }
+    return undefined;
+  }
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate({
-        to: "/",
-        replace: true,
-      });
+  function validateAll(vals: FormValues): Errors {
+    return {
+      email: validateField("email", vals),
+      password: validateField("password", vals),
+    };
+  }
+
+  function handleInputChange(
+    field: keyof FormValues,
+    e: ChangeEvent<HTMLInputElement>,
+  ) {
+    const value = e.target.value;
+
+    setValues((prev) => {
+      const next = { ...prev, [field]: value };
+      setErrors((prevErr) => ({
+        ...prevErr,
+        [field]: validateField(field, next),
+      }));
+      return next;
+    });
+
+    setTouched((prev) => ({ ...prev, [field]: true }));
+  }
+
+  async function fakeLogin() {
+    // TODO: gọi API thật của bạn ở đây
+    // const { accessToken } = await AuthService.login(values.email, values.password)
+    // storage.setItem("token", accessToken)
+    return true;
+  }
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    const next = validateAll(values);
+    setErrors(next);
+
+    if (!next.email && !next.password) {
+      try {
+        await fakeLogin();
+        toast.success("Signed in successfully! Redirecting…");
+        navigate({ to: "/" });
+      } catch (err) {
+        toast.error(`${err}. Please try again.`);
+      }
     }
-  }, [isAuthenticated, navigate]);
+  }
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center align-middle self-center overflow-hidden bg-white px-5 py-10 xs:px-[32px] sm:px-10 lg:px-[48px] xl:px-[80px] 2xl:px-[96px] 3xl:px-[calc(160px-(1920px-100vw)/3)] 3xl:text-[24px]">
-      <div className="relative mt-0 flex w-full flex-row justify-center 3xl:mt-0">
-        {" "}
-        {/* <div className="relative ml-10 hidden size-[30rem] lg:flex 3xl:mt-10 3xl:size-[35rem]">
-          <Lottie animationData={EducationAnimation} loop={true} />
-        </div> */}
-        {loading ? (
-          <div className="relative flex h-[40rem] w-80 flex-col items-center justify-center xs:w-[22.5rem] sm:w-[30rem] xl:h-full 2xl:w-[37.5rem] 3xl:w-[40rem]">
-            <Loading className="relative w-60" loop={true} />
-          </div>
-        ) : (
-          <form
-            onSubmit={formik.handleSubmit}
-            className="relative flex w-80 flex-col place-center justify-center items-center xs:w-[22.5rem] sm:w-[25rem] xl:mr-10 2xl:mr-16 3xl:mr-20"
-          >
-            <div className="text-[32px] font-extrabold text-primary 3xl:text-[40px]">
-              Đăng nhập
+    <div className="min-h-dvh w-full bg-gray-50 relative grid place-items-center px-4 pt-10 pb-10">
+      <div className="w-full max-w-md relative">
+        <h1 className="text-4xl font-bold text-primary text-center xl:text-5xl">
+          LingualLift
+        </h1>
+
+        <form onSubmit={handleSubmit}>
+          <div className="p-6 md:p-8">
+            <div className="space-y-1">
+              <h2 className="text-xl font-semibold text-gray-900 text-center xl:text-2xl">
+                Sign in to your Account
+              </h2>
             </div>
-            <div className="mt-5 flex w-full items-center justify-center text-center 3xl:mt-6">
-              Chào mừng đến với nền tảng dạy học tiếng Anh trực tuyến thầy
-              Nguyễn Thành Luân
-            </div>
-            <div className="mt-6 flex w-full flex-col gap-2 3xl:mt-12">
-              <label htmlFor="email" className="font-bold">
+
+            <div className="mt-6">
+              <label
+                htmlFor="email"
+                className="block mb-2 text-sm xl:text-lg font-medium text-gray-700"
+              >
                 Email
               </label>
-              <input
-                id="email"
-                name="email"
-                type="text"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.email}
-                className={`${formik.touched.email && formik.errors.email ? `border-red` : `border-tertiary`} w-full rounded-lg border border-solid px-3 py-2 focus:!border-primary`}
-              />
-              {formik.touched.email && formik.errors.email ? (
-                <div className="flex text-red">{formik.errors.email}</div>
-              ) : null}
-            </div>
-            <div className="mt-4 flex w-full flex-col gap-2">
-              <label htmlFor="password" className="font-bold">
-                Mật khẩu
-              </label>
-              <div className="relative w-full">
+              <div className="relative">
+                <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    className="text-gray-400"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M20 4H4a2 2 0 0 0-2 2v.4l10 5.6l10-5.6V6a2 2 0 0 0-2-2m0 4.75l-8 4.47l-8-4.47V18a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2z"
+                    />
+                  </svg>
+                </span>
                 <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={values.email}
+                  onChange={(e) => handleInputChange("email", e)}
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? "email-error" : undefined}
+                  placeholder="name@example.com"
+                  className={`w-full rounded-xl border bg-white pl-10 pr-11 py-2.5 outline-none transition
+                    ${
+                      errors.email
+                        ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+                        : touched.email && !errors.email
+                          ? "border-green-500 focus:border-green-500 focus:ring-green-200"
+                          : "border-gray-300 focus:border-orange-500 focus:ring-orange-200"
+                    }`}
+                />
+              </div>
+              <p
+                id="email-error"
+                className={`mt-2 text-sm ${
+                  errors.email ? "text-red-500" : "text-gray-400"
+                }`}
+              >
+                {errors.email ?? "Please enter your Email!"}
+              </p>
+            </div>
+
+            <div className="mt-4">
+              <label
+                htmlFor="password"
+                className="block mb-2 text-sm xl:text-lg font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <div className="relative">
+                <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    className="text-gray-400"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M12 1a5 5 0 0 1 5 5v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1V6a5 5 0 0 1 5-5m3 8V6a3 3 0 0 0-6 0v3z"
+                    />
+                  </svg>
+                </span>
+                <input
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password}
-                  className={`${formik.touched.password && formik.errors.password ? `border-red` : `border-tertiary`} w-full rounded-lg border border-solid px-3 py-2 focus:!border-primary 3xl:px-4`}
+                  value={values.password}
+                  onChange={(e) => handleInputChange("password", e)}
+                  aria-invalid={!!errors.password}
+                  aria-describedby={
+                    errors.password ? "password-error" : undefined
+                  }
+                  placeholder="••••••••"
+                  className={`w-full rounded-xl border bg-white pl-10 pr-11 py-2.5 outline-none transition
+                    ${
+                      errors.password
+                        ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+                        : touched.password && !errors.password
+                          ? "border-green-500 focus:border-green-500 focus:ring-green-200"
+                          : "border-gray-300 focus:border-orange-500 focus:ring-orange-200"
+                    }`}
                 />
-                {!passwordVisible ? (
-                  <Visibility
-                    onClick={() => toggleVisibility()}
-                    className={`${formik.touched.password && formik.errors.password ? `fill-red` : `fill-tertiary`} absolute right-4 top-2 size-6 cursor-pointer 3xl:top-[14px]`}
-                  />
-                ) : (
-                  <VisibilityOff
-                    onClick={() => toggleVisibility()}
-                    className={`${formik.touched.password && formik.errors.password ? `fill-red` : `fill-tertiary`} absolute right-4 top-2 size-6 cursor-pointer`}
-                  />
-                )}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeSlashIcon className="h-5 w-5" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5" />
+                  )}
+                </button>
               </div>
-              <div
-                className={`${formik.touched.password && formik.errors.password ? `justify-between` : `justify-end`} relative flex w-full flex-row`}
-              >
-                {formik.touched.password && formik.errors.password ? (
-                  <div className="flex text-red">{formik.errors.password}</div>
-                ) : null}
-                <div className="cursor-pointer text-primary duration-200 ease-in-out hover:text-primary-700 hover:underline">
-                  Quên mật khẩu?
-                </div>
+              <div className="mt-2 flex items-center justify-between">
+                <span
+                  id="password-error"
+                  className={`text-sm ${
+                    errors.password ? "text-red-500" : "text-gray-400"
+                  }`}
+                >
+                  {errors.password
+                    ? errors.password
+                    : values.password
+                      ? "Password looks good!"
+                      : "Please enter your Password!"}
+                </span>
+                <a
+                  href="/forgot-password"
+                  className="text-sm font-medium text-primary hover:underline"
+                >
+                  Forgot password?
+                </a>
               </div>
             </div>
+
             <button
               type="submit"
-              className="mt-6 flex w-full items-center justify-center rounded-lg bg-primary py-3 font-bold text-white duration-200 ease-in-out hover:bg-primary-700 3xl:mt-12"
+              className="mt-6 w-full rounded-xl bg-primary py-3 font-semibold text-white
+                         transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/30"
             >
-              Đăng nhập
+              Sign in
             </button>
-            <div className="mt-2 flex w-full items-center justify-center 3xl:mt-4">
-              <div className="z-10 bg-white px-2 text-tertiary-300">hoặc</div>
-              <div className="absolute h-[0.5px] w-full bg-tertiary-300"></div>
+
+            <div className="my-6 flex items-center">
+              <hr className="flex-grow border-gray-200" />
+              <span className="px-3 text-xs tracking-wide uppercase text-gray-400">
+                - Or sign in with -
+              </span>
+              <hr className="flex-grow border-gray-200" />
             </div>
-            {/* <div className="mt-2 flex w-full cursor-pointer select-none items-center justify-center rounded-lg border border-solid border-tertiary bg-white py-3 duration-200 ease-in-out 3xl:mt-4">
-              GOOGLE BUTTON PLACEHOLDER
-            </div> */}
+
             <CustomGoogleButton
               onSuccess={async (credentialResponse) => {
                 if (!credentialResponse.credential) {
@@ -223,7 +261,9 @@ function RouteComponent() {
                   );
                   return;
                 }
-                await loginWithGoogle(credentialResponse.credential);
+                // TODO: handle Google sign-in thật
+                toast.success("Google sign-in successful!");
+                navigate({ to: "/" });
               }}
               onError={() => {
                 toast.error(
@@ -231,17 +271,18 @@ function RouteComponent() {
                 );
               }}
             />
-            {/* <div className="mt-6 w-full text-center 3xl:mt-12">
-              Chưa có tài khoản? Đăng ký bằng tài khoản Google{' '}
-              <Link
-                to="/signup"
-                className="cursor-pointer text-primary duration-200 ease-in-out hover:text-primary-700 hover:underline"
-              >
-                ngay
-              </Link>
-            </div> */}
-          </form>
-        )}
+          </div>
+        </form>
+
+        <p className="mt-2 text-center text-sm text-gray-600">
+          Don't have an account?{" "}
+          <a
+            href="/signup"
+            className="font-medium text-primary hover:underline"
+          >
+            Create one
+          </a>
+        </p>
       </div>
     </div>
   );
