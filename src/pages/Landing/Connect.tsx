@@ -14,7 +14,7 @@ import { TiktokWhite } from "../../components/icons";
 export function Connect() {
   return (
     <section className="flex flex-col items-center py-10 mt-0 mb-8">
-      <h2 className="px-4 text-center font-bold leading-tight text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
+      <h2 className="px-4 text-center font-bold leading-tight text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl">
         <span className="text-secondary">KẾT NỐI</span>{" "}
         <span className="text-gray-700">VỚI</span>{" "}
         <span className="text-primary">Chúng Tôi</span>

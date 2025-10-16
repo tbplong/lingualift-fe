@@ -1,15 +1,15 @@
-// src/routes/login/index.tsx
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import CustomGoogleButton from "@/components/ui/button/custom-google-button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "react-toastify";
 
-export const Route = createFileRoute("/login/")({
+export const Route = createFileRoute("/signup/")({
   component: RouteComponent,
 });
 
 type FormValues = {
+  fullName: string;
   email: string;
   password: string;
 };
@@ -21,6 +21,7 @@ function RouteComponent() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [values, setValues] = useState<FormValues>({
+    fullName: "",
     email: "",
     password: "",
   });
@@ -30,10 +31,16 @@ function RouteComponent() {
     Partial<Record<keyof FormValues, boolean>>
   >({});
 
+  // --- Field-level validation helper ---
   function validateField(
     field: keyof FormValues,
     vals: FormValues,
   ): string | undefined {
+    if (field === "fullName") {
+      const v = vals.fullName.trim();
+      if (!v) return "Full name is required.";
+      if (v.length < 6) return "Full name must be at least 6 characters.";
+    }
     if (field === "email") {
       const v = vals.email.trim();
       if (!v) return "Email is required.";
@@ -48,13 +55,16 @@ function RouteComponent() {
     return undefined;
   }
 
+  // --- Form-level validation for submit ---
   function validateAll(vals: FormValues): Errors {
     return {
+      fullName: validateField("fullName", vals),
       email: validateField("email", vals),
       password: validateField("password", vals),
     };
   }
 
+  // Update value + validate that field immediately (so border won't turn green unless valid)
   function handleInputChange(
     field: keyof FormValues,
     e: ChangeEvent<HTMLInputElement>,
@@ -73,31 +83,24 @@ function RouteComponent() {
     setTouched((prev) => ({ ...prev, [field]: true }));
   }
 
-  async function fakeLogin() {
-    // TODO: gọi API thật của bạn ở đây
-    // const { accessToken } = await AuthService.login(values.email, values.password)
-    // storage.setItem("token", accessToken)
-    return true;
-  }
-
-  async function handleSubmit(e: FormEvent) {
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const next = validateAll(values);
     setErrors(next);
 
-    if (!next.email && !next.password) {
-      try {
-        await fakeLogin();
-        toast.success("Signed in successfully! Redirecting…");
-        navigate({ to: "/" });
-      } catch (err) {
-        toast.error(`${err}. Please try again.`);
-      }
+    if (!next.fullName && !next.email && !next.password) {
+      // TODO: Call your signup API here
+      // await api.post('/signup', values);
+
+      toast.success("Signup successful! Redirecting to Sign in...");
+      setTimeout(() => {
+        navigate({ to: "/login" });
+      }, 1200);
     }
   }
 
   return (
-    <div className="min-h-dvh w-full bg-gray-50 relative grid place-items-center px-4 pt-10 pb-10">
+    <div className="min-h-screen w-full bg-gray-50 relative flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-md relative">
         <h1 className="text-4xl font-bold text-primary text-center xl:text-5xl">
           LingualLift
@@ -107,11 +110,65 @@ function RouteComponent() {
           <div className="p-6 md:p-8">
             <div className="space-y-1">
               <h2 className="text-xl font-semibold text-gray-900 text-center xl:text-2xl">
-                Sign in to your Account
+                Create your Account
               </h2>
             </div>
 
+            {/* Full Name */}
             <div className="mt-6">
+              <label
+                htmlFor="fullName"
+                className="block mb-2 text-sm xl:text-lg font-medium text-gray-700"
+              >
+                Full Name
+              </label>
+              <div className="relative">
+                <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    className="text-gray-400"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M12 12a5 5 0 1 0-5-5a5 5 0 0 0 5 5m0 2c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5"
+                    />
+                  </svg>
+                </span>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  value={values.fullName}
+                  onChange={(e) => handleInputChange("fullName", e)}
+                  aria-invalid={!!errors.fullName}
+                  aria-describedby={
+                    errors.fullName ? "fullName-error" : undefined
+                  }
+                  placeholder="Xuan Sang"
+                  className={`w-full rounded-xl border bg-white pl-10 pr-11 py-2.5 outline-none transition
+                    ${
+                      errors.fullName
+                        ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+                        : touched.fullName && !errors.fullName
+                          ? "border-green-500 focus:border-green-500 focus:ring-green-200"
+                          : "border-gray-300 focus:border-orange-500 focus:ring-orange-200"
+                    }`}
+                />
+              </div>
+              <p
+                id="fullName-error"
+                className={`mt-2 text-sm ${
+                  errors.fullName ? "text-red-500" : "text-gray-400"
+                }`}
+              >
+                {errors.fullName ?? "Please enter your Full Name!"}
+              </p>
+            </div>
+
+            {/* Email */}
+            <div className="mt-4">
               <label
                 htmlFor="email"
                 className="block mb-2 text-sm xl:text-lg font-medium text-gray-700"
@@ -161,6 +218,7 @@ function RouteComponent() {
               </p>
             </div>
 
+            {/* Password */}
             <div className="mt-4">
               <label
                 htmlFor="password"
@@ -206,7 +264,6 @@ function RouteComponent() {
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
                     <EyeSlashIcon className="h-5 w-5" />
@@ -242,13 +299,13 @@ function RouteComponent() {
               className="mt-6 w-full rounded-xl bg-primary py-3 font-semibold text-white
                          transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/30"
             >
-              Sign in
+              Create account
             </button>
 
             <div className="my-6 flex items-center">
               <hr className="flex-grow border-gray-200" />
               <span className="px-3 text-xs tracking-wide uppercase text-gray-400">
-                - Or sign in with -
+                - Or sign up with -
               </span>
               <hr className="flex-grow border-gray-200" />
             </div>
@@ -261,9 +318,7 @@ function RouteComponent() {
                   );
                   return;
                 }
-                // TODO: handle Google sign-in thật
-                toast.success("Google sign-in successful!");
-                navigate({ to: "/" });
+                // handle Google signup success here
               }}
               onError={() => {
                 toast.error(
@@ -274,13 +329,22 @@ function RouteComponent() {
           </div>
         </form>
 
+        <p className="mt-4 text-center text-sm text-gray-500">
+          By signing up, you agree to our{" "}
+          <a className="underline hover:text-gray-700" href="/terms">
+            Terms
+          </a>{" "}
+          &{" "}
+          <a className="underline hover:text-gray-700" href="/privacy">
+            Privacy
+          </a>
+          .
+        </p>
+
         <p className="mt-2 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
-          <a
-            href="/signup"
-            className="font-medium text-primary hover:underline"
-          >
-            Create one
+          Already have an account?{" "}
+          <a href="/login" className="font-medium text-primary hover:underline">
+            Sign in
           </a>
         </p>
       </div>
