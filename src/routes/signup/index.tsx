@@ -3,6 +3,8 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import CustomGoogleButton from "@/components/ui/button/custom-google-button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "react-toastify";
+import AuthService from "@/services/auth/auth.service";
+import storage from "@/utils/storage";
 
 export const Route = createFileRoute("/signup/")({
   component: RouteComponent,
@@ -12,6 +14,8 @@ type FormValues = {
   fullName: string;
   email: string;
   password: string;
+  dateOfBirth: string; // YYYY-MM-DD
+  phone: string;
 };
 
 type Errors = Partial<Record<keyof FormValues, string>>;
@@ -24,14 +28,28 @@ function RouteComponent() {
     fullName: "",
     email: "",
     password: "",
+    dateOfBirth: "",
+    phone: "",
   });
 
   const [errors, setErrors] = useState<Errors>({});
   const [touched, setTouched] = useState<
     Partial<Record<keyof FormValues, boolean>>
   >({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // --- Field-level validation helper ---
+  function isAtLeastYearsOld(isoDate: string, years = 13) {
+    const dob = new Date(isoDate);
+    if (Number.isNaN(dob.getTime())) return false;
+    const today = new Date();
+    const cutoff = new Date(
+      today.getFullYear() - years,
+      today.getMonth(),
+      today.getDate(),
+    );
+    return dob <= cutoff;
+  }
+
   function validateField(
     field: keyof FormValues,
     vals: FormValues,
@@ -52,19 +70,32 @@ function RouteComponent() {
       if (!v) return "Password is required.";
       if (v.length < 6) return "Password must be at least 6 characters.";
     }
+    if (field === "dateOfBirth") {
+      const v = vals.dateOfBirth;
+      if (!v) return "Date of birth is required.";
+      if (!isAtLeastYearsOld(v, 13))
+        return "You must be at least 13 years old.";
+    }
+    if (field === "phone") {
+      const v = vals.phone.trim();
+      if (!v) return "Phone is required.";
+      const digits = v.replace(/[^0-9]/g, "");
+      if (digits.length < 9 || digits.length > 15)
+        return "Phone must be 9–15 digits.";
+    }
     return undefined;
   }
 
-  // --- Form-level validation for submit ---
   function validateAll(vals: FormValues): Errors {
     return {
       fullName: validateField("fullName", vals),
       email: validateField("email", vals),
       password: validateField("password", vals),
+      dateOfBirth: validateField("dateOfBirth", vals),
+      phone: validateField("phone", vals),
     };
   }
 
-  // Update value + validate that field immediately (so border won't turn green unless valid)
   function handleInputChange(
     field: keyof FormValues,
     e: ChangeEvent<HTMLInputElement>,
@@ -83,30 +114,47 @@ function RouteComponent() {
     setTouched((prev) => ({ ...prev, [field]: true }));
   }
 
-  function handleSubmit(e: FormEvent) {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const next = validateAll(values);
     setErrors(next);
 
-    if (!next.fullName && !next.email && !next.password) {
-      // TODO: Call your signup API here
-      // await api.post('/signup', values);
-
-      toast.success("Signup successful! Redirecting to Sign in...");
-      setTimeout(() => {
+    if (
+      !next.fullName &&
+      !next.email &&
+      !next.password &&
+      !next.dateOfBirth &&
+      !next.phone
+    ) {
+      try {
+        setIsSubmitting(true);
+        const { data } = await AuthService.signup(
+          values.email,
+          values.password,
+          values.fullName,
+          values.fullName,
+          values.dateOfBirth,
+          values.phone,
+        );
+        storage.setItem("token", data.accessToken);
+        toast.success("Signup successful! Redirecting to Sign in...");
         navigate({ to: "/login" });
-      }, 1200);
+      } catch (err) {
+        toast.error(`${err}. Please try again.`);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
-  }
+  };
 
   return (
     <div className="min-h-screen w-full bg-gray-50 relative flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-md relative">
         <h1 className="text-4xl font-bold text-primary text-center xl:text-5xl">
-          LingualLift
+          LinguaLift
         </h1>
 
-        <form onSubmit={handleSubmit}>
+        <form noValidate onSubmit={handleSubmit}>
           <div className="p-6 md:p-8">
             <div className="space-y-1">
               <h2 className="text-xl font-semibold text-gray-900 text-center xl:text-2xl">
@@ -114,7 +162,6 @@ function RouteComponent() {
               </h2>
             </div>
 
-            {/* Full Name */}
             <div className="mt-6">
               <label
                 htmlFor="fullName"
@@ -167,7 +214,6 @@ function RouteComponent() {
               </p>
             </div>
 
-            {/* Email */}
             <div className="mt-4">
               <label
                 htmlFor="email"
@@ -218,7 +264,6 @@ function RouteComponent() {
               </p>
             </div>
 
-            {/* Password */}
             <div className="mt-4">
               <label
                 htmlFor="password"
@@ -293,13 +338,86 @@ function RouteComponent() {
                 </a>
               </div>
             </div>
+            {/* Date of Birth */}
+            <div className="mt-4">
+              <label
+                htmlFor="dateOfBirth"
+                className="block mb-2 text-sm xl:text-lg font-medium text-gray-700"
+              >
+                Date of Birth
+              </label>
+              <input
+                type="date"
+                id="dateOfBirth"
+                name="dateOfBirth"
+                autoComplete="bday"
+                value={values.dateOfBirth}
+                onChange={(e) => handleInputChange("dateOfBirth", e)}
+                aria-invalid={!!errors.dateOfBirth}
+                aria-describedby={
+                  errors.dateOfBirth ? "dateOfBirth-error" : undefined
+                }
+                className={`w-full rounded-xl border bg-white px-4 py-2.5 outline-none transition
+                    ${
+                      errors.dateOfBirth
+                        ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+                        : touched.dateOfBirth && !errors.dateOfBirth
+                          ? "border-green-500 focus:border-green-500 focus:ring-green-200"
+                          : "border-gray-300 focus:border-orange-500 focus:ring-orange-200"
+                    }`}
+              />
+              <p
+                id="dateOfBirth-error"
+                className={`mt-2 text-sm ${errors.dateOfBirth ? "text-red-500" : "text-gray-400"}`}
+              >
+                {errors.dateOfBirth ?? "Select your birth date (13+)."}
+              </p>
+            </div>
+
+            {/* Phone */}
+            <div className="mt-4">
+              <label
+                htmlFor="phone"
+                className="block mb-2 text-sm xl:text-lg font-medium text-gray-700"
+              >
+                Phone
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                autoComplete="tel"
+                inputMode="tel"
+                value={values.phone}
+                onChange={(e) => handleInputChange("phone", e)}
+                aria-invalid={!!errors.phone}
+                aria-describedby={errors.phone ? "phone-error" : undefined}
+                placeholder="0912345678"
+                className={`w-full rounded-xl border bg-white px-4 py-2.5 outline-none transition
+                    ${
+                      errors.phone
+                        ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+                        : touched.phone && !errors.phone
+                          ? "border-green-500 focus:border-green-500 focus:ring-green-200"
+                          : "border-gray-300 focus:border-orange-500 focus:ring-orange-200"
+                    }`}
+              />
+              <p
+                id="phone-error"
+                className={`mt-2 text-sm ${errors.phone ? "text-red-500" : "text-gray-400"}`}
+              >
+                {errors.phone ?? "Enter a phone number (9–15 digits)."}
+              </p>
+            </div>
 
             <button
               type="submit"
+              disabled={isSubmitting}
+              aria-busy={isSubmitting}
               className="mt-6 w-full rounded-xl bg-primary py-3 font-semibold text-white
-                         transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                         transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Create account
+              {isSubmitting ? "Creating account…" : "Create account"}
             </button>
 
             <div className="my-6 flex items-center">

@@ -4,6 +4,8 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import CustomGoogleButton from "@/components/ui/button/custom-google-button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "react-toastify";
+import AuthService from "@/services/auth/auth.service";
+import storage from "@/utils/storage";
 
 export const Route = createFileRoute("/login/")({
   component: RouteComponent,
@@ -75,9 +77,13 @@ function RouteComponent() {
 
   async function fakeLogin() {
     // TODO: gọi API thật của bạn ở đây
-    // const { accessToken } = await AuthService.login(values.email, values.password)
-    // storage.setItem("token", accessToken)
-    return true;
+    try {
+      const { data } = await AuthService.login(values.email, values.password);
+      storage.setItem("token", data.accessToken);
+      return true;
+    } catch (err) {
+      console.error("Error: ", err);
+    }
   }
 
   async function handleSubmit(e: FormEvent) {
