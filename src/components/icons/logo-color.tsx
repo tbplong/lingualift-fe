@@ -69,8 +69,8 @@ const LogoColored = ({
         fill="#F9BA08"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M130.612 144V112L52.2446 112V160L117.551 160L130.612 144Z"
         fill="#F9BA08"
       />

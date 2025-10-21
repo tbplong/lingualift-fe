@@ -1,0 +1,67 @@
+.carousel {
+  anchor-name: --carousel;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel::scroll-button(right) {
+  background-image: url("/right-arrow.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50% auto;
+  content: "";
+  border-radius: 50%;
+  border: none;
+  width: 80px;
+  height: 80px;
+  background-color: white;
+  cursor: pointer;
+  position: fixed;
+  position-anchor: --carousel;
+  position-area: right center;
+  translate: 0%;
+  transition: filter 0.1s ease-in;
+}
+
+.carousel::scroll-button(right):hover {
+  filter: drop-shadow(2px 5px 5px #e1e6e4);
+}
+
+.carousel::scroll-button(left) {
+  background-image: url("/left-arrow.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50% auto;
+  content: "";
+  border-radius: 50%;
+  border: none;
+  width: 80px;
+  height: 80px;
+  background-color: white;
+  cursor: pointer;
+  position: fixed;
+  position-anchor: --carousel;
+  position-area: left center;
+  translate: 0%;
+  transition: filter 0.1s ease-in;
+}
+
+@media (max-width: 1240px) {
+  .carousel::scroll-button(left),
+  .carousel::scroll-button(right) {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.carousel::scroll-button(left):hover {
+  filter: drop-shadow(2px 5px 5px #e1e6e4);
+}
+
+.carousel::scroll-button(left):disabled,
+.carousel::scroll-button(right):disabled {
+  opacity: 0.5;
+  cursor: auto;
+}

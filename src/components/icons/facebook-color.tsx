@@ -8,10 +8,10 @@ const FacebookColor = ({ className }: { className?: string }) => {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      <g clip-path="url(#clip0_18095_30900)">
+      <g clipPath="url(#clip0_18095_30900)">
         <mask
           id="mask0_18095_30900"
-          style={{ maskType: 'luminance' }}
+          style={{ maskType: "luminance" }}
           maskUnits="userSpaceOnUse"
           x="-32"
           y="-32"
