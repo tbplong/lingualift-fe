@@ -42,13 +42,10 @@ export const mockQuiz: Quiz = {
       isGroupQ: true,
       type: "multiple_choice",
       passage: `When several farmers merge plots into a single “project farm”, they use digital tools to make that teamwork far more effective. GPS mapping, drones, and in-field sensors build a live, shared picture of soil types, weather shifts, and plant growth. Because everyone works on the same data, the team can settle seeding dates, determine when to spray, and track machinery in real time. What once depended on guesswork is now driven by verifiable information.
-
           With GPS technology, farmers can accurately map out their fields and create customised planting plans. Seeding machines change their rate on the fly, drones spray pests on targeted zones, and smart spreaders apply  fertiliser only where data shows a need. Because inputs go exactly where they help, fields yield more while chemical runoff falls. Trials report considerable savings on seed, fuel, and sprays – benefits the partners split at the season’s end.
-
           Water management is just as precise. Specialised equipment tracks moisture every hour, and forecast apps predict rain, wind, or heatwaves. Automated pumps deliver measured water amounts to thirsty zones and stop when a storm is coming, slashing waste and energy bills. The result is steadier yields in dry years, fewer nutrients washed away, and a smaller water footprint for the whole partnership. Smart irrigation also helps limit weed growth, reducing herbicide use.
-          
           The journey from field to market is equally digital. Cloud platforms record harvest weights, storage temperatures, and shipment times the moment they change, while blockchain records freeze each entry so customers can rely on it. Analytic tools browse the records to indicate weak points in the procedure, forecast prices, and suggest better planting plans for the next season to project partners. This makes project farming both profitable and sustainable.`,
-      content: "The word settle in paragraph 1 mostly means _______.",
+      content: "The word settle in paragraph 1 mostly means_______.",
       answerList: [
         { key: 0, option: "A. exchange" },
         { key: 1, option: "B. announce" },
@@ -77,7 +74,7 @@ export const mockQuiz: Quiz = {
       groupId: "G1",
       isGroupQ: true,
       type: "multiple_choice",
-      content: "The word their in paragraph 2 refers to _______.",
+      content: "The word their in paragraph 2 refers to_______.",
       answerList: [
         { key: 0, option: "A. fields" },
         { key: 1, option: "B. planting plans" },
@@ -123,7 +120,7 @@ export const mockQuiz: Quiz = {
       isGroupQ: true,
       type: "multiple_choice",
       content:
-        "The word slashing in paragraph 3 is OPPOSITE in meaning to _______.",
+        "The word slashing in paragraph 3 is OPPOSITE in meaning to_______.",
       answerList: [
         { key: 0, option: "A. disposing" },
         { key: 1, option: "B. converting" },
@@ -198,14 +195,9 @@ export const mockQuiz: Quiz = {
       groupId: "G2",
       isGroupQ: true,
       type: "fill_blank",
-      passage:
-        `Da Nang International Fireworks Festival (DIFF) 2025. With ten teams worldwide, DIFF 2025 features the largest (9) ____ of participating teams in its history, ` +
-        `and is predicted to be the most thrilling (10) ____ so far. Z121 Vina Pyrotech, a company (11) ____ by Vietnam Ministry of National Defence, is a newcomer this year. ` +
-        `With thirty years of experience in fireworks, Z121 Vina Pyrotech is expected to deliver a breathtaking performance. It is among the (12) ____ candidates to win the championship. ` +
-        `From May 31st to July 12th, DIFF 2025 promises a series of spectacular fireworks displays, (13) ____ is hoped to bring spectators a world-class entertainment experience. ` +
-        `Over the past twelve years, the festival has helped the city (14) ____ the reputation as “The City of Fireworks”.`,
+      passage: `Da Nang International Fireworks Festival (DIFF) 2025. With ten teams worldwide, DIFF 2025 features the largest (9)____ of participating teams in its history, and is predicted to be the most thrilling (10)____ so far. Z121 Vina Pyrotech, a company (11)____ by Vietnam Ministry of National Defence, is a newcomer this year. With thirty years of experience in fireworks, Z121 Vina Pyrotech is expected to deliver a breathtaking performance. It is among the (12)____ candidates to win the championship. From May 31st to July 12th, DIFF 2025 promises a series of spectacular fireworks displays, (13)____ is hoped to bring spectators a world-class entertainment experience. Over the past twelve years, the festival has helped the city (14)____ the reputation as “The City of Fireworks”.`,
       content:
-        "DIFF 2025 features the largest (9) _______ of participating teams in its history.",
+        "DIFF 2025 features the largest (9)_______ of participating teams in its history.",
       answerList: [
         { key: 0, option: "A. volume" },
         { key: 1, option: "B. amount" },
@@ -220,7 +212,7 @@ export const mockQuiz: Quiz = {
       isGroupQ: true,
       type: "fill_blank",
       content:
-        "DIFF 2025 is predicted to be the most thrilling (10) _______ so far.",
+        "DIFF 2025 is predicted to be the most thrilling (10)_______ so far.",
       answerList: [
         { key: 0, option: "A. competition" },
         { key: 1, option: "B. competitive" },
@@ -235,7 +227,7 @@ export const mockQuiz: Quiz = {
       isGroupQ: true,
       type: "fill_blank",
       content:
-        "Z121 Vina Pyrotech, a company (11) _______ by Vietnam Ministry of National Defence, is a newcomer this year.",
+        "Z121 Vina Pyrotech, a company (11)_______ by Vietnam Ministry of National Defence, is a newcomer this year.",
       answerList: [
         { key: 0, option: "A. managed" },
         { key: 1, option: "B. managing" },
@@ -250,7 +242,7 @@ export const mockQuiz: Quiz = {
       isGroupQ: true,
       type: "fill_blank",
       content:
-        "It is among the (12) _______ candidates to win the championship.",
+        "It is among the (12)_______ candidates to win the championship.",
       answerList: [
         { key: 0, option: "A. top" },
         { key: 1, option: "B. quick" },
@@ -265,7 +257,7 @@ export const mockQuiz: Quiz = {
       isGroupQ: true,
       type: "fill_blank",
       content:
-        "From May 31st to July 12ᵗʰ, DIFF 2025 promises a series of spectacular fireworks displays, (13) _______ is hoped to bring spectators a world-class entertainment experience.",
+        "From May 31st to July 12ᵗʰ, DIFF 2025 promises a series of spectacular fireworks displays, (13)_______ is hoped to bring spectators a world-class entertainment experience.",
       answerList: [
         { key: 0, option: "A. who" },
         { key: 1, option: "B. which" },
@@ -280,7 +272,7 @@ export const mockQuiz: Quiz = {
       isGroupQ: true,
       type: "fill_blank",
       content:
-        "Over the past twelve years, the Da Nang International Fireworks Festival has helped the city (14) _______ the reputation as “The City of Fireworks”.",
+        "Over the past twelve years, the Da Nang International Fireworks Festival has helped the city (14)_______ the reputation as “The City of Fireworks”.",
       answerList: [
         { key: 0, option: "A. build up" },
         { key: 1, option: "B. go up" },
@@ -293,19 +285,13 @@ export const mockQuiz: Quiz = {
     // ========== Sentence / dialogue arrangement (Q15–Q19) ==========
     {
       id: "Q15",
-      groupId: "G6",
-      isGroupQ: true,
+      isGroupQ: false,
       type: "arrangement",
-      passage: `a. I had to burn the midnight oil to make engaging lesson plans, expecting to capture my students’
-attention.
-b. The reality, however, was not what I had expected when I completely failed to keep the class under
-control despite shouting loudly.
-c. This valuable experience was indeed memorable and made me more confident in my career of
-choice.
-d. Working as an intern at a local high school encouraged me to pursue a teaching career, a
-demanding yet rewarding one.
-e. Instead of giving up, I reflected on what I had done and made improvements in the following
-lessons.`,
+      passage: `a. I had to burn the midnight oil to make engaging lesson plans, expecting to capture my students’ attention.
+b. The reality, however, was not what I had expected when I completely failed to keep the class under control despite shouting loudly.
+c. This valuable experience was indeed memorable and made me more confident in my career of choice.
+d. Working as an intern at a local high school encouraged me to pursue a teaching career, a demanding yet rewarding one.
+e. Instead of giving up, I reflected on what I had done and made improvements in the following lessons.`,
       content:
         "Choose the correct order of sentences a–e for a coherent text about a teaching internship.",
       answerList: [
@@ -318,9 +304,13 @@ lessons.`,
     },
     {
       id: "Q16",
-      groupId: "G6",
-      isGroupQ: true,
+      isGroupQ: false,
       type: "arrangement",
+      passage: `a. David: I used to, but now I use social media and news apps.
+b. Lisa: Same here! It’s more convenient, but I think traditional newspapers have their own charm.
+c. Lisa: Do you still read newspapers?
+d. Lisa: I believe each type has its own value that we can make full use of.
+e. David: You’re right. They fill us with nostalgia that’s hard to replace.`,
       content:
         "Choose the correct order of the conversation between Lisa and David.",
       answerList: [
@@ -333,9 +323,11 @@ lessons.`,
     },
     {
       id: "Q17",
-      groupId: "G6",
-      isGroupQ: true,
+      isGroupQ: false,
       type: "arrangement",
+      passage: `a. Tom: Then, text me when you’re home.
+b. Tom: It’s getting late. Would you like me to give you a lift home?
+c. Mary: Thanks, but I’m going to walk to the supermarket and then take a bus home`,
       content: "Choose the correct order of dialogue between Tom and Mary.",
       answerList: [
         { key: 0, option: "A. a – b – c" },
@@ -347,9 +339,17 @@ lessons.`,
     },
     {
       id: "Q18",
-      groupId: "G6",
-      isGroupQ: true,
+      isGroupQ: false,
       type: "arrangement",
+      passage: `Dear Ms Smith,
+a. This has been pre-approved, but you need to have this letter and your identification card produced
+at the nearest branch to apply.
+b. The offer is exclusive and expires on December 31st.
+c. Your application will be processed, and your card will be issued within 48 hours for immediate use.
+d. It is our honour to offer you credit facilities of $6000, affordable with the monthly instalment of $99.
+e. Should you require further details, please call 0123888888, or visit any of our branches.
+Yours sincerely,
+ABC Bank`,
       content:
         "Choose the correct order of the email from ABC Bank to Ms Smith.",
       answerList: [
@@ -362,9 +362,14 @@ lessons.`,
     },
     {
       id: "Q19",
-      groupId: "G6",
-      isGroupQ: true,
+      isGroupQ: false,
       type: "arrangement",
+      passage: `a. The developments demonstrate a clear modernisation of the city of Paragon, transforming it from a primarily residential locality into a more diverse and economically vibrant area.
+b. This shift was further evidenced by the industrialisation of the surrounding agricultural land, with the appearance of some plants and factories.
+c. Residential areas were noticeably transformed, with the replacement of established terraced housing with new dwellings and the relocation of the original park.
+d. Simultaneously, a significant expansion of commercial infrastructure took place, most prominently
+with the construction of a large supermarket and an accompanying car park where housing once stood.
+e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic reshaping, indicating a move towards urban regeneration and increased commercial activity.`,
       content:
         "Choose the correct order of sentences describing the transformation of Paragon city.",
       answerList: [
@@ -382,16 +387,12 @@ lessons.`,
       groupId: "G3",
       isGroupQ: true,
       type: "multiple_choice",
-      passage:
-        `We seem to be entering a boom era for greenwashing – the tactic of covering routine pollution in eco-friendly ` +
-        `language. ... Hiring an expert agency to splash “carbon-neutral” or “net-zero” across products is far easier, ` +
-        `buying time while emissions remain untouched. ... Intensifying public anxiety ... has placed companies under sharp scrutiny; ` +
-        `many boards therefore choose eye-catching PR over the tougher route of restructuring. ... Regulators ... are struggling ` +
-        `to police false eco-claims, yet enforcement still lags behind corporate ingenuity. ... Whereas denial disputes the crisis, ` +
-        `greenwashing misleads the public into believing problems are solved ... Exposing the facade – and insisting on verifiable, ` +
-        `measurable carbon reductions – is essential if rhetoric is to give way to real action. (Adapted from greenpeace.org.uk)`,
+      passage: `We seem to be entering a boom era for greenwashing – the tactic of covering routine pollution in eco-friendly language. [I] Picture running a high-emitting corporation: meaningful decarbonisation would demand painful negotiations, huge capital outlays, and a full redesign of the business model. Hiring an expert agency to splash “carbon-neutral” or “net-zero” across products is far easier, buying time while emissions remain untouched.
+      Consumers meet this sleight of hand everywhere. Airlines sell “carbon-neutral” flights, filling stations boast about “net-zero” fuel, and breakfast bacon is re-labelled as planet-safe. Advertising spin is old, yet today it is manipulated to conceal ongoing environmental damage. Social media influencers and glossy sustainability reports amplify these claims, broadcasting the narrative far beyond traditional marketing channels.
+      The term greenwashing emerged in the 1980s, an era of oil spills and growing climate science, but the practice has exploded only recently. [II] Intensifying public anxiety over global heating and ecosystem collapse has placed companies under sharp scrutiny; many boards therefore choose eye-catching PR over the tougher route of restructuring supply chains, energy sources, and product lines. Regulators on both sides of the Atlantic are struggling to police false eco-claims, yet enforcement still lags behind corporate ingenuity. Investors, eager to protect shortterm returns, frequently applaud these surface-level initiatives, reinforcing the cycle. [III] No sector illustrates the issue better than oil and gas. Having realised that denying climate science now backfires, the industry has swapped denial for “green” paint. Press releases trumpet potential renewable ventures while drilling plans expand unabated.
+      Why does this matter? Greenwashing and climate denial share a core objective: to postpone the deep emission cuts claimed by scientists as urgent this decade. [IV] Whereas denial disputes the crisis, greenwashing misleads the public into believing problems are solved, thereby eroding consumer advocacy of genuine environmental actions and stalling regulatory reforms. In effect, it acts as a soothing lullaby, guiding society ever closer to ecological breakdown while fostering a false sense of progress. Exposing the facade – and insisting on verifiable, measurable carbon reductions – is essential if rhetoric is to give way to real action.`,
       content:
-        "According to paragraph 1, having products claimed as eco-friendly rather than conducting meaningful decarbonisation will _______.",
+        "According to paragraph 1, having products claimed as eco-friendly rather than conducting meaningful decarbonisation will_______.",
       answerList: [
         {
           key: 0,
@@ -421,7 +422,7 @@ lessons.`,
       groupId: "G3",
       isGroupQ: true,
       type: "multiple_choice",
-      content: "The word manipulated in paragraph 2 mostly means _______.",
+      content: "The word manipulated in paragraph 2 mostly means_______.",
       answerList: [
         { key: 0, option: "A. randomly deployed" },
         { key: 1, option: "B. legally regulated" },
@@ -510,7 +511,7 @@ lessons.`,
       groupId: "G3",
       isGroupQ: true,
       type: "multiple_choice",
-      content: "The phrase the practice in paragraph 3 refers to _______.",
+      content: "The phrase the practice in paragraph 3 refers to_______.",
       answerList: [
         { key: 0, option: "A. global heating" },
         { key: 1, option: "B. scrutiny" },
@@ -632,13 +633,14 @@ lessons.`,
       groupId: "G4",
       isGroupQ: true,
       type: "fill_blank",
-      passage:
-        `How to Manage Your Money Wisely? Managing your finances properly is essential for a stable and secure life. ` +
-        `(30) ________, many people struggle with budgeting and saving ... eventually leading (31) _______ overspending and financial stress. ... ` +
-        `Have a bank account with an increasing amount of savings (32) _______ month ... Buy (33) _______ within your price range. ` +
-        `Track your spending carefully to avoid (34) _______ expenditure ... get your money’s (35) _______! (Adapted from thebalancemoney.com)`,
+      passage: `Managing your finances properly is essential for a stable and secure life. (30)_______, many people struggle with budgeting and saving and give up their financial plans sooner or later, eventually leading (31)_______ verspending and financial stress. Here are some tips to well manage your pocket:
+      • Invest some of your money if possible.
+      • Have a bank account with an increasing amount of savings (32)_______ month by setting realistic financial goals.
+      • Buy (33)_______ within your price range.
+      • Track your spending carefully to avoid (34)_______ expenditure on unnecessary purchases.
+      • Prioritise things that bring you lasting happiness and financial security to get your money’s (35)_______!`,
       content:
-        "Managing your finances properly is essential for a stable and secure life. (30) ________, many people struggle with budgeting and saving...",
+        "Managing your finances properly is essential for a stable and secure life. (30)________, many people struggle with budgeting and saving...",
       answerList: [
         { key: 0, option: "A. However" },
         { key: 1, option: "B. Otherwise" },
@@ -653,7 +655,7 @@ lessons.`,
       isGroupQ: true,
       type: "fill_blank",
       content:
-        "...eventually leading (31) _______ overspending and financial stress.",
+        "...eventually leading (31)_______ overspending and financial stress.",
       answerList: [
         { key: 0, option: "A. on" },
         { key: 1, option: "B. at" },
@@ -668,7 +670,7 @@ lessons.`,
       isGroupQ: true,
       type: "fill_blank",
       content:
-        "Have a bank account with an increasing amount of savings (32) _______ month...",
+        "Have a bank account with an increasing amount of savings (32)_______ month...",
       answerList: [
         { key: 0, option: "A. many" },
         { key: 1, option: "B. some" },
@@ -682,7 +684,7 @@ lessons.`,
       groupId: "G4",
       isGroupQ: true,
       type: "fill_blank",
-      content: "Buy (33) _______ within your price range.",
+      content: "Buy (33)_______ within your price range.",
       answerList: [
         { key: 0, option: "A. affordable products quality" },
         { key: 1, option: "B. products affordable quality" },
@@ -697,7 +699,7 @@ lessons.`,
       isGroupQ: true,
       type: "fill_blank",
       content:
-        "Track your spending carefully to avoid (34) _______ expenditure on unnecessary purchases.",
+        "Track your spending carefully to avoid (34)_______ expenditure on unnecessary purchases.",
       answerList: [
         { key: 0, option: "A. possessive" },
         { key: 1, option: "B. restrictive" },
@@ -712,7 +714,7 @@ lessons.`,
       isGroupQ: true,
       type: "fill_blank",
       content:
-        "Prioritise things that bring lasting happiness and security to get your money’s (35) _______!",
+        "Prioritise things that bring lasting happiness and security to get your money’s (35)_______!",
       answerList: [
         { key: 0, option: "A. worth" },
         { key: 1, option: "B. price" },
@@ -728,13 +730,11 @@ lessons.`,
       groupId: "G5",
       isGroupQ: true,
       type: "fill_blank",
-      passage:
-        `The process of sorting through the various holidays on offer and determining which is the best for you is inevitably complex... ` +
-        `Some people undertake extensive problem solving, in which information is sought about a series of products, (36) _______. ` +
-        `Other consumers ... (37) ________, for the sake of their convenience ... Many consumers engage in routinised response behaviour... (38) _______. ` +
-        `Finally, some consumers will buy on impulse. (39) _______. ... (40) ________, where ‘distressed stock’ needs to be cleared at short notice. (Adapted from The Business of Tourism)`,
+      passage: `The process of sorting through the various holidays on offer and determining which is the best for you is inevitably complex and individual personality traits will determine the eventual decision. Some people undertake a process of extensive problem solving, in which information is sought about a series of products, (36)_______. Other consumers with no patience to explore a variety of choices (37)_______, for the sake of their convenience rather than trying to guarantee that they buy the best possible product. This is known as limited problem solving.
+      Many consumers engage in routinised response behaviour, in which choices change relatively little over time. (38)_______. Also, some holidaymakers who have been content with a particular company or destination in the past may opt for the same experience again.
+      Finally, some consumers will buy on impulse. (39)_______. It is, in fact, a pattern of behaviour that is becoming increasingly prevalent – to the dismay of the operators, who then have less scope for forward planning and reduced opportunities to gain from investing deposits in the short term. (40)_______, where ‘distressed stock’ needs to be cleared at short notice and this can be stimulated by late availability offers particularly.`,
       content:
-        "Some people undertake extensive problem solving, in which information is sought about a series of products, (36) _______.",
+        "Some people undertake extensive problem solving, in which information is sought about a series of products, (36)_______.",
       answerList: [
         {
           key: 0,
@@ -765,7 +765,7 @@ lessons.`,
       isGroupQ: true,
       type: "fill_blank",
       content:
-        "Other consumers with no patience to explore a variety of choices (37) ________, for the sake of their convenience rather than trying to guarantee they buy the best product.",
+        "Other consumers with no patience to explore a variety of choices (37)________, for the sake of their convenience rather than trying to guarantee they buy the best product.",
       answerList: [
         {
           key: 0,
@@ -794,7 +794,7 @@ lessons.`,
       isGroupQ: true,
       type: "fill_blank",
       content:
-        "Many consumers engage in routinised response behaviour... (38) _______.",
+        "Many consumers engage in routinised response behaviour... (38)_______.",
       answerList: [
         {
           key: 0,
@@ -824,7 +824,7 @@ lessons.`,
       groupId: "G5",
       isGroupQ: true,
       type: "fill_blank",
-      content: "Finally, some consumers will buy on impulse. (39) _______.",
+      content: "Finally, some consumers will buy on impulse. (39)_______.",
       answerList: [
         {
           key: 0,
@@ -855,7 +855,7 @@ lessons.`,
       isGroupQ: true,
       type: "fill_blank",
       content:
-        "…operators have less scope for forward planning and reduced opportunities to gain from investing deposits. (40) ________, where ‘distressed stock’ needs to be cleared at short notice…",
+        "…operators have less scope for forward planning and reduced opportunities to gain from investing deposits. (40)________, where ‘distressed stock’ needs to be cleared at short notice…",
       answerList: [
         {
           key: 0,

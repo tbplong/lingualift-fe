@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowRight } from "@/components/icons";
 import AnsBox from "@/pages/quiz/AnsBox";
 import Chosen from "@/pages/quiz/Chosen";
+import ConfirmSubmission from "@/pages/quiz/ConfirmSubmission";
 import { timeFormat } from "@/pages/quiz/timer";
 import { mockQuiz, Quiz } from "@/pages/quiz/type";
 import { createFileRoute } from "@tanstack/react-router";
@@ -75,7 +76,7 @@ function RouteComponent() {
         return;
       }
     });
-  }
+  } else if (question.passage) passage = question.passage;
   const optList = question.answerList;
 
   const [choose, setChoose] = useState<Record<number, boolean>>({
@@ -119,6 +120,8 @@ function RouteComponent() {
   };
   // console.log(time);
   const progress: number = (time / (exam.time * 60)) * 100;
+
+  const [openSub, setOpenSub] = useState<boolean>(false);
   return (
     <div className={clsx("drawer drawer-end h-dvh")}>
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -242,7 +245,7 @@ function RouteComponent() {
             {content}
           </span>
 
-          <div className="w-full grid grid-cols-2 gap-4">
+          <div className="w-full grid grid-cols-2 gap-4 h-40">
             {optList.map((value, i) => {
               return (
                 <Chosen
@@ -283,13 +286,17 @@ function RouteComponent() {
             })}
           </div>
           <button
-            onClick={() => console.log(ans)}
+            onClick={() => setOpenSub(true)}
             className="btn h-16 absolute bottom-8 w-59 bg-secondary hover:border-2 hover:bg-white hover:border-secondary rounded-xl text-white hover:text-secondary text-3xl font-semibold transition-all duration-100 cursor-pointer"
           >
             Submit
           </button>
         </ul>
       </div>
+      <ConfirmSubmission
+        open={openSub}
+        onClose={() => setOpenSub(false)}
+      ></ConfirmSubmission>
     </div>
   );
 }
