@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import { useRef } from "react";
-import noToChar from "./noToChar";
 
 const Chosen = ({
   op,
@@ -22,11 +21,11 @@ const Chosen = ({
       className={clsx(
         "p-4 btn h-full border-2 rounded-2xl text-2xl text-tertiary-100 flex justify-start cursor-pointer",
         choose[op]
-          ? "border-secondary-300 bg-secondary-300 text-white"
-          : "bg-white border-tertiary-100 hover:bg-secondary-100 hover:border-secondary-100 hover:text-tertiary hover:drop-shadow-2xl hover:animate-[fadeIn_0.1s_ease-in]",
+          ? "border-secondary bg-secondary text-white"
+          : "bg-white border-tertiary-100 hover:bg-secondary-100 hover:border-secondary-100 hover:text-tertiary hover:drop-shadow-2xl transition-all duration-100 ease-in",
       )}
     >
-      <span className="font-semibold">{`${noToChar(op)}. ${content}`}</span>
+      <span className="font-semibold">{`${content}`}</span>
     </button>
   );
 };
