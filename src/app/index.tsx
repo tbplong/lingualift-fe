@@ -6,10 +6,9 @@ import { useAuthStore, useGlobalLoadingStore } from "../stores";
 import { GOOGLE_OAUTH_CLIENT_ID } from "../config/env";
 import { routeTree } from "@/routeTree.gen";
 import { useCallback, useEffect } from "react";
-import handleAxiosError from "@/helpers/handle-axios-error";
 import { useUserStore } from "@/stores/user.store";
 import UserService from "@/services/user/user.service";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 // Create a new router instance
 const router = createRouter({
@@ -49,11 +48,8 @@ export default function App() {
       setGlobalLoading(true);
       const { data } = await UserService.getUserProfile();
       setUser(data);
-    } catch (error: unknown) {
+    } catch {
       setIsAuthenticated(false);
-      handleAxiosError(error, (message: string) => {
-        toast.error(message);
-      });
     } finally {
       setGlobalLoading(false);
     }

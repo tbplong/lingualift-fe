@@ -19,7 +19,7 @@ import Loading from "@/components/ui/loading";
 export const Route = createFileRoute("/login/")({
   beforeLoad: async ({ context }) => {
     if (context.authContext.isAuthenticated) {
-      throw redirect({ to: "/home" });
+      throw redirect({ to: "/dashboard" });
     }
   },
   validateSearch: z.object({
@@ -76,7 +76,7 @@ function RouteComponent() {
   useEffect(() => {
     if (isAuthenticated) {
       navigate({
-        to: selected || "/home",
+        to: selected || "/dashboard",
         replace: true,
       });
     }

@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { toast } from "react-toastify";
 
-export const Route = createFileRoute("/home/")({
+export const Route = createFileRoute("/dashboard/")({
   beforeLoad: async ({ context }) => {
     if (!context.authContext.isAuthenticated) {
       toast.error("Please log in to access the home page.");
