@@ -55,22 +55,6 @@ function RouteComponent() {
     Partial<Record<keyof FormValues, boolean>>
   >({});
 
-  const login = async (email: string, password: string) => {
-    try {
-      setLoading(true);
-      const { accessToken } = (await AuthService.login(email, password)).data;
-      storage.setItem("token", accessToken);
-      setToken(accessToken);
-      setIsAuthenticated(true);
-    } catch (error: unknown) {
-      handleAxiosError(error, (message: string) => {
-        toast.error(message);
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const loginWithGoogle = async (credentialResponse: string) => {
     try {
       setLoading(true);
@@ -316,9 +300,6 @@ function RouteComponent() {
                 type="submit"
                 className="mt-6 w-full rounded-xl bg-primary py-3 font-semibold text-white
                          transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/30"
-                onClick={async () => {
-                  await login(values.email, values.password);
-                }}
               >
                 Sign in
               </button>
