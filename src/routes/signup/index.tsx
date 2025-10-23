@@ -5,13 +5,16 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "react-toastify";
 import AuthService from "@/services/auth/auth.service";
 import storage from "@/utils/storage";
+import axios, { AxiosError } from "axios";
+import { useRef } from "react";
 
 export const Route = createFileRoute("/signup/")({
   component: RouteComponent,
 });
 
 type FormValues = {
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   dateOfBirth: string; // YYYY-MM-DD
@@ -23,9 +26,11 @@ type Errors = Partial<Record<keyof FormValues, string>>;
 function RouteComponent() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const emailRef = useRef<HTMLInputElement>(null);
 
   const [values, setValues] = useState<FormValues>({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     dateOfBirth: "",
@@ -54,10 +59,15 @@ function RouteComponent() {
     field: keyof FormValues,
     vals: FormValues,
   ): string | undefined {
-    if (field === "fullName") {
-      const v = vals.fullName.trim();
-      if (!v) return "Full name is required.";
-      if (v.length < 6) return "Full name must be at least 6 characters.";
+    if (field === "firstName") {
+      const v = vals.firstName.trim();
+      if (!v) return "First name is required.";
+      if (v.length < 2) return "Must be at least 2 characters.";
+    }
+    if (field === "lastName") {
+      const v = vals.lastName.trim();
+      if (!v) return "Last name is required.";
+      if (v.length < 2) return "Must be at least 2 characters.";
     }
     if (field === "email") {
       const v = vals.email.trim();
@@ -80,15 +90,16 @@ function RouteComponent() {
       const v = vals.phone.trim();
       if (!v) return "Phone is required.";
       const digits = v.replace(/[^0-9]/g, "");
-      if (digits.length < 9 || digits.length > 15)
-        return "Phone must be 9–15 digits.";
+      if (digits.length < 10 || digits.length > 11)
+        return "Phone must be 10 - 11 digits.";
     }
     return undefined;
   }
 
   function validateAll(vals: FormValues): Errors {
     return {
-      fullName: validateField("fullName", vals),
+      firstName: validateField("firstName", vals),
+      lastName: validateField("lastName", vals),
       email: validateField("email", vals),
       password: validateField("password", vals),
       dateOfBirth: validateField("dateOfBirth", vals),
@@ -120,7 +131,8 @@ function RouteComponent() {
     setErrors(next);
 
     if (
-      !next.fullName &&
+      !next.firstName &&
+      !next.lastName &&
       !next.email &&
       !next.password &&
       !next.dateOfBirth &&
@@ -131,18 +143,39 @@ function RouteComponent() {
         const { data } = await AuthService.signup(
           values.email,
           values.password,
-          values.fullName,
-          values.fullName,
+          values.firstName,
+          values.lastName,
           values.dateOfBirth,
           values.phone,
         );
         storage.setItem("token", data.accessToken);
         toast.success("Signup successful! Redirecting to Sign in...");
         navigate({ to: "/login" });
-      } catch (err) {
-        toast.error(`${err}. Please try again.`);
-      } finally {
-        setIsSubmitting(false);
+      } catch (err: unknown) {
+        let apiMessage = "Something went wrong. Please try again.";
+        if (axios.isAxiosError(err)) {
+          const e = err as AxiosError<{ message?: string }>;
+          apiMessage = e.response?.data?.message ?? e.message ?? apiMessage;
+        } else if (err instanceof Error) {
+          apiMessage = err.message ?? apiMessage;
+        }
+
+        if (apiMessage.includes("User already exists")) {
+          setErrors((prev) => ({
+            ...prev,
+            email: "This email has already been used. Please use another one.",
+          }));
+          setTouched((prev) => ({ ...prev, email: true }));
+          setIsSubmitting(false);
+          toast.error(
+            "This email has already been used. Please use another one.",
+          );
+          // nếu muốn focus vào ô email, xem mục 2
+          emailRef.current?.focus();
+          return;
+        }
+
+        toast.error(apiMessage);
       }
     }
   };
@@ -157,61 +190,111 @@ function RouteComponent() {
         <form noValidate onSubmit={handleSubmit}>
           <div className="p-6 md:p-8">
             <div className="space-y-1">
-              <h2 className="text-xl font-semibold text-gray-900 text-center xl:text-2xl">
+              <h2 className="text-xl font-semibold text-gray-900 text-center xl:text-3xl">
                 Create your Account
               </h2>
             </div>
 
-            <div className="mt-6">
-              <label
-                htmlFor="fullName"
-                className="block mb-2 text-sm xl:text-lg font-medium text-gray-700"
-              >
-                Full Name
-              </label>
-              <div className="relative">
-                <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    className="text-gray-400"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M12 12a5 5 0 1 0-5-5a5 5 0 0 0 5 5m0 2c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5"
-                    />
-                  </svg>
-                </span>
-                <input
-                  type="text"
-                  id="fullName"
-                  name="fullName"
-                  value={values.fullName}
-                  onChange={(e) => handleInputChange("fullName", e)}
-                  aria-invalid={!!errors.fullName}
-                  aria-describedby={
-                    errors.fullName ? "fullName-error" : undefined
-                  }
-                  placeholder="Xuan Sang"
-                  className={`w-full rounded-xl border bg-white pl-10 pr-11 py-2.5 outline-none transition
-                    ${
-                      errors.fullName
-                        ? "border-red-500 focus:border-red-500 focus:ring-red-200"
-                        : touched.fullName && !errors.fullName
-                          ? "border-green-500 focus:border-green-500 focus:ring-green-200"
-                          : "border-gray-300 focus:border-orange-500 focus:ring-orange-200"
-                    }`}
-                />
+            <div className="mt-6 flex gap-4">
+              <div className="w-1/2">
+                <label
+                  htmlFor="firstName"
+                  className="block mb-2 text-sm xl:text-lg font-medium text-gray-700"
+                >
+                  First Name
+                </label>
+                <div className="relative">
+                  <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      className="text-gray-400"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M12 12a5 5 0 1 0-5-5a5 5 0 0 0 5 5m0 2c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5"
+                      />
+                    </svg>
+                  </span>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={values.firstName}
+                    onChange={(e) => handleInputChange("firstName", e)}
+                    aria-invalid={!!errors.firstName}
+                    aria-describedby={
+                      errors.firstName ? "firstName-error" : undefined
+                    }
+                    placeholder="Sang"
+                    className={`w-full rounded-xl border bg-white pl-10 pr-11 py-2.5 outline-none transition
+          ${
+            errors.firstName
+              ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+              : touched.firstName && !errors.firstName
+                ? "border-green-500 focus:border-green-500 focus:ring-green-200"
+                : "border-gray-300 focus:border-orange-500 focus:ring-orange-200"
+          }`}
+                  />
+                </div>
+                <p
+                  id="firstName-error"
+                  className={`mt-2 text-sm ${errors.firstName ? "text-red-500" : "text-gray-400"}`}
+                >
+                  {errors.firstName ?? "Enter your First Name!"}
+                </p>
               </div>
-              <p
-                id="fullName-error"
-                className={`mt-2 text-sm ${
-                  errors.fullName ? "text-red-500" : "text-gray-400"
-                }`}
-              >
-                {errors.fullName ?? "Please enter your Full Name!"}
-              </p>
+
+              <div className="w-1/2">
+                <label
+                  htmlFor="lastName"
+                  className="block mb-2 text-sm xl:text-lg font-medium text-gray-700"
+                >
+                  Last Name
+                </label>
+                <div className="relative">
+                  <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      className="text-gray-400"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M12 12a5 5 0 1 0-5-5a5 5 0 0 0 5 5m0 2c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5"
+                      />
+                    </svg>
+                  </span>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    value={values.lastName}
+                    onChange={(e) => handleInputChange("lastName", e)}
+                    aria-invalid={!!errors.lastName}
+                    aria-describedby={
+                      errors.lastName ? "lastName-error" : undefined
+                    }
+                    placeholder="Nguyen"
+                    className={`w-full rounded-xl border bg-white pl-10 pr-11 py-2.5 outline-none transition
+          ${
+            errors.lastName
+              ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+              : touched.lastName && !errors.lastName
+                ? "border-green-500 focus:border-green-500 focus:ring-green-200"
+                : "border-gray-300 focus:border-orange-500 focus:ring-orange-200"
+          }`}
+                  />
+                </div>
+                <p
+                  id="lastName-error"
+                  className={`mt-2 text-sm ${errors.lastName ? "text-red-500" : "text-gray-400"}`}
+                >
+                  {errors.lastName ?? "Enter your Last Name!"}
+                </p>
+              </div>
             </div>
 
             <div className="mt-4">
@@ -239,6 +322,7 @@ function RouteComponent() {
                   type="email"
                   id="email"
                   name="email"
+                  ref={emailRef}
                   value={values.email}
                   onChange={(e) => handleInputChange("email", e)}
                   aria-invalid={!!errors.email}
@@ -330,12 +414,6 @@ function RouteComponent() {
                       ? "Password looks good!"
                       : "Please enter your Password!"}
                 </span>
-                <a
-                  href="/forgot-password"
-                  className="text-sm font-medium text-primary hover:underline"
-                >
-                  Forgot password?
-                </a>
               </div>
             </div>
             {/* Date of Birth */}
@@ -406,7 +484,7 @@ function RouteComponent() {
                 id="phone-error"
                 className={`mt-2 text-sm ${errors.phone ? "text-red-500" : "text-gray-400"}`}
               >
-                {errors.phone ?? "Enter a phone number (9–15 digits)."}
+                {errors.phone ?? "Enter a phone number (10 - 11 digits)."}
               </p>
             </div>
 

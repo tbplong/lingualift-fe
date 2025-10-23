@@ -22,7 +22,8 @@ const AuthService = {
     }>(`auth/signup`, {
       email: email,
       password: password,
-      firstName: lastName,
+      firstName: firstName,
+      lastName: lastName,
       dateofBirth: dateofBirth,
       phone: phone,
     });
