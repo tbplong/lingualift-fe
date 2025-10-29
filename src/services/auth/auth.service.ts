@@ -1,32 +1,40 @@
+import { API_URL } from "@/config/env";
 import axios from "@/utils/custom-axios";
+
+const url = `${API_URL}/v1/auth`;
+
 const AuthService = {
-  login: async (email: string, password: string) => {
+  signUp: async (email: string, password: string) => {
     return await axios.post<{
       accessToken: string;
-    }>(`auth/login`, {
+      hasPassword: boolean;
+      isFirstLogin: boolean;
+      activeTokenCount: number;
+    }>(`${url}/password/signup`, {
       email,
       password,
     });
   },
-  signup: async (
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-    dateofBirth: string,
-    phone: string,
-  ) => {
-    console.log("Signup is called");
+  login: async (email: string, password: string) => {
     return await axios.post<{
       accessToken: string;
-    }>(`auth/signup`, {
-      email: email,
-      password: password,
-      firstName: firstName,
-      lastName: lastName,
-      dateofBirth: dateofBirth,
-      phone: phone,
+      hasPassword: boolean;
+      isFirstLogin: boolean;
+      activeTokenCount: number;
+    }>(`${url}/password/`, {
+      email,
+      password,
     });
+  },
+  loginWithGoogle: async (idToken: string) => {
+    return await axios.post<{
+      accessToken: string;
+      hasPassword: boolean;
+      isFirstLogin: boolean;
+    }>(`${url}/google`, { idToken });
+  },
+  logout: async () => {
+    await axios.post<void>(`${url}/logout`);
   },
 };
 

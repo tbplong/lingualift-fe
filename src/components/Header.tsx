@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
-import { YoutubeColor, YoutubeWhite } from "./icons";
+import { ProfileIcon, YoutubeColor, YoutubeWhite } from "./icons";
 import { MessengerColor, MessengerWhite } from "./icons";
 import { FacebookColor, FacebookWhite } from "./icons";
 import { TiktokColor, TiktokWhite } from "./icons";
 import { Link } from "@tanstack/react-router";
+import { useUserStore } from "@/stores/user.store";
+import { useAuthStore } from "@/stores";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const { isAuthenticated } = useAuthStore();
+  const { user } = useUserStore();
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -45,9 +49,10 @@ export function Header() {
         {/* Actions */}
         <div className="ml-auto flex items-center gap-2 sm:gap-4">
           {/* Ẩn Sign in ở màn rất nhỏ để đủ chỗ */}
-          <Link
-            to="/login"
-            className="
+          {isAuthenticated && user ? (
+            <Link
+              to="/login"
+              className="
           sm:inline-flex
           px-5 py-2 text-sm
           sm:px-7 sm:py-3 sm:text-base
@@ -56,9 +61,36 @@ export function Header() {
           hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 
           shadow-md hover:shadow-lg whitespace-nowrap cursor-pointer
         "
-          >
-            Sign in
-          </Link>
+            >
+              {" "}
+              <div
+                style={{ backgroundImage: `url(${user?.picture})` }}
+                className={`${user?.picture ? "" : "flex items-center justify-center bg-tertiary"} relative size-8 rounded-full bg-cover xl:size-10`}
+              >
+                {user?.picture ? (
+                  <></>
+                ) : (
+                  <ProfileIcon className="size-8 fill-white" />
+                )}
+              </div>
+              <span className="ml-4">Đến trang chủ</span>
+            </Link>
+          ) : (
+            <Link
+              to="/login"
+              className="
+          sm:inline-flex
+          px-5 py-2 text-sm
+          sm:px-7 sm:py-3 sm:text-base
+          md:px-10 md:py-4 md:text-[25px]
+          rounded bg-primary text-white font-semibold
+          hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 
+          shadow-md hover:shadow-lg whitespace-nowrap cursor-pointer
+        "
+            >
+              Sign in
+            </Link>
+          )}
 
           <button
             onClick={() => setMenuOpen(true)}
