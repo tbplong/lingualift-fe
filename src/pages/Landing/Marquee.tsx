@@ -28,10 +28,7 @@ function Row({ items }: { items: string[] }) {
   return (
     <div className="flex shrink-0 items-center whitespace-nowrap">
       {items.map((t, i) => (
-        <span
-          key={i}
-          className="px-10 font-extrabold tracking-wide text-white"
-        >
+        <span key={i} className="px-10 font-extrabold tracking-wide text-white">
           {t}
         </span>
       ))}

@@ -127,9 +127,13 @@ function RouteComponent() {
 
   async function fakeLogin() {
     // TODO: gọi API thật của bạn ở đây
-    // const { accessToken } = await AuthService.login(values.email, values.password)
-    // storage.setItem("token", accessToken)
-    return true;
+    try {
+      const { data } = await AuthService.login(values.email, values.password);
+      storage.setItem("token", data.accessToken);
+      return true;
+    } catch (err) {
+      console.error("Error: ", err);
+    }
   }
 
   async function handleSubmit(e: FormEvent) {
