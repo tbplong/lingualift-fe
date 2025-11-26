@@ -4,15 +4,26 @@ import axios from "@/utils/custom-axios";
 const url = `${API_URL}/v1/auth`;
 
 const AuthService = {
-  signUp: async (email: string, password: string) => {
+  signUp: async (
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    dateOfBirth: string,
+    phone: string,
+  ) => {
     return await axios.post<{
       accessToken: string;
       hasPassword: boolean;
       isFirstLogin: boolean;
       activeTokenCount: number;
-    }>(`${url}/password/signup`, {
+    }>(`${url}/signup`, {
       email,
       password,
+      firstName,
+      lastName,
+      dateOfBirth,
+      phone,
     });
   },
   login: async (email: string, password: string) => {
@@ -21,7 +32,7 @@ const AuthService = {
       hasPassword: boolean;
       isFirstLogin: boolean;
       activeTokenCount: number;
-    }>(`${url}/password/`, {
+    }>(`${url}/login`, {
       email,
       password,
     });

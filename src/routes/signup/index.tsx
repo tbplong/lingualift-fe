@@ -140,7 +140,7 @@ function RouteComponent() {
     ) {
       try {
         setIsSubmitting(true);
-        const { data } = await AuthService.signup(
+        const { data } = await AuthService.signUp(
           values.email,
           values.password,
           values.firstName,

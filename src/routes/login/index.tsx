@@ -125,17 +125,6 @@ function RouteComponent() {
     setTouched((prev) => ({ ...prev, [field]: true }));
   }
 
-  async function fakeLogin() {
-    // TODO: gọi API thật của bạn ở đây
-    try {
-      const { data } = await AuthService.login(values.email, values.password);
-      storage.setItem("token", data.accessToken);
-      return true;
-    } catch (err) {
-      console.error("Error: ", err);
-    }
-  }
-
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const next = validateAll(values);
@@ -143,7 +132,8 @@ function RouteComponent() {
 
     if (!next.email && !next.password) {
       try {
-        await fakeLogin();
+        const { data } = await AuthService.login(values.email, values.password);
+        storage.setItem("token", data.accessToken);
         toast.success("Signed in successfully! Redirecting…");
         navigate({ to: "/" });
       } catch (err) {
