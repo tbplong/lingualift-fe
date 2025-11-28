@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import storage from "@/utils/storage";
+import { ReactNode } from "react";
 import {
   LayoutDashboard,
   PlusCircle,
@@ -19,7 +20,7 @@ import {
 interface StatCardProps {
   title: string;
   value: string | number | undefined; // Chấp nhận chuỗi, số hoặc undefined (lúc chưa load data)
-  icon: string; // Kiểu chuẩn cho mọi thành phần render được (Icon, div, svg...)
+  icon: ReactNode; // Kiểu chuẩn cho mọi thành phần render được (Icon, div, svg...)
   bgIcon: string; // Class CSS (ví dụ: "bg-blue-100")
   trend?: string; // Dấu ? nghĩa là Optional (có cũng được, không có cũng không sao)
   subtext?: string; // Optional
@@ -332,7 +333,7 @@ const NavItem = ({
   active = false,
 }: {
   to: string;
-  icon: string;
+  icon: ReactNode;
   label: string;
   active?: boolean;
 }) => (
