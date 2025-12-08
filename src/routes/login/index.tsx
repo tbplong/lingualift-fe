@@ -150,7 +150,7 @@ function RouteComponent() {
         </div>
       ) : (
         <div className="w-full max-w-md relative">
-          <h1 className="text-4xl font-bold text-primary text-center xl:text-5xl">
+          <h1 className="text-4xl font-bold text-primary text-center md:3xl: xl:text-5xl">
             LingualLift
           </h1>
 
