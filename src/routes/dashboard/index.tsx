@@ -41,6 +41,17 @@ interface UserProfile {
   avatarLetter: string;
 }
 
+interface UserProfile {
+  firstName: string;
+  lastName: string;
+  email: string;
+  level: string;
+  xp: number;
+  rank: number;
+  streak: number;
+  avatarLetter: string;
+}
+
 // Dữ liệu giả lập cho Recommended Quizzes
 const recommendedQuizzes = [
   {
@@ -68,7 +79,7 @@ const recommendedQuizzes = [
     color: "bg-green-100 text-green-600",
   },
   {
-    id: 1,
+    id: 4,
     title: "Present Perfect Tense",
     category: "Grammar",
     level: "Hard",
