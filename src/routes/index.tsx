@@ -1,10 +1,10 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { Connect } from "@/pages/landing/Connect";
-import CoreValue from "@/pages/landing/CoreValue";
-import { FooterBadgeRow } from "@/pages/landing/FooterBadge";
-import Hero from "@/pages/landing/Hero";
-import WhyChoose from "@/pages/landing/WhyChoose";
+import { Connect } from "@/pages/Landing/Connect";
+import CoreValue from "@/pages/Landing/CoreValue";
+import { FooterBadgeRow } from "@/pages/Landing/FooterBadge";
+import Hero from "@/pages/Landing/Hero";
+import WhyChoose from "@/pages/Landing/WhyChoose";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
