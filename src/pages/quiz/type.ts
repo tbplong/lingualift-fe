@@ -5,6 +5,8 @@ export type Quiz = {
   questionsNo: number; // total number of questions
   expiredAt: Date | null;
   isShowAnswer: boolean;
+  // createdAt: Date;
+  // updatedAt: Date;
 
   questions: Question[];
 };

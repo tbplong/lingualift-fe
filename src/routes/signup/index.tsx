@@ -3,15 +3,22 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import CustomGoogleButton from "@/components/ui/button/custom-google-button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "react-toastify";
+import AuthService from "@/services/auth/auth.service";
+import storage from "@/utils/storage";
+import axios, { AxiosError } from "axios";
+import { useRef } from "react";
 
 export const Route = createFileRoute("/signup/")({
   component: RouteComponent,
 });
 
 type FormValues = {
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
+  dateOfBirth: string; // YYYY-MM-DD
+  phone: string;
 };
 
 type Errors = Partial<Record<keyof FormValues, string>>;
@@ -19,27 +26,48 @@ type Errors = Partial<Record<keyof FormValues, string>>;
 function RouteComponent() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const emailRef = useRef<HTMLInputElement>(null);
 
   const [values, setValues] = useState<FormValues>({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
+    dateOfBirth: "",
+    phone: "",
   });
 
   const [errors, setErrors] = useState<Errors>({});
   const [touched, setTouched] = useState<
     Partial<Record<keyof FormValues, boolean>>
   >({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // --- Field-level validation helper ---
+  function isAtLeastYearsOld(isoDate: string, years = 13) {
+    const dob = new Date(isoDate);
+    if (Number.isNaN(dob.getTime())) return false;
+    const today = new Date();
+    const cutoff = new Date(
+      today.getFullYear() - years,
+      today.getMonth(),
+      today.getDate(),
+    );
+    return dob <= cutoff;
+  }
+
   function validateField(
     field: keyof FormValues,
     vals: FormValues,
   ): string | undefined {
-    if (field === "fullName") {
-      const v = vals.fullName.trim();
-      if (!v) return "Full name is required.";
-      if (v.length < 6) return "Full name must be at least 6 characters.";
+    if (field === "firstName") {
+      const v = vals.firstName.trim();
+      if (!v) return "First name is required.";
+      if (v.length < 2) return "Must be at least 2 characters.";
+    }
+    if (field === "lastName") {
+      const v = vals.lastName.trim();
+      if (!v) return "Last name is required.";
+      if (v.length < 2) return "Must be at least 2 characters.";
     }
     if (field === "email") {
       const v = vals.email.trim();
@@ -52,19 +80,33 @@ function RouteComponent() {
       if (!v) return "Password is required.";
       if (v.length < 6) return "Password must be at least 6 characters.";
     }
+    if (field === "dateOfBirth") {
+      const v = vals.dateOfBirth;
+      if (!v) return "Date of birth is required.";
+      if (!isAtLeastYearsOld(v, 13))
+        return "You must be at least 13 years old.";
+    }
+    if (field === "phone") {
+      const v = vals.phone.trim();
+      if (!v) return "Phone is required.";
+      const digits = v.replace(/[^0-9]/g, "");
+      if (digits.length < 10 || digits.length > 11)
+        return "Phone must be 10 - 11 digits.";
+    }
     return undefined;
   }
 
-  // --- Form-level validation for submit ---
   function validateAll(vals: FormValues): Errors {
     return {
-      fullName: validateField("fullName", vals),
+      firstName: validateField("firstName", vals),
+      lastName: validateField("lastName", vals),
       email: validateField("email", vals),
       password: validateField("password", vals),
+      dateOfBirth: validateField("dateOfBirth", vals),
+      phone: validateField("phone", vals),
     };
   }
 
-  // Update value + validate that field immediately (so border won't turn green unless valid)
   function handleInputChange(
     field: keyof FormValues,
     e: ChangeEvent<HTMLInputElement>,
@@ -83,91 +125,178 @@ function RouteComponent() {
     setTouched((prev) => ({ ...prev, [field]: true }));
   }
 
-  function handleSubmit(e: FormEvent) {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const next = validateAll(values);
     setErrors(next);
 
-    if (!next.fullName && !next.email && !next.password) {
-      // TODO: Call your signup API here
-      // await api.post('/signup', values);
-
-      toast.success("Signup successful! Redirecting to Sign in...");
-      setTimeout(() => {
+    if (
+      !next.firstName &&
+      !next.lastName &&
+      !next.email &&
+      !next.password &&
+      !next.dateOfBirth &&
+      !next.phone
+    ) {
+      try {
+        setIsSubmitting(true);
+        const { data } = await AuthService.signUp(
+          values.email,
+          values.password,
+          values.firstName,
+          values.lastName,
+          values.dateOfBirth,
+          values.phone,
+        );
+        storage.setItem("token", data.accessToken);
+        toast.success("Signup successful! Redirecting to Sign in...");
         navigate({ to: "/login" });
-      }, 1200);
+      } catch (err: unknown) {
+        let apiMessage = "Something went wrong. Please try again.";
+        if (axios.isAxiosError(err)) {
+          const e = err as AxiosError<{ message?: string }>;
+          apiMessage = e.response?.data?.message ?? e.message ?? apiMessage;
+        } else if (err instanceof Error) {
+          apiMessage = err.message ?? apiMessage;
+        }
+
+        if (apiMessage.includes("User already exists")) {
+          setErrors((prev) => ({
+            ...prev,
+            email: "This email has already been used. Please use another one.",
+          }));
+          setTouched((prev) => ({ ...prev, email: true }));
+          setIsSubmitting(false);
+          toast.error(
+            "This email has already been used. Please use another one.",
+          );
+          // nếu muốn focus vào ô email, xem mục 2
+          emailRef.current?.focus();
+          return;
+        }
+
+        toast.error(apiMessage);
+      }
     }
-  }
+  };
 
   return (
     <div className="min-h-screen w-full bg-gray-50 relative flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-md relative">
         <h1 className="text-4xl font-bold text-primary text-center xl:text-5xl">
-          LingualLift
+          LinguaLift
         </h1>
 
-        <form onSubmit={handleSubmit}>
+        <form noValidate onSubmit={handleSubmit}>
           <div className="p-6 md:p-8">
             <div className="space-y-1">
-              <h2 className="text-xl font-semibold text-gray-900 text-center xl:text-2xl">
+              <h2 className="text-xl font-semibold text-gray-900 text-center xl:text-3xl">
                 Create your Account
               </h2>
             </div>
 
-            {/* Full Name */}
-            <div className="mt-6">
-              <label
-                htmlFor="fullName"
-                className="block mb-2 text-sm xl:text-lg font-medium text-gray-700"
-              >
-                Full Name
-              </label>
-              <div className="relative">
-                <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    className="text-gray-400"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M12 12a5 5 0 1 0-5-5a5 5 0 0 0 5 5m0 2c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5"
-                    />
-                  </svg>
-                </span>
-                <input
-                  type="text"
-                  id="fullName"
-                  name="fullName"
-                  value={values.fullName}
-                  onChange={(e) => handleInputChange("fullName", e)}
-                  aria-invalid={!!errors.fullName}
-                  aria-describedby={
-                    errors.fullName ? "fullName-error" : undefined
-                  }
-                  placeholder="Xuan Sang"
-                  className={`w-full rounded-xl border bg-white pl-10 pr-11 py-2.5 outline-none transition
-                    ${
-                      errors.fullName
-                        ? "border-red-500 focus:border-red-500 focus:ring-red-200"
-                        : touched.fullName && !errors.fullName
-                          ? "border-green-500 focus:border-green-500 focus:ring-green-200"
-                          : "border-gray-300 focus:border-orange-500 focus:ring-orange-200"
-                    }`}
-                />
+            <div className="mt-6 flex gap-4">
+              <div className="w-1/2">
+                <label
+                  htmlFor="firstName"
+                  className="block mb-2 text-sm xl:text-lg font-medium text-gray-700"
+                >
+                  First Name
+                </label>
+                <div className="relative">
+                  <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      className="text-gray-400"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M12 12a5 5 0 1 0-5-5a5 5 0 0 0 5 5m0 2c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5"
+                      />
+                    </svg>
+                  </span>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={values.firstName}
+                    onChange={(e) => handleInputChange("firstName", e)}
+                    aria-invalid={!!errors.firstName}
+                    aria-describedby={
+                      errors.firstName ? "firstName-error" : undefined
+                    }
+                    placeholder="Sang"
+                    className={`w-full rounded-xl border bg-white pl-10 pr-11 py-2.5 outline-none transition
+          ${
+            errors.firstName
+              ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+              : touched.firstName && !errors.firstName
+                ? "border-green-500 focus:border-green-500 focus:ring-green-200"
+                : "border-gray-300 focus:border-orange-500 focus:ring-orange-200"
+          }`}
+                  />
+                </div>
+                <p
+                  id="firstName-error"
+                  className={`mt-2 text-sm ${errors.firstName ? "text-red-500" : "text-gray-400"}`}
+                >
+                  {errors.firstName ?? "Enter your First Name!"}
+                </p>
               </div>
-              <p
-                id="fullName-error"
-                className={`mt-2 text-sm ${
-                  errors.fullName ? "text-red-500" : "text-gray-400"
-                }`}
-              >
-                {errors.fullName ?? "Please enter your Full Name!"}
-              </p>
+
+              <div className="w-1/2">
+                <label
+                  htmlFor="lastName"
+                  className="block mb-2 text-sm xl:text-lg font-medium text-gray-700"
+                >
+                  Last Name
+                </label>
+                <div className="relative">
+                  <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      className="text-gray-400"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M12 12a5 5 0 1 0-5-5a5 5 0 0 0 5 5m0 2c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5"
+                      />
+                    </svg>
+                  </span>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    value={values.lastName}
+                    onChange={(e) => handleInputChange("lastName", e)}
+                    aria-invalid={!!errors.lastName}
+                    aria-describedby={
+                      errors.lastName ? "lastName-error" : undefined
+                    }
+                    placeholder="Nguyen"
+                    className={`w-full rounded-xl border bg-white pl-10 pr-11 py-2.5 outline-none transition
+          ${
+            errors.lastName
+              ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+              : touched.lastName && !errors.lastName
+                ? "border-green-500 focus:border-green-500 focus:ring-green-200"
+                : "border-gray-300 focus:border-orange-500 focus:ring-orange-200"
+          }`}
+                  />
+                </div>
+                <p
+                  id="lastName-error"
+                  className={`mt-2 text-sm ${errors.lastName ? "text-red-500" : "text-gray-400"}`}
+                >
+                  {errors.lastName ?? "Enter your Last Name!"}
+                </p>
+              </div>
             </div>
 
-            {/* Email */}
             <div className="mt-4">
               <label
                 htmlFor="email"
@@ -193,6 +322,7 @@ function RouteComponent() {
                   type="email"
                   id="email"
                   name="email"
+                  ref={emailRef}
                   value={values.email}
                   onChange={(e) => handleInputChange("email", e)}
                   aria-invalid={!!errors.email}
@@ -218,7 +348,6 @@ function RouteComponent() {
               </p>
             </div>
 
-            {/* Password */}
             <div className="mt-4">
               <label
                 htmlFor="password"
@@ -285,21 +414,88 @@ function RouteComponent() {
                       ? "Password looks good!"
                       : "Please enter your Password!"}
                 </span>
-                <a
-                  href="/forgot-password"
-                  className="text-sm font-medium text-primary hover:underline"
-                >
-                  Forgot password?
-                </a>
               </div>
+            </div>
+            {/* Date of Birth */}
+            <div className="mt-4">
+              <label
+                htmlFor="dateOfBirth"
+                className="block mb-2 text-sm xl:text-lg font-medium text-gray-700"
+              >
+                Date of Birth
+              </label>
+              <input
+                type="date"
+                id="dateOfBirth"
+                name="dateOfBirth"
+                autoComplete="bday"
+                value={values.dateOfBirth}
+                onChange={(e) => handleInputChange("dateOfBirth", e)}
+                aria-invalid={!!errors.dateOfBirth}
+                aria-describedby={
+                  errors.dateOfBirth ? "dateOfBirth-error" : undefined
+                }
+                className={`w-full rounded-xl border bg-white px-4 py-2.5 outline-none transition
+                    ${
+                      errors.dateOfBirth
+                        ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+                        : touched.dateOfBirth && !errors.dateOfBirth
+                          ? "border-green-500 focus:border-green-500 focus:ring-green-200"
+                          : "border-gray-300 focus:border-orange-500 focus:ring-orange-200"
+                    }`}
+              />
+              <p
+                id="dateOfBirth-error"
+                className={`mt-2 text-sm ${errors.dateOfBirth ? "text-red-500" : "text-gray-400"}`}
+              >
+                {errors.dateOfBirth ?? "Select your birth date (13+)."}
+              </p>
+            </div>
+
+            {/* Phone */}
+            <div className="mt-4">
+              <label
+                htmlFor="phone"
+                className="block mb-2 text-sm xl:text-lg font-medium text-gray-700"
+              >
+                Phone
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                autoComplete="tel"
+                inputMode="tel"
+                value={values.phone}
+                onChange={(e) => handleInputChange("phone", e)}
+                aria-invalid={!!errors.phone}
+                aria-describedby={errors.phone ? "phone-error" : undefined}
+                placeholder="0912345678"
+                className={`w-full rounded-xl border bg-white px-4 py-2.5 outline-none transition
+                    ${
+                      errors.phone
+                        ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+                        : touched.phone && !errors.phone
+                          ? "border-green-500 focus:border-green-500 focus:ring-green-200"
+                          : "border-gray-300 focus:border-orange-500 focus:ring-orange-200"
+                    }`}
+              />
+              <p
+                id="phone-error"
+                className={`mt-2 text-sm ${errors.phone ? "text-red-500" : "text-gray-400"}`}
+              >
+                {errors.phone ?? "Enter a phone number (10 - 11 digits)."}
+              </p>
             </div>
 
             <button
               type="submit"
+              disabled={isSubmitting}
+              aria-busy={isSubmitting}
               className="mt-6 w-full rounded-xl bg-primary py-3 font-semibold text-white
-                         transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                         transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Create account
+              {isSubmitting ? "Creating account…" : "Create account"}
             </button>
 
             <div className="my-6 flex items-center">

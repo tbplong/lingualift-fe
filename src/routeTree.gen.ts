@@ -12,9 +12,9 @@ import { Route as rootRouteImport } from "./routes/__root";
 import { Route as IndexRouteImport } from "./routes/index";
 import { Route as TermsIndexRouteImport } from "./routes/terms/index";
 import { Route as SignupIndexRouteImport } from "./routes/signup/index";
-import { Route as QuizIndexRouteImport } from "./routes/quiz/index";
 import { Route as PrivacyIndexRouteImport } from "./routes/privacy/index";
 import { Route as LoginIndexRouteImport } from "./routes/login/index";
+import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index";
 import { Route as AboutIndexRouteImport } from "./routes/about/index";
 
 const IndexRoute = IndexRouteImport.update({
@@ -32,11 +32,6 @@ const SignupIndexRoute = SignupIndexRouteImport.update({
   path: "/signup/",
   getParentRoute: () => rootRouteImport,
 } as any);
-const QuizIndexRoute = QuizIndexRouteImport.update({
-  id: "/quiz/",
-  path: "/quiz/",
-  getParentRoute: () => rootRouteImport,
-} as any);
 const PrivacyIndexRoute = PrivacyIndexRouteImport.update({
   id: "/privacy/",
   path: "/privacy/",
@@ -45,6 +40,11 @@ const PrivacyIndexRoute = PrivacyIndexRouteImport.update({
 const LoginIndexRoute = LoginIndexRouteImport.update({
   id: "/login/",
   path: "/login/",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: "/dashboard/",
+  path: "/dashboard/",
   getParentRoute: () => rootRouteImport,
 } as any);
 const AboutIndexRoute = AboutIndexRouteImport.update({
@@ -56,18 +56,18 @@ const AboutIndexRoute = AboutIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
   "/about": typeof AboutIndexRoute;
+  "/dashboard": typeof DashboardIndexRoute;
   "/login": typeof LoginIndexRoute;
   "/privacy": typeof PrivacyIndexRoute;
-  "/quiz": typeof QuizIndexRoute;
   "/signup": typeof SignupIndexRoute;
   "/terms": typeof TermsIndexRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
   "/about": typeof AboutIndexRoute;
+  "/dashboard": typeof DashboardIndexRoute;
   "/login": typeof LoginIndexRoute;
   "/privacy": typeof PrivacyIndexRoute;
-  "/quiz": typeof QuizIndexRoute;
   "/signup": typeof SignupIndexRoute;
   "/terms": typeof TermsIndexRoute;
 }
@@ -75,9 +75,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   "/": typeof IndexRoute;
   "/about/": typeof AboutIndexRoute;
+  "/dashboard/": typeof DashboardIndexRoute;
   "/login/": typeof LoginIndexRoute;
   "/privacy/": typeof PrivacyIndexRoute;
-  "/quiz/": typeof QuizIndexRoute;
   "/signup/": typeof SignupIndexRoute;
   "/terms/": typeof TermsIndexRoute;
 }
@@ -86,20 +86,27 @@ export interface FileRouteTypes {
   fullPaths:
     | "/"
     | "/about"
+    | "/dashboard"
     | "/login"
     | "/privacy"
-    | "/quiz"
     | "/signup"
     | "/terms";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/about" | "/login" | "/privacy" | "/quiz" | "/signup" | "/terms";
+  to:
+    | "/"
+    | "/about"
+    | "/dashboard"
+    | "/login"
+    | "/privacy"
+    | "/signup"
+    | "/terms";
   id:
     | "__root__"
     | "/"
     | "/about/"
+    | "/dashboard/"
     | "/login/"
     | "/privacy/"
-    | "/quiz/"
     | "/signup/"
     | "/terms/";
   fileRoutesById: FileRoutesById;
@@ -107,9 +114,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
   AboutIndexRoute: typeof AboutIndexRoute;
+  DashboardIndexRoute: typeof DashboardIndexRoute;
   LoginIndexRoute: typeof LoginIndexRoute;
   PrivacyIndexRoute: typeof PrivacyIndexRoute;
-  QuizIndexRoute: typeof QuizIndexRoute;
   SignupIndexRoute: typeof SignupIndexRoute;
   TermsIndexRoute: typeof TermsIndexRoute;
 }
@@ -137,13 +144,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof SignupIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
-    "/quiz/": {
-      id: "/quiz/";
-      path: "/quiz";
-      fullPath: "/quiz";
-      preLoaderRoute: typeof QuizIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
     "/privacy/": {
       id: "/privacy/";
       path: "/privacy";
@@ -156,6 +156,13 @@ declare module "@tanstack/react-router" {
       path: "/login";
       fullPath: "/login";
       preLoaderRoute: typeof LoginIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/dashboard/": {
+      id: "/dashboard/";
+      path: "/dashboard";
+      fullPath: "/dashboard";
+      preLoaderRoute: typeof DashboardIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/about/": {
@@ -171,6 +178,7 @@ declare module "@tanstack/react-router" {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutIndexRoute: AboutIndexRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   PrivacyIndexRoute: PrivacyIndexRoute,
   QuizIndexRoute: QuizIndexRoute,
