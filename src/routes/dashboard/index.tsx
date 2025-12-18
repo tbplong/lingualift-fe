@@ -1,21 +1,10 @@
-import { createFileRoute, redirect, Link } from "@tanstack/react-router";
-import { toast } from "react-toastify";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import storage from "@/utils/storage";
 import { ReactNode } from "react";
-import {
-  LayoutDashboard,
-  PlusCircle,
-  Library,
-  User,
-  LogOut,
-  Trophy,
-  Target,
-  Zap,
-  Flame,
-  TrendingUp,
-} from "lucide-react"; // Import Icons
+import { Trophy, Target, Zap, Flame, TrendingUp } from "lucide-react"; // Import Icons
+import StudyLayout from "@/components/study-layout";
 
 interface StatCardProps {
   title: string;
@@ -27,12 +16,6 @@ interface StatCardProps {
 }
 
 export const Route = createFileRoute("/dashboard/")({
-  beforeLoad: async () => {
-    const token = storage.getItem("accessToken");
-    if (!token) {
-      throw redirect({ to: "/" });
-    }
-  },
   component: RouteComponent,
 });
 
@@ -103,53 +86,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans text-slate-800 overflow-hidden">
-      {/* ================= SIDEBAR ================= */}
-      <aside className="w-20 lg:w-64 bg-white border-r border-slate-200 flex flex-col justify-between z-20 transition-all duration-300">
-        <div>
-          <div className="h-24 flex items-center justify-center lg:justify-start lg:px-8">
-            {/* Logo text gradients */}
-            <h1 className="text-4xl font-black bg-gradient-to-r from-primary-200 to-primary bg-clip-text text-transparent lg:block pb-1">
-              Lingualift
-            </h1>
-            <span className="lg:hidden text-3xl font-black text-indigo-600">
-              L.
-            </span>
-          </div>
-
-          <nav className="px-3 lg:px-4 space-y-2 mt-4">
-            <NavItem
-              to="/dashboard"
-              icon={<LayoutDashboard size={20} />}
-              label="Dashboard"
-              active
-            />
-            <NavItem
-              to="/practice"
-              icon={<PlusCircle size={20} />}
-              label="New Practice"
-            />
-            <NavItem
-              to="/library"
-              icon={<Library size={20} />}
-              label="Quiz Library"
-            />
-            <NavItem to="/profile" icon={<User size={20} />} label="Profile" />
-          </nav>
-        </div>
-
-        <div className="p-4 border-t border-slate-100 mb-4">
-          <button
-            onClick={() => toast.info("Logging out...")}
-            className="w-full flex items-center justify-center lg:justify-start gap-3 py-3 px-4 text-slate-500 font-medium rounded-xl hover:bg-red-50 hover:text-red-600 transition-all"
-          >
-            <LogOut size={20} />
-            <span className="hidden lg:block">Log Out</span>
-          </button>
-        </div>
-      </aside>
-
-      {/* ================= MAIN CONTENT ================= */}
+    <StudyLayout>
       <main className="flex-1 flex overflow-hidden relative">
         {/* Decorative Background Blob */}
         <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-indigo-50/50 to-transparent pointer-events-none"></div>
@@ -321,39 +258,39 @@ function RouteComponent() {
           </div>
         </aside>
       </main>
-    </div>
+    </StudyLayout>
   );
 }
 
-// 1. Sidebar Item
-const NavItem = ({
-  to,
-  icon,
-  label,
-  active = false,
-}: {
-  to: string;
-  icon: ReactNode;
-  label: string;
-  active?: boolean;
-}) => (
-  <Link
-    to={to}
-    className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 group
-            ${
-              active
-                ? "bg-primary text-white shadow-lg shadow-indigo-200"
-                : "text-slate-500 hover:bg-slate-50 hover:text-indigo-600"
-            }`}
-  >
-    <span
-      className={`${active ? "text-white" : "text-slate-400 group-hover:text-indigo-600"}`}
-    >
-      {icon}
-    </span>
-    <span className="font-semibold hidden lg:block">{label}</span>
-  </Link>
-);
+// // 1. Sidebar Item
+// const NavItem = ({
+//   to,
+//   icon,
+//   label,
+//   active = false,
+// }: {
+//   to: string;
+//   icon: ReactNode;
+//   label: string;
+//   active?: boolean;
+// }) => (
+//   <Link
+//     to={to}
+//     className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 group
+//             ${
+//               active
+//                 ? "bg-primary text-white shadow-lg shadow-indigo-200"
+//                 : "text-slate-500 hover:bg-slate-50 hover:text-indigo-600"
+//             }`}
+//   >
+//     <span
+//       className={`${active ? "text-white" : "text-slate-400 group-hover:text-indigo-600"}`}
+//     >
+//       {icon}
+//     </span>
+//     <span className="font-semibold hidden lg:block">{label}</span>
+//   </Link>
+// );
 
 const StatCard = ({
   title,
