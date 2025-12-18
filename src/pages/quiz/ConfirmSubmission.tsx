@@ -1,17 +1,14 @@
-import { useNavigate } from "@tanstack/react-router";
 import clsx from "clsx";
 
 const ConfirmSubmission = ({
   open,
   onClose,
+  confirmSubmit,
 }: {
   open: boolean;
   onClose: () => void;
+  confirmSubmit: () => void;
 }) => {
-  const navigate = useNavigate({ from: "/quiz" });
-  const confirmSubmit = () => {
-    navigate({ to: "/" });
-  };
   return (
     <div
       onClick={onClose}

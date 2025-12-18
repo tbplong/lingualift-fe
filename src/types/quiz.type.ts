@@ -1,17 +1,20 @@
+import { QuizCreateREQ } from "@/services/quiz/request/quiz.request";
+
 export type Quiz = {
+  _id: string;
   title: string; // e.g. "Đề thi Tốt nghiệp THPT Tiếng Anh 2025 - Mã đề 1105"
   time: number; // 50 (minutes)
   maxAttempt: number | null; // optional
   questionsNo: number; // total number of questions
   expiredAt: Date | null;
   isShowAnswer: boolean;
-  // createdAt: Date;
-  // updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 
   questions: Question[];
 };
 
-type Question = {
+export type Question = {
   id: string; // e.g. "Q1"
   groupId?: string; // for questions sharing a reading passage
   content: string; // the actual question text
@@ -29,7 +32,7 @@ type AnswerOption = {
   option: string; // e.g. "A. whose"
 };
 
-export const mockQuiz: Quiz = {
+export const mockQuiz: QuizCreateREQ = {
   title: "Đề thi Tốt nghiệp THPT Tiếng Anh 2025 – Mã đề 1102",
   time: 50,
   maxAttempt: null,
