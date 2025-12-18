@@ -1,4 +1,4 @@
-import { Setting } from "@/components/icons";
+import { Setting, Trash } from "@/components/icons";
 import QuizService from "@/services/quiz/quiz.service";
 import { QuizsResponse } from "@/services/quiz/response/quiz.response";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -17,6 +17,9 @@ function RouteComponent() {
   };
   const createExam = () => {
     navigate({ to: `/quiz/create` });
+  };
+  const editExam = (id: string) => {
+    navigate({ to: `/quiz/edit/${id}` });
   };
   const [exams, setExams] = useState<QuizsResponse | null>(null);
   useEffect(() => {
@@ -68,7 +71,43 @@ function RouteComponent() {
                         isManager ? "" : "hidden",
                       )}
                     >
-                      <button className="btn p-0 w-full rounded-lg shadow-sm bg-tertiary border-2 border-tertiary hover:bg-white hover:border-tertiary">
+                      <button
+                        className="btn p-0 w-full rounded-lg shadow-sm bg-quaternary border-2 border-quaternary hover:bg-white"
+                        onClick={async () => {
+                          try {
+                            console.log(
+                              (await QuizService.deleteQuiz(quiz._id)).data,
+                            );
+                            setExams((prev) => {
+                              if (!prev) return null;
+
+                              return {
+                                ...prev,
+                                quizs: prev.quizs.filter(
+                                  (q) => q._id !== quiz._id,
+                                ),
+                              };
+                            });
+                          } catch (error) {
+                            console.error("Failed to delete", error);
+                          }
+                        }}
+                      >
+                        <Trash className="scale-130 fill-white hover:fill-quaternary"></Trash>
+                      </button>
+                    </div>
+                    <div
+                      className={clsx(
+                        "card-actions w-10",
+                        isManager ? "" : "hidden",
+                      )}
+                    >
+                      <button
+                        className="btn p-0 w-full rounded-lg shadow-sm bg-tertiary border-2 border-tertiary hover:bg-white"
+                        onClick={() => {
+                          editExam(quiz._id);
+                        }}
+                      >
                         <Setting className="w-full h-full fill-white hover:fill-tertiary"></Setting>
                       </button>
                     </div>

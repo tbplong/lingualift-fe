@@ -1,7 +1,7 @@
 import { QuestionItem } from "@/pages/quiz/QuestionItem";
 import QuizService from "@/services/quiz/quiz.service";
 import { QuizCreateREQ } from "@/services/quiz/request/quiz.request";
-import { Question } from "@/types";
+import { mockQuiz, Question } from "@/types";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
@@ -22,12 +22,12 @@ function RouteComponent() {
     type: "multiple_choice",
     isGroupQ: true,
     answerList: [
+      { key: 0, option: "" },
       { key: 1, option: "" },
       { key: 2, option: "" },
       { key: 3, option: "" },
-      { key: 4, option: "" },
     ],
-    answerKey: 1,
+    answerKey: 0,
     explanation: undefined,
   });
   const [questions, setQuestions] = useState<Question[]>([baseQuestion(1)]);
@@ -172,7 +172,13 @@ function RouteComponent() {
           >
             New Question
           </button>
-          <button className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl">
+          <button
+            className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl"
+            onClick={async () => {
+              console.log((await QuizService.createQuiz(mockQuiz)).data);
+              backToQuiz();
+            }}
+          >
             Add by JSON
           </button>
           <button className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl">

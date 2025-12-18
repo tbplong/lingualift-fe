@@ -223,7 +223,7 @@ export const QuestionItem = ({
               className="font-bold cursor-pointer"
               onClick={() => onChange(index, "answerKey", ans.key)}
             >
-              {String.fromCharCode(64 + ans.key)}.
+              {String.fromCharCode(65 + ans.key)}.
             </span>
 
             {/* Ô NHẬP NỘI DUNG ĐÁP ÁN */}

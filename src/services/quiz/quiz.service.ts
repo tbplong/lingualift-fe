@@ -15,6 +15,12 @@ const QuizService = {
   getQuizsMeta: async () => {
     return await axios.get<Quiz>(`${url}/`);
   },
+  updateQuiz: async (id: string, data: QuizCreateREQ) => {
+    return await axios.patch<Quiz>(`${url}/${id}`, data);
+  },
+  deleteQuiz: async (id: string) => {
+    return await axios.delete<Quiz>(`${url}/${id}`);
+  },
 };
 
 export default QuizService;

@@ -29,7 +29,7 @@ export type Question = {
 
 type AnswerOption = {
   key: number; // 1, 2, 3, 4 — or match A,B,C,D
-  option: string; // e.g. "A. whose"
+  option: string; // e.g. "whose"
 };
 
 export const mockQuiz: QuizCreateREQ = {
@@ -47,15 +47,15 @@ export const mockQuiz: QuizCreateREQ = {
       isGroupQ: true,
       type: "multiple_choice",
       passage: `When several farmers merge plots into a single “project farm”, they use digital tools to make that teamwork far more effective. GPS mapping, drones, and in-field sensors build a live, shared picture of soil types, weather shifts, and plant growth. Because everyone works on the same data, the team can settle seeding dates, determine when to spray, and track machinery in real time. What once depended on guesswork is now driven by verifiable information.
-          With GPS technology, farmers can accurately map out their fields and create customised planting plans. Seeding machines change their rate on the fly, drones spray pests on targeted zones, and smart spreaders apply  fertiliser only where data shows a need. Because inputs go exactly where they help, fields yield more while chemical runoff falls. Trials report considerable savings on seed, fuel, and sprays – benefits the partners split at the season’s end.
+          With GPS technology, farmers can accurately map out their fields and create customised planting plans. Seeding machines change their rate on the fly, drones spray pests on targeted zones, and smart spreaders apply  fertiliser only where data shows a neeBecause inputs go exactly where they help, fields yield more while chemical runoff falls. Trials report considerable savings on seed, fuel, and sprays – benefits the partners split at the season’s end.
           Water management is just as precise. Specialised equipment tracks moisture every hour, and forecast apps predict rain, wind, or heatwaves. Automated pumps deliver measured water amounts to thirsty zones and stop when a storm is coming, slashing waste and energy bills. The result is steadier yields in dry years, fewer nutrients washed away, and a smaller water footprint for the whole partnership. Smart irrigation also helps limit weed growth, reducing herbicide use.
           The journey from field to market is equally digital. Cloud platforms record harvest weights, storage temperatures, and shipment times the moment they change, while blockchain records freeze each entry so customers can rely on it. Analytic tools browse the records to indicate weak points in the procedure, forecast prices, and suggest better planting plans for the next season to project partners. This makes project farming both profitable and sustainable.`,
       content: "The word settle in paragraph 1 mostly means_______.",
       answerList: [
-        { key: 0, option: "A. exchange" },
-        { key: 1, option: "B. announce" },
-        { key: 2, option: "C. expect" },
-        { key: 3, option: "D. decide" },
+        { key: 0, option: "exchange" },
+        { key: 1, option: "announce" },
+        { key: 2, option: "expect" },
+        { key: 3, option: "decide" },
       ],
       answerKey: 3,
     },
@@ -67,10 +67,10 @@ export const mockQuiz: QuizCreateREQ = {
       content:
         "Which of the following is NOT mentioned in paragraph 1 as information displayed on a live, shared picture?",
       answerList: [
-        { key: 0, option: "A. weather shifts" },
-        { key: 1, option: "B. soil types" },
-        { key: 2, option: "C. plant growth" },
-        { key: 3, option: "D. drones" },
+        { key: 0, option: "weather shifts" },
+        { key: 1, option: "soil types" },
+        { key: 2, option: "plant growth" },
+        { key: 3, option: "drones" },
       ],
       answerKey: 3,
     },
@@ -81,10 +81,10 @@ export const mockQuiz: QuizCreateREQ = {
       type: "multiple_choice",
       content: "The word their in paragraph 2 refers to_______.",
       answerList: [
-        { key: 0, option: "A. fields" },
-        { key: 1, option: "B. planting plans" },
-        { key: 2, option: "C. farmers" },
-        { key: 3, option: "D. Seeding machines" },
+        { key: 0, option: "fields" },
+        { key: 1, option: "planting plans" },
+        { key: 2, option: "farmers" },
+        { key: 3, option: "Seeding machines" },
       ],
       answerKey: 2,
     },
@@ -99,22 +99,22 @@ export const mockQuiz: QuizCreateREQ = {
         {
           key: 0,
           option:
-            "A. As resources are directed to the areas that need them, harvests increase and pollution from excess chemicals declines.",
+            "As resources are directed to the areas that need them, harvests increase and pollution from excess chemicals declines.",
         },
         {
           key: 1,
           option:
-            "B. When chemicals are placed only where they are needed, productivity increases yet more overdue chemicals are released.",
+            "When chemicals are placed only where they are needed, productivity increases yet more overdue chemicals are released.",
         },
         {
           key: 2,
           option:
-            "C. Precise application of fertilisers and sprays to required areas raises crop output but in turn increases chemical wastage.",
+            "Precise application of fertilisers and sprays to required areas raises crop output but in turn increases chemical wastage.",
         },
         {
           key: 3,
           option:
-            "D. There is an increase in chemical wastage and crop output though fewer resources are used for the indicated land area.",
+            "There is an increase in chemical wastage and crop output though fewer resources are used for the indicated land area.",
         },
       ],
       answerKey: 0,
@@ -127,10 +127,10 @@ export const mockQuiz: QuizCreateREQ = {
       content:
         "The word slashing in paragraph 3 is OPPOSITE in meaning to_______.",
       answerList: [
-        { key: 0, option: "A. disposing" },
-        { key: 1, option: "B. converting" },
-        { key: 2, option: "C. increasing" },
-        { key: 3, option: "D. reducing" },
+        { key: 0, option: "disposing" },
+        { key: 1, option: "converting" },
+        { key: 2, option: "increasing" },
+        { key: 3, option: "reducing" },
       ],
       answerKey: 2,
     },
@@ -144,22 +144,22 @@ export const mockQuiz: QuizCreateREQ = {
         {
           key: 0,
           option:
-            "A. Buyers have little reliable information on harvest weights and storage temperatures.",
+            "Buyers have little reliable information on harvest weights and storage temperatures.",
         },
         {
           key: 1,
           option:
-            "B. Farmers regard cloud platforms the best tools to improve the quality of their crops.",
+            "Farmers regard cloud platforms the best tools to improve the quality of their crops.",
         },
         {
           key: 2,
           option:
-            "C. Project partners are unable to forecast prices of crops in the following season.",
+            "Project partners are unable to forecast prices of crops in the following season.",
         },
         {
           key: 3,
           option:
-            "D. Analytic tools offer suggestions for better planting plans for the following season.",
+            "Analytic tools offer suggestions for better planting plans for the following season.",
         },
       ],
       answerKey: 3,
@@ -172,10 +172,10 @@ export const mockQuiz: QuizCreateREQ = {
       content:
         "Which paragraph mentions approaches to different weather patterns?",
       answerList: [
-        { key: 0, option: "A. Paragraph 2" },
-        { key: 1, option: "B. Paragraph 3" },
-        { key: 2, option: "C. Paragraph 4" },
-        { key: 3, option: "D. Paragraph 1" },
+        { key: 0, option: "Paragraph 2" },
+        { key: 1, option: "Paragraph 3" },
+        { key: 2, option: "Paragraph 4" },
+        { key: 3, option: "Paragraph 1" },
       ],
       answerKey: 1,
     },
@@ -186,10 +186,10 @@ export const mockQuiz: QuizCreateREQ = {
       type: "multiple_choice",
       content: "Which paragraph mentions real-time tracking of produce?",
       answerList: [
-        { key: 0, option: "A. Paragraph 2" },
-        { key: 1, option: "B. Paragraph 1" },
-        { key: 2, option: "C. Paragraph 4" },
-        { key: 3, option: "D. Paragraph 3" },
+        { key: 0, option: "Paragraph 2" },
+        { key: 1, option: "Paragraph 1" },
+        { key: 2, option: "Paragraph 4" },
+        { key: 3, option: "Paragraph 3" },
       ],
       answerKey: 2,
     },
@@ -204,10 +204,10 @@ export const mockQuiz: QuizCreateREQ = {
       content:
         "DIFF 2025 features the largest (9)_______ of participating teams in its history.",
       answerList: [
-        { key: 0, option: "A. volume" },
-        { key: 1, option: "B. amount" },
-        { key: 2, option: "C. number" },
-        { key: 3, option: "D. level" },
+        { key: 0, option: "volume" },
+        { key: 1, option: "amount" },
+        { key: 2, option: "number" },
+        { key: 3, option: "level" },
       ],
       answerKey: 2,
     },
@@ -219,10 +219,10 @@ export const mockQuiz: QuizCreateREQ = {
       content:
         "DIFF 2025 is predicted to be the most thrilling (10)_______ so far.",
       answerList: [
-        { key: 0, option: "A. competition" },
-        { key: 1, option: "B. competitive" },
-        { key: 2, option: "C. compete" },
-        { key: 3, option: "D. competitively" },
+        { key: 0, option: "competition" },
+        { key: 1, option: "competitive" },
+        { key: 2, option: "compete" },
+        { key: 3, option: "competitively" },
       ],
       answerKey: 0,
     },
@@ -234,10 +234,10 @@ export const mockQuiz: QuizCreateREQ = {
       content:
         "Z121 Vina Pyrotech, a company (11)_______ by Vietnam Ministry of National Defence, is a newcomer this year.",
       answerList: [
-        { key: 0, option: "A. managed" },
-        { key: 1, option: "B. managing" },
-        { key: 2, option: "C. has managed" },
-        { key: 3, option: "D. is managing" },
+        { key: 0, option: "managed" },
+        { key: 1, option: "managing" },
+        { key: 2, option: "has managed" },
+        { key: 3, option: "is managing" },
       ],
       answerKey: 0,
     },
@@ -249,10 +249,10 @@ export const mockQuiz: QuizCreateREQ = {
       content:
         "It is among the (12)_______ candidates to win the championship.",
       answerList: [
-        { key: 0, option: "A. top" },
-        { key: 1, option: "B. quick" },
-        { key: 2, option: "C. high" },
-        { key: 3, option: "D. smart" },
+        { key: 0, option: "top" },
+        { key: 1, option: "quick" },
+        { key: 2, option: "high" },
+        { key: 3, option: "smart" },
       ],
       answerKey: 0,
     },
@@ -264,10 +264,10 @@ export const mockQuiz: QuizCreateREQ = {
       content:
         "From May 31st to July 12ᵗʰ, DIFF 2025 promises a series of spectacular fireworks displays, (13)_______ is hoped to bring spectators a world-class entertainment experience.",
       answerList: [
-        { key: 0, option: "A. who" },
-        { key: 1, option: "B. which" },
-        { key: 2, option: "C. when" },
-        { key: 3, option: "D. why" },
+        { key: 0, option: "who" },
+        { key: 1, option: "which" },
+        { key: 2, option: "when" },
+        { key: 3, option: "why" },
       ],
       answerKey: 1,
     },
@@ -279,10 +279,10 @@ export const mockQuiz: QuizCreateREQ = {
       content:
         "Over the past twelve years, the Da Nang International Fireworks Festival has helped the city (14)_______ the reputation as “The City of Fireworks”.",
       answerList: [
-        { key: 0, option: "A. build up" },
-        { key: 1, option: "B. go up" },
-        { key: 2, option: "C. come up" },
-        { key: 3, option: "D. look up" },
+        { key: 0, option: "build up" },
+        { key: 1, option: "go up" },
+        { key: 2, option: "come up" },
+        { key: 3, option: "look up" },
       ],
       answerKey: 0,
     },
@@ -292,18 +292,18 @@ export const mockQuiz: QuizCreateREQ = {
       id: "Q15",
       isGroupQ: false,
       type: "arrangement",
-      passage: `a. I had to burn the midnight oil to make engaging lesson plans, expecting to capture my students’ attention.
-b. The reality, however, was not what I had expected when I completely failed to keep the class under control despite shouting loudly.
-c. This valuable experience was indeed memorable and made me more confident in my career of choice.
-d. Working as an intern at a local high school encouraged me to pursue a teaching career, a demanding yet rewarding one.
+      passage: `I had to burn the midnight oil to make engaging lesson plans, expecting to capture my students’ attention.
+The reality, however, was not what I had expected when I completely failed to keep the class under control despite shouting loudly.
+This valuable experience was indeed memorable and made me more confident in my career of choice.
+Working as an intern at a local high school encouraged me to pursue a teaching career, a demanding yet rewarding one.
 e. Instead of giving up, I reflected on what I had done and made improvements in the following lessons.`,
       content:
         "Choose the correct order of sentences a–e for a coherent text about a teaching internship.",
       answerList: [
-        { key: 0, option: "A. c – b – e – a – d" },
-        { key: 1, option: "B. c – a – e – d – b" },
-        { key: 2, option: "C. d – a – b – e – c" },
-        { key: 3, option: "D. d – b – e – c – a" },
+        { key: 0, option: "c – b – e – a – d" },
+        { key: 1, option: "c – a – e – d – b" },
+        { key: 2, option: "d – a – b – e – c" },
+        { key: 3, option: "d – b – e – c – a" },
       ],
       answerKey: 2,
     },
@@ -311,18 +311,18 @@ e. Instead of giving up, I reflected on what I had done and made improvements in
       id: "Q16",
       isGroupQ: false,
       type: "arrangement",
-      passage: `a. David: I used to, but now I use social media and news apps.
-b. Lisa: Same here! It’s more convenient, but I think traditional newspapers have their own charm.
-c. Lisa: Do you still read newspapers?
-d. Lisa: I believe each type has its own value that we can make full use of.
+      passage: `David: I used to, but now I use social media and news apps.
+Lisa: Same here! It’s more convenient, but I think traditional newspapers have their own charm.
+Lisa: Do you still read newspapers?
+Lisa: I believe each type has its own value that we can make full use of.
 e. David: You’re right. They fill us with nostalgia that’s hard to replace.`,
       content:
         "Choose the correct order of the conversation between Lisa and David.",
       answerList: [
-        { key: 0, option: "A. d – a – c – e – b" },
-        { key: 1, option: "B. c – a – b – e – d" },
-        { key: 2, option: "C. d – e – b – a – c" },
-        { key: 3, option: "D. c – e – d – a – b" },
+        { key: 0, option: "d – a – c – e – b" },
+        { key: 1, option: "c – a – b – e – d" },
+        { key: 2, option: "d – e – b – a – c" },
+        { key: 3, option: "c – e – d – a – b" },
       ],
       answerKey: 1,
     },
@@ -330,15 +330,15 @@ e. David: You’re right. They fill us with nostalgia that’s hard to replace.`
       id: "Q17",
       isGroupQ: false,
       type: "arrangement",
-      passage: `a. Tom: Then, text me when you’re home.
-b. Tom: It’s getting late. Would you like me to give you a lift home?
-c. Mary: Thanks, but I’m going to walk to the supermarket and then take a bus home`,
+      passage: `Tom: Then, text me when you’re home.
+Tom: It’s getting late. Would you like me to give you a lift home?
+Mary: Thanks, but I’m going to walk to the supermarket and then take a bus home`,
       content: "Choose the correct order of dialogue between Tom and Mary.",
       answerList: [
-        { key: 0, option: "A. a – b – c" },
-        { key: 1, option: "B. b – a – c" },
-        { key: 2, option: "C. b – c – a" },
-        { key: 3, option: "D. a – c – b" },
+        { key: 0, option: "a – b – c" },
+        { key: 1, option: "b – a – c" },
+        { key: 2, option: "b – c – a" },
+        { key: 3, option: "a – c – b" },
       ],
       answerKey: 2,
     },
@@ -347,21 +347,21 @@ c. Mary: Thanks, but I’m going to walk to the supermarket and then take a bus 
       isGroupQ: false,
       type: "arrangement",
       passage: `Dear Ms Smith,
-a. This has been pre-approved, but you need to have this letter and your identification card produced
+This has been pre-approved, but you need to have this letter and your identification card produced
 at the nearest branch to apply.
-b. The offer is exclusive and expires on December 31st.
-c. Your application will be processed, and your card will be issued within 48 hours for immediate use.
-d. It is our honour to offer you credit facilities of $6000, affordable with the monthly instalment of $99.
+The offer is exclusive and expires on December 31st.
+Your application will be processed, and your card will be issued within 48 hours for immediate use.
+It is our honour to offer you credit facilities of $6000, affordable with the monthly instalment of $99.
 e. Should you require further details, please call 0123888888, or visit any of our branches.
 Yours sincerely,
 ABC Bank`,
       content:
         "Choose the correct order of the email from ABC Bank to Ms Smith.",
       answerList: [
-        { key: 0, option: "A. b – d – a – c – e" },
-        { key: 1, option: "B. a – c – d – b – e" },
-        { key: 2, option: "C. d – a – c – b – e" },
-        { key: 3, option: "D. c – a – d – b – e" },
+        { key: 0, option: "b – d – a – c – e" },
+        { key: 1, option: "a – c – d – b – e" },
+        { key: 2, option: "d – a – c – b – e" },
+        { key: 3, option: "c – a – d – b – e" },
       ],
       answerKey: 2,
     },
@@ -369,19 +369,19 @@ ABC Bank`,
       id: "Q19",
       isGroupQ: false,
       type: "arrangement",
-      passage: `a. The developments demonstrate a clear modernisation of the city of Paragon, transforming it from a primarily residential locality into a more diverse and economically vibrant area.
-b. This shift was further evidenced by the industrialisation of the surrounding agricultural land, with the appearance of some plants and factories.
-c. Residential areas were noticeably transformed, with the replacement of established terraced housing with new dwellings and the relocation of the original park.
-d. Simultaneously, a significant expansion of commercial infrastructure took place, most prominently
+      passage: `The developments demonstrate a clear modernisation of the city of Paragon, transforming it from a primarily residential locality into a more diverse and economically vibrant area.
+This shift was further evidenced by the industrialisation of the surrounding agricultural land, with the appearance of some plants and factories.
+Residential areas were noticeably transformed, with the replacement of established terraced housing with new dwellings and the relocation of the original park.
+Simultaneously, a significant expansion of commercial infrastructure took place, most prominently
 with the construction of a large supermarket and an accompanying car park where housing once stood.
 e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic reshaping, indicating a move towards urban regeneration and increased commercial activity.`,
       content:
         "Choose the correct order of sentences describing the transformation of Paragon city.",
       answerList: [
-        { key: 0, option: "A. e – d – b – a – c" },
-        { key: 1, option: "B. e – b – a – c – d" },
-        { key: 2, option: "C. e – c – a – d – b" },
-        { key: 3, option: "D. e – c – d – b – a" },
+        { key: 0, option: "e – d – b – a – c" },
+        { key: 1, option: "e – b – a – c – d" },
+        { key: 2, option: "e – c – a – d – b" },
+        { key: 3, option: "e – c – d – b – a" },
       ],
       answerKey: 3,
     },
@@ -402,22 +402,20 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
         {
           key: 0,
           option:
-            "A. bring about a full redesign of the business model of a company",
+            "bring about a full redesign of the business model of a company",
         },
         {
           key: 1,
-          option:
-            "B. lead to delays without solving the current emission problem",
+          option: "lead to delays without solving the current emission problem",
         },
         {
           key: 2,
           option:
-            "C. cause physical injuries to those involved in the negotiation",
+            "cause physical injuries to those involved in the negotiation",
         },
         {
           key: 3,
-          option:
-            "D. involve spending a huge amount of money paying the agency",
+          option: "involve spending a huge amount of money paying the agency",
         },
       ],
       answerKey: 1,
@@ -429,10 +427,10 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
       type: "multiple_choice",
       content: "The word manipulated in paragraph 2 mostly means_______.",
       answerList: [
-        { key: 0, option: "A. randomly deployed" },
-        { key: 1, option: "B. legally regulated" },
-        { key: 2, option: "C. purposely adjusted" },
-        { key: 3, option: "D. hastily produced" },
+        { key: 0, option: "randomly deployed" },
+        { key: 1, option: "legally regulated" },
+        { key: 2, option: "purposely adjusted" },
+        { key: 3, option: "hastily produced" },
       ],
       answerKey: 2,
     },
@@ -446,22 +444,22 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
         {
           key: 0,
           option:
-            "A. The stories about greenwashing reach a much wider audience due to the joint effort of social media and traditional marketing channels.",
+            "The stories about greenwashing reach a much wider audience due to the joint effort of social media and traditional marketing channels.",
         },
         {
           key: 1,
           option:
-            "B. Commercials for everyday products ... are prevalent on unconventional marketing channels.",
+            "Commercials for everyday products ... are prevalent on unconventional marketing channels.",
         },
         {
           key: 2,
           option:
-            "C. Social media influencers and impressive reports have a role to play in the dissemination of deceptive environmental claims.",
+            "Social media influencers and impressive reports have a role to play in the dissemination of deceptive environmental claims.",
         },
         {
           key: 3,
           option:
-            "D. Sustainability buzzwords now fill every sector, with their reach being amplified by influencers and polished reports.",
+            "Sustainability buzzwords now fill every sector, with their reach being amplified by influencers and polished reports.",
         },
       ],
       answerKey: 3,
@@ -475,20 +473,20 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
       answerList: [
         {
           key: 0,
-          option: "A. Increasing public concern about environmental issues",
+          option: "Increasing public concern about environmental issues",
         },
         {
           key: 1,
-          option: "B. Public pressure on corporations to opt for PR campaigns",
+          option: "Public pressure on corporations to opt for PR campaigns",
         },
         {
           key: 2,
           option:
-            "C. Growing public interest in the development of climate science",
+            "Growing public interest in the development of climate science",
         },
         {
           key: 3,
-          option: "D. Public belief that carbon reductions are unnecessary",
+          option: "Public belief that carbon reductions are unnecessary",
         },
       ],
       answerKey: 0,
@@ -503,11 +501,11 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
       answerList: [
         {
           key: 0,
-          option: "A. Enforcement that falls behind corporate creativity",
+          option: "Enforcement that falls behind corporate creativity",
         },
-        { key: 1, option: "B. Insufficient public support" },
-        { key: 2, option: "C. A lack of clear terminology" },
-        { key: 3, option: "D. Conflicting laws on both sides of the Atlantic" },
+        { key: 1, option: "Insufficient public support" },
+        { key: 2, option: "A lack of clear terminology" },
+        { key: 3, option: "Conflicting laws on both sides of the Atlantic" },
       ],
       answerKey: 0,
     },
@@ -518,10 +516,10 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
       type: "multiple_choice",
       content: "The phrase the practice in paragraph 3 refers to_______.",
       answerList: [
-        { key: 0, option: "A. global heating" },
-        { key: 1, option: "B. scrutiny" },
-        { key: 2, option: "C. climate science" },
-        { key: 3, option: "D. greenwashing" },
+        { key: 0, option: "global heating" },
+        { key: 1, option: "scrutiny" },
+        { key: 2, option: "climate science" },
+        { key: 3, option: "greenwashing" },
       ],
       answerKey: 3,
     },
@@ -536,22 +534,22 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
         {
           key: 0,
           option:
-            "A. For empty slogans to be realised into moves, revelations about greenwashing and practical measures to reduce carbon are required.",
+            "For empty slogans to be realised into moves, revelations about greenwashing and practical measures to reduce carbon are required.",
         },
         {
           key: 1,
           option:
-            "B. Greenwashing is, in fact, a fallacy and therefore should be replaced by feasible actions which are encouraged through public movements.",
+            "Greenwashing is, in fact, a fallacy and therefore should be replaced by feasible actions which are encouraged through public movements.",
         },
         {
           key: 2,
           option:
-            "C. To make way for meaningful activities in reality, it is vital to expose the public to proper and specific measures to reduce emissions.",
+            "To make way for meaningful activities in reality, it is vital to expose the public to proper and specific measures to reduce emissions.",
         },
         {
           key: 3,
           option:
-            "D. The real solution ... is to verify and measure carbon reductions rather than just raise public awareness through campaigns.",
+            "The real solution ... is to verify and measure carbon reductions rather than just raise public awareness through campaigns.",
         },
       ],
       answerKey: 0,
@@ -566,22 +564,22 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
         {
           key: 0,
           option:
-            "A. Regulators are effectively utilising the tools and resources...",
+            "Regulators are effectively utilising the tools and resources...",
         },
         {
           key: 1,
           option:
-            "B. Greenwashing brings corporations benefits in terms of finance and reputation without having to reform their core operations.",
+            "Greenwashing brings corporations benefits in terms of finance and reputation without having to reform their core operations.",
         },
         {
           key: 2,
           option:
-            "C. The shift from denying climate science ... genuine commitment to renewables.",
+            "The shift from denying climate science ... genuine commitment to renewables.",
         },
         {
           key: 3,
           option:
-            "D. Investors who value long-term environmental impact put pressure ...",
+            "Investors who value long-term environmental impact put pressure ...",
         },
       ],
       answerKey: 1,
@@ -594,10 +592,10 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
       content:
         "Where in the passage does the following sentence best fit? 'Yet greenwashing is arguably more insidious.'",
       answerList: [
-        { key: 0, option: "A. [IV]" },
-        { key: 1, option: "B. [III]" },
-        { key: 2, option: "C. [II]" },
-        { key: 3, option: "D. [I]" },
+        { key: 0, option: "[IV]" },
+        { key: 1, option: "[III]" },
+        { key: 2, option: "[II]" },
+        { key: 3, option: "[I]" },
       ],
       answerKey: 0,
     },
@@ -611,22 +609,21 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
         {
           key: 0,
           option:
-            "A. Greenwashing is surging as firms cover ongoing pollution in eco-friendly rhetoric, distracting the public and postponing the deep emission cuts scientists deem urgent.",
+            "Greenwashing is surging as firms cover ongoing pollution in eco-friendly rhetoric, distracting the public and postponing the deep emission cuts scientists deem urgent.",
         },
         {
           key: 1,
           option:
-            "B. High-emitting sectors follow the trend of greenwashing, boasting about potential renewables while quietly damaging the environment.",
+            "High-emitting sectors follow the trend of greenwashing, boasting about potential renewables while quietly damaging the environment.",
         },
         {
           key: 2,
-          option:
-            "C. Major emitters opt for denial rather than decarbonisation.",
+          option: "Major emitters opt for denial rather than decarbonisation.",
         },
         {
           key: 3,
           option:
-            "D. Greenwashing has merely drawn policymakers’ attention worldwide.",
+            "Greenwashing has merely drawn policymakers’ attention worldwide.",
         },
       ],
       answerKey: 0,
@@ -647,10 +644,10 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
       content:
         "Managing your finances properly is essential for a stable and secure life. (30)________, many people struggle with budgeting and saving...",
       answerList: [
-        { key: 0, option: "A. However" },
-        { key: 1, option: "B. Otherwise" },
-        { key: 2, option: "C. Though" },
-        { key: 3, option: "D. While" },
+        { key: 0, option: "However" },
+        { key: 1, option: "Otherwise" },
+        { key: 2, option: "Though" },
+        { key: 3, option: "While" },
       ],
       answerKey: 0,
     },
@@ -662,10 +659,10 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
       content:
         "...eventually leading (31)_______ overspending and financial stress.",
       answerList: [
-        { key: 0, option: "A. on" },
-        { key: 1, option: "B. at" },
-        { key: 2, option: "C. in" },
-        { key: 3, option: "D. to" },
+        { key: 0, option: "on" },
+        { key: 1, option: "at" },
+        { key: 2, option: "in" },
+        { key: 3, option: "to" },
       ],
       answerKey: 3,
     },
@@ -677,10 +674,10 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
       content:
         "Have a bank account with an increasing amount of savings (32)_______ month...",
       answerList: [
-        { key: 0, option: "A. many" },
-        { key: 1, option: "B. some" },
-        { key: 2, option: "C. much" },
-        { key: 3, option: "D. each" },
+        { key: 0, option: "many" },
+        { key: 1, option: "some" },
+        { key: 2, option: "much" },
+        { key: 3, option: "each" },
       ],
       answerKey: 3,
     },
@@ -691,10 +688,10 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
       type: "fill_blank",
       content: "Buy (33)_______ within your price range.",
       answerList: [
-        { key: 0, option: "A. affordable products quality" },
-        { key: 1, option: "B. products affordable quality" },
-        { key: 2, option: "C. affordable quality products" },
-        { key: 3, option: "D. products quality affordable" },
+        { key: 0, option: "affordable products quality" },
+        { key: 1, option: "products affordable quality" },
+        { key: 2, option: "affordable quality products" },
+        { key: 3, option: "products quality affordable" },
       ],
       answerKey: 2,
     },
@@ -706,10 +703,10 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
       content:
         "Track your spending carefully to avoid (34)_______ expenditure on unnecessary purchases.",
       answerList: [
-        { key: 0, option: "A. possessive" },
-        { key: 1, option: "B. restrictive" },
-        { key: 2, option: "C. objective" },
-        { key: 3, option: "D. excessive" },
+        { key: 0, option: "possessive" },
+        { key: 1, option: "restrictive" },
+        { key: 2, option: "objective" },
+        { key: 3, option: "excessive" },
       ],
       answerKey: 3,
     },
@@ -721,10 +718,10 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
       content:
         "Prioritise things that bring lasting happiness and security to get your money’s (35)_______!",
       answerList: [
-        { key: 0, option: "A. worth" },
-        { key: 1, option: "B. price" },
-        { key: 2, option: "C. rate" },
-        { key: 3, option: "D. cost" },
+        { key: 0, option: "worth" },
+        { key: 1, option: "price" },
+        { key: 2, option: "rate" },
+        { key: 3, option: "cost" },
       ],
       answerKey: 0,
     },
@@ -744,22 +741,22 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
         {
           key: 0,
           option:
-            "A. each of which is evaluated and compared with similar products",
+            "each of which is evaluated and compared with similar products",
         },
         {
           key: 1,
           option:
-            "B. every one of them undergoes evaluations and comparisons with similar products",
+            "every one of them undergoes evaluations and comparisons with similar products",
         },
         {
           key: 2,
           option:
-            "C. when it is similarly evaluated and compared with other products",
+            "when it is similarly evaluated and compared with other products",
         },
         {
           key: 3,
           option:
-            "D. those with similarities to other products will be evaluated and compared carefully",
+            "those with similarities to other products will be evaluated and compared carefully",
         },
       ],
       answerKey: 0,
@@ -775,20 +772,20 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
         {
           key: 0,
           option:
-            "A. be deliberate to confine themselves to a small number of choices",
+            "be deliberate to confine themselves to a small number of choices",
         },
         {
           key: 1,
-          option: "B. being deliberately confined themselves to fewer choices",
+          option: "being deliberately confined themselves to fewer choices",
         },
         {
           key: 2,
           option:
-            "C. will deliberately confine themselves to a small number of choices",
+            "will deliberately confine themselves to a small number of choices",
         },
         {
           key: 3,
-          option: "D. fewer choices are deliberately confined to themselves",
+          option: "fewer choices are deliberately confined to themselves",
         },
       ],
       answerKey: 2,
@@ -804,22 +801,22 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
         {
           key: 0,
           option:
-            "A. Common brands, by contrast, are a pattern among loyal consumers",
+            "Common brands, by contrast, are a pattern among loyal consumers",
         },
         {
           key: 1,
           option:
-            "B. This is a common pattern among brand-loyal consumers, for example",
+            "This is a common pattern among brand-loyal consumers, for example",
         },
         {
           key: 2,
           option:
-            "C. By contrast, a consumer-loyal pattern is seen among common brands",
+            "By contrast, a consumer-loyal pattern is seen among common brands",
         },
         {
           key: 3,
           option:
-            "D. This is a common example of brands with loyalty to a consumer pattern",
+            "This is a common example of brands with loyalty to a consumer pattern",
         },
       ],
       answerKey: 1,
@@ -834,22 +831,22 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
         {
           key: 0,
           option:
-            "A. The products cost little, which means they are better known and more favoured by typical holiday purchasers",
+            "The products cost little, which means they are better known and more favoured by typical holiday purchasers",
         },
         {
           key: 1,
           option:
-            "B. While this is more typical of products costing little, it is by no means unknown among holiday purchasers",
+            "While this is more typical of products costing little, it is by no means unknown among holiday purchasers",
         },
         {
           key: 2,
           option:
-            "C. It doesn’t matter whether products are unknown, it is typical of purchasers to have holidays costing little",
+            "It doesn’t matter whether products are unknown, it is typical of purchasers to have holidays costing little",
         },
         {
           key: 3,
           option:
-            "D. In the meantime, holidays costing little are known to be products typically favoured by many purchasers",
+            "In the meantime, holidays costing little are known to be products typically favoured by many purchasers",
         },
       ],
       answerKey: 1,
@@ -865,22 +862,22 @@ e. Between 2000 and 2015, the outskirts of Paragon city underwent a dramatic res
         {
           key: 0,
           option:
-            "A. Though such trait of impulse purchasing proves to be valuable",
+            "Though such trait of impulse purchasing proves to be valuable",
         },
         {
           key: 1,
           option:
-            "B. So valuable is such purchasing trait that it proves to be impulsive",
+            "So valuable is such purchasing trait that it proves to be impulsive",
         },
         {
           key: 2,
           option:
-            "C. Such trait is so impulsive that it proves to be valuable to purchasers",
+            "Such trait is so impulsive that it proves to be valuable to purchasers",
         },
         {
           key: 3,
           option:
-            "D. Such impulse purchasing proves to be a valuable trait, though",
+            "Such impulse purchasing proves to be a valuable trait, though",
         },
       ],
       answerKey: 3,

@@ -33,6 +33,19 @@ const Chosen = ({
         );
     }
   };
+
+  const getOp = (op: number) => {
+    switch (op) {
+      case 0:
+        return "A. ";
+      case 1:
+        return "B. ";
+      case 2:
+        return "C. ";
+      case 3:
+        return "D. ";
+    }
+  };
   return (
     <button
       ref={butRef}
@@ -53,7 +66,7 @@ const Chosen = ({
           length >= 60 ? "text-sm" : length >= 30 ? "text-lg" : "text-2xl",
         )}
       >
-        {`${content}`}
+        {`${getOp(op)}${content}`}
       </span>
     </button>
   );
