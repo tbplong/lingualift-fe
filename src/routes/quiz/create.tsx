@@ -2,8 +2,8 @@ import { QuestionItem } from "@/pages/quiz/QuestionItem";
 import QuizService from "@/services/quiz/quiz.service";
 import { QuizCreateREQ } from "@/services/quiz/request/quiz.request";
 import { Question } from "@/types";
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
 
 export const Route = createFileRoute("/quiz/create")({
   component: RouteComponent,
@@ -12,6 +12,7 @@ export const Route = createFileRoute("/quiz/create")({
 function RouteComponent() {
   const [baseTitle, setBaseTitle] = useState<string>("");
   const [baseTime, setBaseTime] = useState<number>(1);
+  const listRef = useRef<HTMLDivElement>(null);
 
   const baseQuestion = (id: number): Question => ({
     id: `Q${id}`,
@@ -48,6 +49,21 @@ function RouteComponent() {
       questions: questions,
     };
   };
+  const prevLengthRef = useRef(questions.length);
+  useEffect(() => {
+    // Chỉ cuộn nếu số lượng câu hỏi TĂNG lên (tức là vừa Add Dummy)
+    if (questions.length > prevLengthRef.current) {
+      if (listRef.current) {
+        listRef.current.scrollTo({
+          top: listRef.current.scrollHeight,
+          behavior: "smooth",
+        });
+      }
+    }
+
+    // Cập nhật lại độ dài hiện tại để dùng cho lần so sánh sau
+    prevLengthRef.current = questions.length;
+  }, [questions.length]);
 
   // 1. Tính toán danh sách Group ID (Lọc rỗng và trùng)
   const existingGroups = Array.from(
@@ -97,9 +113,18 @@ function RouteComponent() {
       }
     }
   };
+
+  const deleteQuestion = (index: number) => {
+    setQuestions((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const navigate = useNavigate();
+  const backToQuiz = () => {
+    navigate({ to: "/quiz" });
+  };
   return (
     <div className="flex flex-row items-center h-dvh w-full">
-      <div className="flex flex-col w-1/2 mx-2">
+      <div className="flex flex-col w-1/2 ml-3">
         <div className="flex flex-col">
           <span className="font-bold text-4xl text-primary">Title:</span>
           <input
@@ -140,18 +165,21 @@ function RouteComponent() {
             <span className="font-bold text-primary"> mins</span>
           </div>
         </div>
-        <div className="flex flex-row w-full border-2 rounded-2xl border-none overflow-hidden gap-4">
+        <div className="flex flex-row w-full border-none gap-4">
           <button
-            className="btn flex-1 border-none bg-secondary text-white"
+            className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl"
             onClick={addDummy}
           >
-            Add Dummy
+            New Question
           </button>
-          <button className="btn flex-1 border-none bg-secondary text-white">
+          <button className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl">
+            Add by JSON
+          </button>
+          <button className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl">
             Save Changes
           </button>
           <button
-            className="btn flex-1 border-none bg-secondary text-white"
+            className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl"
             onClick={async () => {
               console.log(
                 (
@@ -160,13 +188,17 @@ function RouteComponent() {
                   )
                 ).data,
               );
+              backToQuiz();
             }}
           >
-            Confirm
+            Create Exam
           </button>
         </div>
       </div>
-      <div className="w-1/2 pl-4 border-l-0 border-r-4 h-24/25 overflow-y-scroll border-y-20 border-primary-200 bg-primary-200 rounded-2xl flex flex-col gap-2">
+      <div
+        ref={listRef}
+        className="w-1/2 m-4 pl-4 border-l-0 border-r-4 h-24/25 overflow-y-scroll border-y-20 border-primary-200 bg-primary-200 rounded-2xl flex flex-col gap-2"
+      >
         {/* {Object.entries(questions).map(([key, q]) => {
           return (
             <div className='p-2 mx-1 bg-white border-4 border-secondary-300 h-fit rounded-2xl'>
@@ -208,13 +240,14 @@ function RouteComponent() {
         })} */}
         {questions.map((q, index) => (
           <QuestionItem
-            key={q.id || index} // Nên dùng ID nếu có, fallback index
+            key={index} // Nên dùng ID nếu có, fallback index
             index={index}
             q={q}
             existingGroups={existingGroups as string[]}
             onChange={handleQuestionChange}
             onGroupSelect={handleGroupSelect}
             onAnswerChange={handleAnswerChange}
+            onDelete={deleteQuestion}
           />
         ))}
       </div>
