@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from "./routes/__root";
 import { Route as IndexRouteImport } from "./routes/index";
 import { Route as TermsIndexRouteImport } from "./routes/terms/index";
 import { Route as SignupIndexRouteImport } from "./routes/signup/index";
+import { Route as ProfileIndexRouteImport } from "./routes/profile/index";
 import { Route as PrivacyIndexRouteImport } from "./routes/privacy/index";
 import { Route as LoginIndexRouteImport } from "./routes/login/index";
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index";
@@ -30,6 +31,11 @@ const TermsIndexRoute = TermsIndexRouteImport.update({
 const SignupIndexRoute = SignupIndexRouteImport.update({
   id: "/signup/",
   path: "/signup/",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const ProfileIndexRoute = ProfileIndexRouteImport.update({
+  id: "/profile/",
+  path: "/profile/",
   getParentRoute: () => rootRouteImport,
 } as any);
 const PrivacyIndexRoute = PrivacyIndexRouteImport.update({
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   "/dashboard": typeof DashboardIndexRoute;
   "/login": typeof LoginIndexRoute;
   "/privacy": typeof PrivacyIndexRoute;
+  "/profile": typeof ProfileIndexRoute;
   "/signup": typeof SignupIndexRoute;
   "/terms": typeof TermsIndexRoute;
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   "/dashboard": typeof DashboardIndexRoute;
   "/login": typeof LoginIndexRoute;
   "/privacy": typeof PrivacyIndexRoute;
+  "/profile": typeof ProfileIndexRoute;
   "/signup": typeof SignupIndexRoute;
   "/terms": typeof TermsIndexRoute;
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   "/dashboard/": typeof DashboardIndexRoute;
   "/login/": typeof LoginIndexRoute;
   "/privacy/": typeof PrivacyIndexRoute;
+  "/profile/": typeof ProfileIndexRoute;
   "/signup/": typeof SignupIndexRoute;
   "/terms/": typeof TermsIndexRoute;
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | "/dashboard"
     | "/login"
     | "/privacy"
+    | "/profile"
     | "/signup"
     | "/terms";
   fileRoutesByTo: FileRoutesByTo;
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | "/dashboard"
     | "/login"
     | "/privacy"
+    | "/profile"
     | "/signup"
     | "/terms";
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | "/dashboard/"
     | "/login/"
     | "/privacy/"
+    | "/profile/"
     | "/signup/"
     | "/terms/";
   fileRoutesById: FileRoutesById;
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute;
   LoginIndexRoute: typeof LoginIndexRoute;
   PrivacyIndexRoute: typeof PrivacyIndexRoute;
+  ProfileIndexRoute: typeof ProfileIndexRoute;
   SignupIndexRoute: typeof SignupIndexRoute;
   TermsIndexRoute: typeof TermsIndexRoute;
 }
@@ -142,6 +155,13 @@ declare module "@tanstack/react-router" {
       path: "/signup";
       fullPath: "/signup";
       preLoaderRoute: typeof SignupIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/profile/": {
+      id: "/profile/";
+      path: "/profile";
+      fullPath: "/profile";
+      preLoaderRoute: typeof ProfileIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/privacy/": {
@@ -182,6 +202,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginIndexRoute: LoginIndexRoute,
   PrivacyIndexRoute: PrivacyIndexRoute,
   QuizIndexRoute: QuizIndexRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
   SignupIndexRoute: SignupIndexRoute,
   TermsIndexRoute: TermsIndexRoute,
 };
