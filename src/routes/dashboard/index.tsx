@@ -8,13 +8,13 @@ import RightSidebar from "@/components/dashboard/layout/rightsidebar";
 import MiddleContent from "@/components/dashboard/layout/middle";
 import { Search } from "lucide-react";
 
-// ✅ 1) ROUTE KEY: KHÔNG có dấu "/" cuối (với src/routes/dashboard/index.tsx)
+// ✅ CHỌN 1:
+// - Nếu routeTree.gen.ts có key '/dashboard/': dùng "/dashboard/"
+// - Nếu routeTree.gen.ts có key '/dashboard': dùng "/dashboard"
 export const Route = createFileRoute("/dashboard/")({
   beforeLoad: () => {
     const token = storage.getItem("token");
-    if (!token) {
-      throw redirect({ to: "/login" });
-    }
+    if (!token) throw redirect({ to: "/login" });
   },
   component: RouteComponent,
 });
@@ -57,7 +57,6 @@ type UserProfile = {
   avatarLetter: string;
 };
 
-// ✅ API user có thể thiếu field => define optional
 type ApiUser = {
   firstName?: string;
   lastName?: string;
@@ -68,7 +67,6 @@ type ApiUser = {
   streak?: number;
 };
 
-// ✅ summary backend có thể trả theo 2 kiểu key => gom lại
 type DashboardSummary = {
   timeThisWeekMin?: number;
   completed?: number;
@@ -79,9 +77,6 @@ type DashboardSummary = {
   accuracy?: number;
 };
 
-// ✅ MiddleContent cần stats kiểu nào thì giữ đúng kiểu đó.
-// Nếu MiddleContent đang dùng timeThisWeekMin/completed/accuracyPercent thì giữ như dưới.
-// Nếu MiddleContent đang dùng weeklyMinutes/quizzesCompleted/accuracy thì đổi lại cho đúng component đó.
 type Stats = {
   timeThisWeekMin: number;
   completed: number;
@@ -178,8 +173,6 @@ function RouteComponent() {
           avatarLetter: (p.firstName ?? "U").charAt(0).toUpperCase(),
         });
 
-        // ✅ Quan trọng: theo lỗi bạn đưa trước đó, getSummary() KHÔNG có .data
-        // => summary là object luôn
         const s = (summary ?? {}) as DashboardSummary;
 
         setStats({
