@@ -15,8 +15,12 @@ import { Route as SignupIndexRouteImport } from "./routes/signup/index";
 import { Route as ProfileIndexRouteImport } from "./routes/profile/index";
 import { Route as PrivacyIndexRouteImport } from "./routes/privacy/index";
 import { Route as LoginIndexRouteImport } from "./routes/login/index";
+import { Route as ExamIndexRouteImport } from "./routes/exam/index";
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index";
 import { Route as AboutIndexRouteImport } from "./routes/about/index";
+import { Route as ExamCreateRouteImport } from "./routes/exam/create";
+import { Route as ExamIdRouteImport } from "./routes/exam/$id";
+import { Route as ExamEditIdRouteImport } from "./routes/exam/edit/$id";
 
 const IndexRoute = IndexRouteImport.update({
   id: "/",
@@ -48,6 +52,11 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   path: "/login/",
   getParentRoute: () => rootRouteImport,
 } as any);
+const ExamIndexRoute = ExamIndexRouteImport.update({
+  id: "/exam/",
+  path: "/exam/",
+  getParentRoute: () => rootRouteImport,
+} as any);
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: "/dashboard/",
   path: "/dashboard/",
@@ -58,80 +67,123 @@ const AboutIndexRoute = AboutIndexRouteImport.update({
   path: "/about/",
   getParentRoute: () => rootRouteImport,
 } as any);
+const ExamCreateRoute = ExamCreateRouteImport.update({
+  id: "/exam/create",
+  path: "/exam/create",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const ExamIdRoute = ExamIdRouteImport.update({
+  id: "/exam/$id",
+  path: "/exam/$id",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const ExamEditIdRoute = ExamEditIdRouteImport.update({
+  id: "/exam/edit/$id",
+  path: "/exam/edit/$id",
+  getParentRoute: () => rootRouteImport,
+} as any);
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
+  "/exam/$id": typeof ExamIdRoute;
+  "/exam/create": typeof ExamCreateRoute;
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
+  "/exam": typeof ExamIndexRoute;
   "/login": typeof LoginIndexRoute;
   "/privacy": typeof PrivacyIndexRoute;
   "/profile": typeof ProfileIndexRoute;
   "/signup": typeof SignupIndexRoute;
   "/terms": typeof TermsIndexRoute;
+  "/exam/edit/$id": typeof ExamEditIdRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
+  "/exam/$id": typeof ExamIdRoute;
+  "/exam/create": typeof ExamCreateRoute;
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
+  "/exam": typeof ExamIndexRoute;
   "/login": typeof LoginIndexRoute;
   "/privacy": typeof PrivacyIndexRoute;
   "/profile": typeof ProfileIndexRoute;
   "/signup": typeof SignupIndexRoute;
   "/terms": typeof TermsIndexRoute;
+  "/exam/edit/$id": typeof ExamEditIdRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   "/": typeof IndexRoute;
+  "/exam/$id": typeof ExamIdRoute;
+  "/exam/create": typeof ExamCreateRoute;
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/exam/": typeof ExamIndexRoute;
   "/login/": typeof LoginIndexRoute;
   "/privacy/": typeof PrivacyIndexRoute;
   "/profile/": typeof ProfileIndexRoute;
   "/signup/": typeof SignupIndexRoute;
   "/terms/": typeof TermsIndexRoute;
+  "/exam/edit/$id": typeof ExamEditIdRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | "/"
+    | "/exam/$id"
+    | "/exam/create"
     | "/about"
     | "/dashboard"
+    | "/exam"
     | "/login"
     | "/privacy"
     | "/profile"
     | "/signup"
-    | "/terms";
+    | "/terms"
+    | "/exam/edit/$id";
   fileRoutesByTo: FileRoutesByTo;
   to:
     | "/"
+    | "/exam/$id"
+    | "/exam/create"
     | "/about"
     | "/dashboard"
+    | "/exam"
     | "/login"
     | "/privacy"
     | "/profile"
     | "/signup"
-    | "/terms";
+    | "/terms"
+    | "/exam/edit/$id";
   id:
     | "__root__"
     | "/"
+    | "/exam/$id"
+    | "/exam/create"
     | "/about/"
     | "/dashboard/"
+    | "/exam/"
     | "/login/"
     | "/privacy/"
     | "/profile/"
     | "/signup/"
-    | "/terms/";
+    | "/terms/"
+    | "/exam/edit/$id";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
+  ExamIdRoute: typeof ExamIdRoute;
+  ExamCreateRoute: typeof ExamCreateRoute;
   AboutIndexRoute: typeof AboutIndexRoute;
   DashboardIndexRoute: typeof DashboardIndexRoute;
+  ExamIndexRoute: typeof ExamIndexRoute;
   LoginIndexRoute: typeof LoginIndexRoute;
   PrivacyIndexRoute: typeof PrivacyIndexRoute;
   ProfileIndexRoute: typeof ProfileIndexRoute;
   SignupIndexRoute: typeof SignupIndexRoute;
   TermsIndexRoute: typeof TermsIndexRoute;
+  ExamEditIdRoute: typeof ExamEditIdRoute;
 }
 
 declare module "@tanstack/react-router" {
@@ -178,6 +230,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof LoginIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/exam/": {
+      id: "/exam/";
+      path: "/exam";
+      fullPath: "/exam";
+      preLoaderRoute: typeof ExamIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     "/dashboard/": {
       id: "/dashboard/";
       path: "/dashboard";
@@ -192,18 +251,43 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AboutIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/exam/create": {
+      id: "/exam/create";
+      path: "/exam/create";
+      fullPath: "/exam/create";
+      preLoaderRoute: typeof ExamCreateRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/exam/$id": {
+      id: "/exam/$id";
+      path: "/exam/$id";
+      fullPath: "/exam/$id";
+      preLoaderRoute: typeof ExamIdRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/exam/edit/$id": {
+      id: "/exam/edit/$id";
+      path: "/exam/edit/$id";
+      fullPath: "/exam/edit/$id";
+      preLoaderRoute: typeof ExamEditIdRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExamIdRoute: ExamIdRoute,
+  ExamCreateRoute: ExamCreateRoute,
   AboutIndexRoute: AboutIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  ExamIndexRoute: ExamIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   PrivacyIndexRoute: PrivacyIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,
   SignupIndexRoute: SignupIndexRoute,
   TermsIndexRoute: TermsIndexRoute,
+  ExamEditIdRoute: ExamEditIdRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
