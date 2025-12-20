@@ -8,6 +8,7 @@ import RightSidebar from "@/components/dashboard/layout/rightsidebar";
 import MiddleContent from "@/components/dashboard/layout/middle";
 import { Search } from "lucide-react";
 
+// ✅ 1) ROUTE KEY: KHÔNG có dấu "/" cuối (với src/routes/dashboard/index.tsx)
 export const Route = createFileRoute("/dashboard/")({
   beforeLoad: () => {
     const token = storage.getItem("token");
@@ -56,10 +57,35 @@ type UserProfile = {
   avatarLetter: string;
 };
 
+// ✅ API user có thể thiếu field => define optional
+type ApiUser = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  level?: string;
+  xp?: number;
+  rank?: number;
+  streak?: number;
+};
+
+// ✅ summary backend có thể trả theo 2 kiểu key => gom lại
+type DashboardSummary = {
+  timeThisWeekMin?: number;
+  completed?: number;
+  accuracyPercent?: number;
+
+  weeklyMinutes?: number;
+  quizzesCompleted?: number;
+  accuracy?: number;
+};
+
+// ✅ MiddleContent cần stats kiểu nào thì giữ đúng kiểu đó.
+// Nếu MiddleContent đang dùng timeThisWeekMin/completed/accuracyPercent thì giữ như dưới.
+// Nếu MiddleContent đang dùng weeklyMinutes/quizzesCompleted/accuracy thì đổi lại cho đúng component đó.
 type Stats = {
-  weeklyMinutes: number;
-  quizzesCompleted: number;
-  accuracy: number;
+  timeThisWeekMin: number;
+  completed: number;
+  accuracyPercent: number;
 };
 
 type ContinueItem = {
@@ -87,12 +113,11 @@ function RouteComponent() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [stats, setStats] = useState<Stats>({
-    weeklyMinutes: 0,
-    quizzesCompleted: 0,
-    accuracy: 0,
+    timeThisWeekMin: 0,
+    completed: 0,
+    accuracyPercent: 0,
   });
 
-  // Bạn chưa có API cho các phần dưới, nên giữ tạm hardcode (khi có API sẽ thay tiếp)
   const continueItem: ContinueItem | null = {
     quizId: "quiz_grammar_ps_pc",
     title: "Present Simple vs Present Continuous",
@@ -127,41 +152,44 @@ function RouteComponent() {
   const weeklyGoal: WeeklyGoal = useMemo(
     () => ({
       targetMinutes: 120,
-      currentMinutes: stats.weeklyMinutes,
+      currentMinutes: stats.timeThisWeekMin,
     }),
-    [stats.weeklyMinutes],
+    [stats.timeThisWeekMin],
   );
 
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const [profileRes, summaryRes] = await Promise.all([
+        const [profileRes, summary] = await Promise.all([
           UserService.getUserProfile(),
           DashboardService.getSummary(),
         ]);
 
-        const p = profileRes.data;
+        const p = (profileRes?.data ?? {}) as ApiUser;
+
         setUser({
-          firstName: p.firstName,
-          lastName: p.lastName,
-          email: p.email,
-          level: p.level || "A0",
-          xp: p.xp || 0,
-          rank: p.rank || 999,
-          streak: p.streak || 0,
-          avatarLetter: (p.firstName || "U").charAt(0).toUpperCase(),
+          firstName: p.firstName ?? "User",
+          lastName: p.lastName ?? "",
+          email: p.email ?? "user@example.com",
+          level: p.level ?? "A0",
+          xp: p.xp ?? 0,
+          rank: p.rank ?? 999,
+          streak: p.streak ?? 0,
+          avatarLetter: (p.firstName ?? "U").charAt(0).toUpperCase(),
         });
 
-        const s = summaryRes.data;
+        // ✅ Quan trọng: theo lỗi bạn đưa trước đó, getSummary() KHÔNG có .data
+        // => summary là object luôn
+        const s = (summary ?? {}) as DashboardSummary;
+
         setStats({
-          weeklyMinutes: s.timeThisWeekMin ?? 0,
-          quizzesCompleted: s.completed ?? 0,
-          accuracy: s.accuracyPercent ?? 0,
+          timeThisWeekMin: s.timeThisWeekMin ?? s.weeklyMinutes ?? 0,
+          completed: s.completed ?? s.quizzesCompleted ?? 0,
+          accuracyPercent: s.accuracyPercent ?? s.accuracy ?? 0,
         });
       } catch (error) {
         console.error("Failed to load dashboard", error);
 
-        // Fallback để UI vẫn render
         setUser(
           (prev) =>
             prev ?? {
@@ -177,9 +205,9 @@ function RouteComponent() {
         );
 
         setStats({
-          weeklyMinutes: 0,
-          quizzesCompleted: 0,
-          accuracy: 0,
+          timeThisWeekMin: 0,
+          completed: 0,
+          accuracyPercent: 0,
         });
       } finally {
         setIsLoading(false);
@@ -199,15 +227,12 @@ function RouteComponent() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-gradient-to-b from-indigo-50/60 via-slate-50 to-slate-50 font-sans text-slate-800">
-      {/* ================= SIDEBAR ================= */}
       <Sidebar />
 
-      {/* ================= MAIN CONTENT ================= */}
       <main className="relative flex flex-1 overflow-hidden">
         <div className="pointer-events-none absolute left-0 top-0 h-64 w-full bg-gradient-to-b from-indigo-50/50 to-transparent" />
 
         <div className="flex flex-1 flex-col gap-8 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-slate-200 lg:p-10">
-          {/* Header Section: Search Bar */}
           <header className="relative z-10 mb-2 flex items-center justify-center">
             <div className="group relative w-full max-w-2xl">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-5">
@@ -230,13 +255,12 @@ function RouteComponent() {
 
           <MiddleContent
             stats={stats}
-            continueItem={continueItem} // backend trả null nếu không có
-            recent={recent} // mảng attempts
+            continueItem={continueItem}
+            recent={recent}
             weeklyGoal={weeklyGoal}
           />
         </div>
 
-        {/* ================= RIGHT SIDEBAR ================= */}
         <RightSidebar
           user={user}
           recommended={recommendedQuizzes}
