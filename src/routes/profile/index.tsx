@@ -17,6 +17,8 @@ import { Footer } from "@/components/Footer";
 import Heading from "@/components/Heading";
 import BackButton from "@/components/button/back-button";
 import StudyLayout from "@/components/study-layout";
+import UserService from "@/services/user/user.service";
+import { UserUpdateREQ } from "@/services/user/request/user.request";
 // import { useUserStore } from "@/stores";
 
 export const Route = createFileRoute("/profile/")({
@@ -52,19 +54,11 @@ function RouteComponent() {
 
       try {
         setLoading(true);
-        const userFormData = {
+        const userFormData: UserUpdateREQ = {
           firstName: values.firstName,
           lastName: values.lastName,
-          phone: user?.phone || "",
-          address: user?.address || "",
-          highSchool: user?.highSchool || "",
-          socialMedia: {
-            facebookUrl: user?.socialMedia?.facebookUrl || "",
-            facebookName: user?.socialMedia?.facebookName || "",
-          },
         };
-        console.log("api will be called ", userFormData);
-        // await UserService.updateProfile(userFormData as UserUpdateREQ);
+        await UserService.editProfile(userFormData);
         toast.success("Cập nhật thông tin tài khoản thành công!");
       } catch (error) {
         toast.error("Cập nhật thông tin tài khoản thất bại!");
@@ -96,19 +90,11 @@ function RouteComponent() {
 
       try {
         setLoading(true);
-        const userFormData = {
-          firstName: user?.firstName || "",
-          lastName: user?.lastName || "",
-          phone: user?.phone || "",
+        const userFormData: UserUpdateREQ = {
           address: values.address,
           highSchool: values.school,
-          socialMedia: {
-            facebookUrl: user?.socialMedia?.facebookUrl || "",
-            facebookName: user?.socialMedia?.facebookName || "",
-          },
         };
-        console.log("api will be called ", userFormData);
-        // await UserService.updateProfile(userFormData as UserUpdateREQ);
+        await UserService.editProfile(userFormData);
         toast.success("Cập nhật thông tin tài khoản thành công!");
       } catch (error) {
         toast.error("Cập nhật thông tin tài khoản thất bại!");
@@ -147,19 +133,14 @@ function RouteComponent() {
 
       try {
         setLoading(true);
-        const userFormData = {
-          firstName: user?.firstName || "",
-          lastName: user?.lastName || "",
+        const userFormData: UserUpdateREQ = {
           phone: values.phone,
-          address: user?.address || "",
-          highSchool: user?.highSchool || "",
           socialMedia: {
             facebookUrl: values.facebookUrl,
             facebookName: values.facebookName,
           },
         };
-        console.log("api will be called ", userFormData);
-        // await UserService.updateProfile(userFormData as UserUpdateREQ);
+        await UserService.editProfile(userFormData);
         console.log("called api");
         toast.success("Cập nhật thông tin tài khoản thành công!");
       } catch (error) {

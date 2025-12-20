@@ -18,6 +18,17 @@ const UserService = {
       email,
     });
   },
+
+  editProfile: async (data: UserUpdateREQ) => {
+    return await axios.patch<Promise<User>>(`${url}/profile`, {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      highSchool: data.highSchool,
+      phone: data.phone,
+      socialMedia: data.socialMedia,
+      address: data.address,
+    });
+  },
 };
 
 export default UserService;
