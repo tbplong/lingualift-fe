@@ -41,7 +41,7 @@ export default function RightSidebar({
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-bold text-slate-800">Recommended</h3>
           <Link
-            to="/library"
+            to="/"
             className="text-xs font-bold text-primary hover:underline"
           >
             View All
@@ -121,7 +121,8 @@ function QuizCard({ quiz }: { quiz: RecommendedQuiz }) {
           </div>
 
           <Link
-            to={`/practice?quizId=${quiz.id}`}
+            to={"/"}
+            // /practice?quizId=${quiz.id}
             className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300"
           >
             <PlayCircle size={18} fill="currentColor" fillOpacity={1} />

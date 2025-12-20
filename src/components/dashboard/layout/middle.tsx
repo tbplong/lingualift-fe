@@ -15,20 +15,21 @@ import DashboardService, {
   DashboardWeekly,
 } from "@/services/dashboard/dashboard.service";
 
-type Stats = {
-  weeklyMinutes: number;
-  quizzesCompleted: number;
-  accuracy: number; // 0-100
+// ✅ Khớp với stats trong dashboard route
+export type Stats = {
+  timeThisWeekMin: number;
+  completed: number;
+  accuracyPercent: number; // 0-100
 };
 
-type ContinueItem = {
+export type ContinueItem = {
   quizId: string;
   title: string;
   category: string;
   progressPercent: number; // 0-100
 };
 
-type RecentAttempt = {
+export type RecentAttempt = {
   id: string;
   quizId: string;
   title: string;
@@ -91,14 +92,14 @@ export default function MiddleContent({
     };
   }, []);
 
-  // Ưu tiên dùng API. Nếu API chưa có (null) thì fallback sang props để UI vẫn chạy.
+  // ✅ Ưu tiên API. Nếu chưa có (null) fallback sang props.
   const uiStats: Stats = useMemo(() => {
     if (!summary) return stats;
 
     return {
-      weeklyMinutes: summary.timeThisWeekMin ?? 0,
-      quizzesCompleted: summary.completed ?? 0,
-      accuracy: summary.accuracyPercent ?? 0,
+      timeThisWeekMin: summary.timeThisWeekMin ?? 0,
+      completed: summary.completed ?? 0,
+      accuracyPercent: summary.accuracyPercent ?? 0,
     };
   }, [stats, summary]);
 
@@ -107,8 +108,6 @@ export default function MiddleContent({
   const accuracySeries = weekly?.sparklines?.accuracy ?? [];
 
   const goalForUI = useMemo(() => {
-    // target lấy từ props (bạn có thể set từ user settings)
-    // current lấy từ API summary.timeThisWeekMin nếu có
     const currentFromApi = summary?.timeThisWeekMin ?? null;
 
     return {
@@ -120,10 +119,8 @@ export default function MiddleContent({
 
   return (
     <section className="flex-1 overflow-y-auto p-6 lg:p-10 space-y-6 max-w-[1100px] mx-auto w-full">
-      {/* HERO */}
       <ContinueHero item={continueItem} />
 
-      {/* ERROR */}
       {error ? (
         <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
           {error}
@@ -133,28 +130,27 @@ export default function MiddleContent({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatCardSpark
           title="Time"
-          value={`${uiStats.weeklyMinutes} min`}
+          value={`${uiStats.timeThisWeekMin} min`}
           hint="This week"
           icon={<Clock size={16} />}
           series={loading ? [0, 0, 0, 0, 0, 0, 0] : timeSeries}
         />
         <StatCardSpark
           title="Completed"
-          value={`${uiStats.quizzesCompleted}`}
+          value={`${uiStats.completed}`}
           hint="Quizzes finished"
           icon={<CheckCircle2 size={16} />}
           series={loading ? [0, 0, 0, 0, 0, 0, 0] : completedSeries}
         />
         <StatCardSpark
           title="Accuracy"
-          value={`${uiStats.accuracy}%`}
+          value={`${uiStats.accuracyPercent}%`}
           hint="Avg score"
           icon={<BarChart3 size={16} />}
           series={loading ? [0, 0, 0, 0, 0, 0, 0] : accuracySeries}
         />
       </div>
 
-      {/* ACTIVITY + GOAL */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2">
           <RecentActivityPro items={recent} />
@@ -199,7 +195,7 @@ function ContinueHero({ item }: { item: ContinueItem | null }) {
             </div>
 
             <Link
-              to="/practice"
+              to="/"
               className="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white font-semibold shadow-sm hover:opacity-95"
             >
               New Practice <ArrowRight size={16} />
@@ -245,7 +241,7 @@ function ContinueHero({ item }: { item: ContinueItem | null }) {
           </div>
 
           <Link
-            to={`/practice?quizId=${item.quizId}`}
+            to={`/`}
             className="shrink-0 inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-primary text-white font-semibold shadow-sm hover:opacity-95"
           >
             Continue <ArrowRight size={16} />
@@ -338,7 +334,7 @@ function RecentActivityPro({ items }: { items: RecentAttempt[] }) {
           </div>
 
           <Link
-            to="/library"
+            to="/"
             className="text-xs font-bold text-primary hover:underline"
           >
             View all
@@ -351,44 +347,43 @@ function RecentActivityPro({ items }: { items: RecentAttempt[] }) {
           </div>
         ) : (
           <div className="mt-5 space-y-3">
-            {items.map((x) => {
-              const tone = scoreTone(x.scorePercent);
-              return (
-                <div
-                  key={x.id}
-                  className="group flex items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50/70 border border-slate-200/60 hover:bg-white transition"
-                >
-                  <div className="min-w-0 flex items-center gap-3">
-                    <span className={`w-2.5 h-2.5 rounded-full ${tone.dot}`} />
+            {items.map((x) => (
+              <div
+                key={x.id}
+                className="group flex items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50/70 border border-slate-200/60 hover:bg-white transition"
+              >
+                <div className="min-w-0 flex items-center gap-3">
+                  <span
+                    className={`w-2.5 h-2.5 rounded-full ${scoreTone(x.scorePercent).dot}`}
+                  />
 
-                    <div className="min-w-0">
-                      <div className="font-bold text-slate-900 line-clamp-1 group-hover:text-primary transition-colors">
-                        {x.title}
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
-                        <Clock size={12} />
-                        {x.timeText}
-                      </div>
+                  <div className="min-w-0">
+                    <div className="font-bold text-slate-900 line-clamp-1 group-hover:text-primary transition-colors">
+                      {x.title}
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
+                      <Clock size={12} />
+                      {x.timeText}
                     </div>
                   </div>
-
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`text-xs font-black px-2.5 py-1 rounded-full ${tone.badge}`}
-                    >
-                      {x.scorePercent}%
-                    </span>
-
-                    <Link
-                      to={`/practice?quizId=${x.quizId}`}
-                      className="px-3 py-2 rounded-xl bg-white border border-slate-200/60 text-sm font-semibold text-slate-700 hover:border-primary-200 hover:text-primary transition"
-                    >
-                      Retry
-                    </Link>
-                  </div>
                 </div>
-              );
-            })}
+
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`text-xs font-black px-2.5 py-1 rounded-full ${scoreTone(x.scorePercent).badge}`}
+                  >
+                    {x.scorePercent}%
+                  </span>
+
+                  <Link
+                    to={`/`}
+                    className="px-3 py-2 rounded-xl bg-white border border-slate-200/60 text-sm font-semibold text-slate-700 hover:border-primary-200 hover:text-primary transition"
+                  >
+                    Retry
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
@@ -398,19 +393,10 @@ function RecentActivityPro({ items }: { items: RecentAttempt[] }) {
 
 function scoreTone(score: number) {
   if (score >= 85)
-    return {
-      dot: "bg-emerald-500",
-      badge: "text-emerald-500",
-    };
+    return { dot: "bg-emerald-500", badge: "bg-emerald-50 text-emerald-700" };
   if (score >= 70)
-    return {
-      dot: "bg-secondary",
-      badge: " text-secondary",
-    };
-  return {
-    dot: "bg-rose-500",
-    badge: "bg-rose-50 text-rose-700",
-  };
+    return { dot: "bg-secondary", badge: "bg-secondary/10 text-secondary" };
+  return { dot: "bg-rose-500", badge: "bg-rose-50 text-rose-700" };
 }
 
 /* ===================== WEEKLY goal ring ===================== */
@@ -501,13 +487,13 @@ function QuickActions() {
 
         <div className="mt-4 flex flex-col gap-2">
           <Link
-            to="/practice"
+            to="/"
             className="w-full text-center py-3 rounded-2xl bg-primary text-white font-semibold shadow-sm hover:opacity-95"
           >
             New Practice
           </Link>
           <Link
-            to="/library"
+            to="/"
             className="w-full text-center py-3 rounded-2xl bg-white border border-slate-200/60 font-semibold text-slate-700 hover:border-primary-200 hover:text-primary transition"
           >
             Browse Library

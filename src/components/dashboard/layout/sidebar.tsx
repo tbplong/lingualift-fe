@@ -28,28 +28,28 @@ export default function Sidebar() {
         {/* Menu */}
         <nav className="px-3 lg:px-4 space-y-2 mt-4">
           <NavItem
-            to="/dashboard"
+            to="#"
             icon={<LayoutDashboard size={20} />}
             label="Dashboard"
             active={pathname === "/dashboard"}
           />
 
           <NavItem
-            to="/practice"
+            to="#"
             icon={<PlusCircle size={20} />}
             label="New Practice"
             active={pathname.startsWith("/practice")}
           />
 
           <NavItem
-            to="/library"
+            to="#"
             icon={<Library size={20} />}
             label="Quiz Library"
             active={pathname.startsWith("/library")}
           />
 
           <NavItem
-            to="/profile"
+            to="#"
             icon={<User size={20} />}
             label="Profile"
             active={pathname.startsWith("/profile")}
