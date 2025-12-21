@@ -12,11 +12,18 @@ import { Route as rootRouteImport } from "./routes/__root";
 import { Route as IndexRouteImport } from "./routes/index";
 import { Route as TermsIndexRouteImport } from "./routes/terms/index";
 import { Route as SignupIndexRouteImport } from "./routes/signup/index";
+import { Route as QuizIndexRouteImport } from "./routes/quiz/index";
 import { Route as ProfileIndexRouteImport } from "./routes/profile/index";
 import { Route as PrivacyIndexRouteImport } from "./routes/privacy/index";
 import { Route as LoginIndexRouteImport } from "./routes/login/index";
+import { Route as HistoryIndexRouteImport } from "./routes/history/index";
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index";
 import { Route as AboutIndexRouteImport } from "./routes/about/index";
+import { Route as QuizCreateRouteImport } from "./routes/quiz/create";
+import { Route as QuizQuizIdRouteImport } from "./routes/quiz/$quizId";
+import { Route as HistoryQuizIdIndexRouteImport } from "./routes/history/$quizId/index";
+import { Route as QuizEditQuizIdRouteImport } from "./routes/quiz/edit/$quizId";
+import { Route as HistoryQuizIdAttemptIdRouteImport } from "./routes/history/$quizId/$attemptId";
 
 const IndexRoute = IndexRouteImport.update({
   id: "/",
@@ -31,6 +38,11 @@ const TermsIndexRoute = TermsIndexRouteImport.update({
 const SignupIndexRoute = SignupIndexRouteImport.update({
   id: "/signup/",
   path: "/signup/",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const QuizIndexRoute = QuizIndexRouteImport.update({
+  id: "/quiz/",
+  path: "/quiz/",
   getParentRoute: () => rootRouteImport,
 } as any);
 const ProfileIndexRoute = ProfileIndexRouteImport.update({
@@ -48,6 +60,11 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   path: "/login/",
   getParentRoute: () => rootRouteImport,
 } as any);
+const HistoryIndexRoute = HistoryIndexRouteImport.update({
+  id: "/history/",
+  path: "/history/",
+  getParentRoute: () => rootRouteImport,
+} as any);
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: "/dashboard/",
   path: "/dashboard/",
@@ -58,80 +75,154 @@ const AboutIndexRoute = AboutIndexRouteImport.update({
   path: "/about/",
   getParentRoute: () => rootRouteImport,
 } as any);
+const QuizCreateRoute = QuizCreateRouteImport.update({
+  id: "/quiz/create",
+  path: "/quiz/create",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const QuizQuizIdRoute = QuizQuizIdRouteImport.update({
+  id: "/quiz/$quizId",
+  path: "/quiz/$quizId",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const HistoryQuizIdIndexRoute = HistoryQuizIdIndexRouteImport.update({
+  id: "/history/$quizId/",
+  path: "/history/$quizId/",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const QuizEditQuizIdRoute = QuizEditQuizIdRouteImport.update({
+  id: "/quiz/edit/$quizId",
+  path: "/quiz/edit/$quizId",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const HistoryQuizIdAttemptIdRoute = HistoryQuizIdAttemptIdRouteImport.update({
+  id: "/history/$quizId/$attemptId",
+  path: "/history/$quizId/$attemptId",
+  getParentRoute: () => rootRouteImport,
+} as any);
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
+  "/quiz/$quizId": typeof QuizQuizIdRoute;
+  "/quiz/create": typeof QuizCreateRoute;
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
+  "/history": typeof HistoryIndexRoute;
   "/login": typeof LoginIndexRoute;
   "/privacy": typeof PrivacyIndexRoute;
   "/profile": typeof ProfileIndexRoute;
+  "/quiz": typeof QuizIndexRoute;
   "/signup": typeof SignupIndexRoute;
   "/terms": typeof TermsIndexRoute;
+  "/history/$quizId/$attemptId": typeof HistoryQuizIdAttemptIdRoute;
+  "/quiz/edit/$quizId": typeof QuizEditQuizIdRoute;
+  "/history/$quizId": typeof HistoryQuizIdIndexRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
+  "/quiz/$quizId": typeof QuizQuizIdRoute;
+  "/quiz/create": typeof QuizCreateRoute;
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
+  "/history": typeof HistoryIndexRoute;
   "/login": typeof LoginIndexRoute;
   "/privacy": typeof PrivacyIndexRoute;
   "/profile": typeof ProfileIndexRoute;
+  "/quiz": typeof QuizIndexRoute;
   "/signup": typeof SignupIndexRoute;
   "/terms": typeof TermsIndexRoute;
+  "/history/$quizId/$attemptId": typeof HistoryQuizIdAttemptIdRoute;
+  "/quiz/edit/$quizId": typeof QuizEditQuizIdRoute;
+  "/history/$quizId": typeof HistoryQuizIdIndexRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   "/": typeof IndexRoute;
+  "/quiz/$quizId": typeof QuizQuizIdRoute;
+  "/quiz/create": typeof QuizCreateRoute;
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/history/": typeof HistoryIndexRoute;
   "/login/": typeof LoginIndexRoute;
   "/privacy/": typeof PrivacyIndexRoute;
   "/profile/": typeof ProfileIndexRoute;
+  "/quiz/": typeof QuizIndexRoute;
   "/signup/": typeof SignupIndexRoute;
   "/terms/": typeof TermsIndexRoute;
+  "/history/$quizId/$attemptId": typeof HistoryQuizIdAttemptIdRoute;
+  "/quiz/edit/$quizId": typeof QuizEditQuizIdRoute;
+  "/history/$quizId/": typeof HistoryQuizIdIndexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | "/"
+    | "/quiz/$quizId"
+    | "/quiz/create"
     | "/about"
     | "/dashboard"
+    | "/history"
     | "/login"
     | "/privacy"
     | "/profile"
+    | "/quiz"
     | "/signup"
-    | "/terms";
+    | "/terms"
+    | "/history/$quizId/$attemptId"
+    | "/quiz/edit/$quizId"
+    | "/history/$quizId";
   fileRoutesByTo: FileRoutesByTo;
   to:
     | "/"
+    | "/quiz/$quizId"
+    | "/quiz/create"
     | "/about"
     | "/dashboard"
+    | "/history"
     | "/login"
     | "/privacy"
     | "/profile"
+    | "/quiz"
     | "/signup"
-    | "/terms";
+    | "/terms"
+    | "/history/$quizId/$attemptId"
+    | "/quiz/edit/$quizId"
+    | "/history/$quizId";
   id:
     | "__root__"
     | "/"
+    | "/quiz/$quizId"
+    | "/quiz/create"
     | "/about/"
     | "/dashboard/"
+    | "/history/"
     | "/login/"
     | "/privacy/"
     | "/profile/"
+    | "/quiz/"
     | "/signup/"
-    | "/terms/";
+    | "/terms/"
+    | "/history/$quizId/$attemptId"
+    | "/quiz/edit/$quizId"
+    | "/history/$quizId/";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
+  QuizQuizIdRoute: typeof QuizQuizIdRoute;
+  QuizCreateRoute: typeof QuizCreateRoute;
   AboutIndexRoute: typeof AboutIndexRoute;
   DashboardIndexRoute: typeof DashboardIndexRoute;
+  HistoryIndexRoute: typeof HistoryIndexRoute;
   LoginIndexRoute: typeof LoginIndexRoute;
   PrivacyIndexRoute: typeof PrivacyIndexRoute;
   ProfileIndexRoute: typeof ProfileIndexRoute;
+  QuizIndexRoute: typeof QuizIndexRoute;
   SignupIndexRoute: typeof SignupIndexRoute;
   TermsIndexRoute: typeof TermsIndexRoute;
+  HistoryQuizIdAttemptIdRoute: typeof HistoryQuizIdAttemptIdRoute;
+  QuizEditQuizIdRoute: typeof QuizEditQuizIdRoute;
+  HistoryQuizIdIndexRoute: typeof HistoryQuizIdIndexRoute;
 }
 
 declare module "@tanstack/react-router" {
@@ -157,6 +248,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof SignupIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/quiz/": {
+      id: "/quiz/";
+      path: "/quiz";
+      fullPath: "/quiz";
+      preLoaderRoute: typeof QuizIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     "/profile/": {
       id: "/profile/";
       path: "/profile";
@@ -178,6 +276,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof LoginIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/history/": {
+      id: "/history/";
+      path: "/history";
+      fullPath: "/history";
+      preLoaderRoute: typeof HistoryIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     "/dashboard/": {
       id: "/dashboard/";
       path: "/dashboard";
@@ -192,19 +297,60 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AboutIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/quiz/create": {
+      id: "/quiz/create";
+      path: "/quiz/create";
+      fullPath: "/quiz/create";
+      preLoaderRoute: typeof QuizCreateRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/quiz/$quizId": {
+      id: "/quiz/$quizId";
+      path: "/quiz/$quizId";
+      fullPath: "/quiz/$quizId";
+      preLoaderRoute: typeof QuizQuizIdRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/history/$quizId/": {
+      id: "/history/$quizId/";
+      path: "/history/$quizId";
+      fullPath: "/history/$quizId";
+      preLoaderRoute: typeof HistoryQuizIdIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/quiz/edit/$quizId": {
+      id: "/quiz/edit/$quizId";
+      path: "/quiz/edit/$quizId";
+      fullPath: "/quiz/edit/$quizId";
+      preLoaderRoute: typeof QuizEditQuizIdRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/history/$quizId/$attemptId": {
+      id: "/history/$quizId/$attemptId";
+      path: "/history/$quizId/$attemptId";
+      fullPath: "/history/$quizId/$attemptId";
+      preLoaderRoute: typeof HistoryQuizIdAttemptIdRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  QuizQuizIdRoute: QuizQuizIdRoute,
+  QuizCreateRoute: QuizCreateRoute,
   AboutIndexRoute: AboutIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  HistoryIndexRoute: HistoryIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   PrivacyIndexRoute: PrivacyIndexRoute,
-  QuizIndexRoute: QuizIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,
+  QuizIndexRoute: QuizIndexRoute,
   SignupIndexRoute: SignupIndexRoute,
   TermsIndexRoute: TermsIndexRoute,
+  HistoryQuizIdAttemptIdRoute: HistoryQuizIdAttemptIdRoute,
+  QuizEditQuizIdRoute: QuizEditQuizIdRoute,
+  HistoryQuizIdIndexRoute: HistoryQuizIdIndexRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

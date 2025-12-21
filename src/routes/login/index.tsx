@@ -135,7 +135,7 @@ function RouteComponent() {
         const { data } = await AuthService.login(values.email, values.password);
         storage.setItem("token", data.accessToken);
         toast.success("Signed in successfully! Redirecting…");
-        navigate({ to: "/" });
+        navigate({ to: "/dashboard" });
       } catch (err) {
         toast.error(`${err}. Please try again.`);
       }

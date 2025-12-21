@@ -105,11 +105,11 @@ const SidebarDesktop = ({ isManager, opened }: SidebarDesktopProps) => {
           <Item
             opened={opened}
             name="Quiz Library"
-            route="/courses-forum"
+            route="/quiz"
             current={router.location.pathname}
           >
             <Library
-              className={`${router.location.pathname.startsWith("/courses-forum") ? "fill-white" : "fill-tertiary group-hover:fill-white"} size-6 duration-200 ease-in-out `}
+              className={`${router.location.pathname.startsWith("/quiz") ? "fill-white" : "fill-tertiary group-hover:fill-white"} size-6 duration-200 ease-in-out `}
             />
           </Item>
           <Item
