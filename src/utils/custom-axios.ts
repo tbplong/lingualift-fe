@@ -13,6 +13,7 @@ instance.interceptors.request.use(
   async (config) => {
     const token: string | null = storage.getItem("token");
     config.headers.Authorization = `Bearer ${token}`;
+
     return config;
   },
   async (error) => {
