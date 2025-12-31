@@ -4,9 +4,9 @@ import { ReactNode, useState } from "react";
 
 import FloatingContactButton from "./floating-contact-button";
 import Header from "./header";
-import SidebarDesktop from "./sidebar-desktop";
-import SidebarMobile from "./sidebar-mobile";
 import { useUserStore } from "@/stores/user.store";
+// import RightSidebar from "../dashboard/layout/rightsidebar";
+import Sidebar from "../dashboard/layout/sidebar";
 
 type StudyLayoutProps = {
   children: ReactNode;
@@ -20,7 +20,8 @@ const StudyLayout = ({ children }: StudyLayoutProps) => {
   return (
     <div className="relative flex h-fit min-h-screen w-screen min-w-[360px] flex-row bg-white">
       <FloatingContactButton />
-      <SidebarMobile
+      <Sidebar />
+      {/* <SidebarMobile
         isManager={user?.isManager}
         opened={sidebarMobileOpened}
         close={() => setSidebarMobileOpened(false)}
@@ -28,7 +29,7 @@ const StudyLayout = ({ children }: StudyLayoutProps) => {
       <SidebarDesktop
         isManager={user?.isManager}
         opened={sidebarDesktopOpened}
-      />
+      /> */}
       <div className="relative flex h-fit w-full min-w-0 flex-col bg-white">
         <Header
           user={user}

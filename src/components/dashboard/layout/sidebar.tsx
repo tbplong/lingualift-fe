@@ -1,5 +1,5 @@
 // src/components/layout/Sidebar.tsx
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { ReactNode } from "react";
 import { toast } from "react-toastify";
 import {
@@ -11,14 +11,20 @@ import {
 } from "lucide-react";
 
 export default function Sidebar() {
+  const navigate = useNavigate();
   const pathname = useRouterState().location.pathname;
 
   return (
-    <aside className="w-20 lg:w-64 bg-white border-r border-slate-200 flex flex-col justify-between z-20 transition-all duration-300">
+    <aside className="w-20 lg:w-64 xl:w-72 bg-white border-r border-slate-200 flex flex-col justify-between z-20 transition-all duration-300">
       {/* ========== TOP ========== */}
       <div>
         {/* Logo */}
-        <div className="h-24 flex items-center justify-center lg:justify-start lg:px-8">
+        <div
+          onClick={() => {
+            navigate({ to: "/" });
+          }}
+          className="h-24 flex items-center justify-center lg:justify-start lg:px-8"
+        >
           <h1 className="hidden lg:block text-3xl font-black bg-gradient-to-r from-primary-200 to-primary bg-clip-text text-transparent">
             Lingualift
           </h1>
@@ -28,14 +34,14 @@ export default function Sidebar() {
         {/* Menu */}
         <nav className="px-3 lg:px-4 space-y-2 mt-4">
           <NavItem
-            to="#"
+            to="/dashboard"
             icon={<LayoutDashboard size={20} />}
             label="Dashboard"
             active={pathname === "/dashboard"}
           />
 
           <NavItem
-            to="#"
+            to="/quiz"
             icon={<PlusCircle size={20} />}
             label="New Practice"
             active={pathname.startsWith("/practice")}
@@ -49,7 +55,7 @@ export default function Sidebar() {
           />
 
           <NavItem
-            to="#"
+            to="/profile"
             icon={<User size={20} />}
             label="Profile"
             active={pathname.startsWith("/profile")}
