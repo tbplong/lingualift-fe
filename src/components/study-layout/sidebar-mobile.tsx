@@ -335,11 +335,11 @@ const SidebarMobile = ({ isManager, opened, close }: SidebarMobileProps) => {
             </Item>
             <Item
               name="Đề Trường - Sở"
-              route="/national-exams"
+              route="/exam"
               current={router.location.pathname}
             >
               <DocumentIcon
-                className={`${router.location.pathname.startsWith("/national-exams") ? "fill-white" : "fill-tertiary group-hover:fill-white"} size-6 duration-200 ease-in-out `}
+                className={`${router.location.pathname.startsWith("/exam") ? "fill-white" : "fill-tertiary group-hover:fill-white"} size-6 duration-200 ease-in-out `}
               />
             </Item>
             <Item

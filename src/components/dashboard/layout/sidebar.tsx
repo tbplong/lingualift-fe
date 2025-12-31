@@ -14,6 +14,7 @@ import storage from "@/utils/storage";
 import AuthService from "@/services/auth/auth.service";
 
 export default function Sidebar() {
+  const navigate = useNavigate();
   const pathname = useRouterState().location.pathname;
   const navigate = useNavigate();
 
@@ -31,11 +32,16 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-20 lg:w-64 bg-white border-r border-slate-200 flex flex-col justify-between z-20 transition-all duration-300">
+    <aside className="w-20 lg:w-64 xl:w-72 bg-white border-r border-slate-200 flex flex-col justify-between z-20 transition-all duration-300">
       {/* ========== TOP ========== */}
       <div>
         {/* Logo */}
-        <div className="h-24 flex items-center justify-center lg:justify-start lg:px-8">
+        <div
+          onClick={() => {
+            navigate({ to: "/" });
+          }}
+          className="h-24 flex items-center justify-center lg:justify-start lg:px-8"
+        >
           <h1 className="hidden lg:block text-3xl font-black bg-gradient-to-r from-primary-200 to-primary bg-clip-text text-transparent">
             Lingualift
           </h1>

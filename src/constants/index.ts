@@ -6,3 +6,5 @@ export const PHONE_REGEX =
 
 export const MESSENGER_URL: string =
   "https://www.facebook.com/messages/t/110456618681669";
+
+export const FILENAME_REGEX = /^[a-zA-Z0-9._-]+$/;

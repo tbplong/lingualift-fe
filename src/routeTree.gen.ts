@@ -82,6 +82,7 @@ export interface FileRoutesByFullPath {
   "/profile": typeof ProfileIndexRoute;
   "/signup": typeof SignupIndexRoute;
   "/terms": typeof TermsIndexRoute;
+  "/exam/edit/$id": typeof ExamEditIdRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
@@ -94,6 +95,7 @@ export interface FileRoutesByTo {
   "/profile": typeof ProfileIndexRoute;
   "/signup": typeof SignupIndexRoute;
   "/terms": typeof TermsIndexRoute;
+  "/exam/edit/$id": typeof ExamEditIdRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
@@ -107,6 +109,7 @@ export interface FileRoutesById {
   "/profile/": typeof ProfileIndexRoute;
   "/signup/": typeof SignupIndexRoute;
   "/terms/": typeof TermsIndexRoute;
+  "/exam/edit/$id": typeof ExamEditIdRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
@@ -120,7 +123,8 @@ export interface FileRouteTypes {
     | "/privacy"
     | "/profile"
     | "/signup"
-    | "/terms";
+    | "/terms"
+    | "/exam/edit/$id";
   fileRoutesByTo: FileRoutesByTo;
   to:
     | "/"
@@ -132,7 +136,8 @@ export interface FileRouteTypes {
     | "/privacy"
     | "/profile"
     | "/signup"
-    | "/terms";
+    | "/terms"
+    | "/exam/edit/$id";
   id:
     | "__root__"
     | "/"
@@ -144,7 +149,8 @@ export interface FileRouteTypes {
     | "/privacy/"
     | "/profile/"
     | "/signup/"
-    | "/terms/";
+    | "/terms/"
+    | "/exam/edit/$id";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
@@ -158,6 +164,7 @@ export interface RootRouteChildren {
   ProfileIndexRoute: typeof ProfileIndexRoute;
   SignupIndexRoute: typeof SignupIndexRoute;
   TermsIndexRoute: typeof TermsIndexRoute;
+  ExamEditIdRoute: typeof ExamEditIdRoute;
 }
 
 declare module "@tanstack/react-router" {
@@ -246,6 +253,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileIndexRoute: ProfileIndexRoute,
   SignupIndexRoute: SignupIndexRoute,
   TermsIndexRoute: TermsIndexRoute,
+  ExamEditIdRoute: ExamEditIdRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
