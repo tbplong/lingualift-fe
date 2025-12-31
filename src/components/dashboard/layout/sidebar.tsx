@@ -16,7 +16,6 @@ import AuthService from "@/services/auth/auth.service";
 export default function Sidebar() {
   const navigate = useNavigate();
   const pathname = useRouterState().location.pathname;
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
