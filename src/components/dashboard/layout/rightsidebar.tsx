@@ -5,10 +5,6 @@ type UserProfile = {
   firstName: string;
   lastName: string;
   email: string;
-  level: string;
-  xp: number;
-  rank: number;
-  streak: number;
 };
 
 type RecommendedQuiz = {

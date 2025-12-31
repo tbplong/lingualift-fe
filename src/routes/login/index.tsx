@@ -12,10 +12,9 @@ import z from "zod";
 import Loading from "@/components/ui/loading";
 
 export const Route = createFileRoute("/login/")({
-  beforeLoad: async ({ context }) => {
-    if (context.authContext.isAuthenticated) {
-      throw redirect({ to: "/dashboard" });
-    }
+  beforeLoad: () => {
+    const token = storage.getItem("token");
+    if (token) throw redirect({ to: "/dashboard" });
   },
   validateSearch: z.object({
     next: z.string().optional(),

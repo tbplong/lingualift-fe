@@ -15,12 +15,10 @@ import { Route as SignupIndexRouteImport } from "./routes/signup/index";
 import { Route as ProfileIndexRouteImport } from "./routes/profile/index";
 import { Route as PrivacyIndexRouteImport } from "./routes/privacy/index";
 import { Route as LoginIndexRouteImport } from "./routes/login/index";
-import { Route as ExamIndexRouteImport } from "./routes/exam/index";
+import { Route as LibraryIndexRouteImport } from "./routes/library/index";
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index";
 import { Route as AboutIndexRouteImport } from "./routes/about/index";
-import { Route as ExamCreateRouteImport } from "./routes/exam/create";
-import { Route as ExamIdRouteImport } from "./routes/exam/$id";
-import { Route as ExamEditIdRouteImport } from "./routes/exam/edit/$id";
+import { Route as LibraryMaterialIdRouteImport } from "./routes/library/$materialId";
 
 const IndexRoute = IndexRouteImport.update({
   id: "/",
@@ -52,9 +50,9 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   path: "/login/",
   getParentRoute: () => rootRouteImport,
 } as any);
-const ExamIndexRoute = ExamIndexRouteImport.update({
-  id: "/exam/",
-  path: "/exam/",
+const LibraryIndexRoute = LibraryIndexRouteImport.update({
+  id: "/library/",
+  path: "/library/",
   getParentRoute: () => rootRouteImport,
 } as any);
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
@@ -67,29 +65,18 @@ const AboutIndexRoute = AboutIndexRouteImport.update({
   path: "/about/",
   getParentRoute: () => rootRouteImport,
 } as any);
-const ExamCreateRoute = ExamCreateRouteImport.update({
-  id: "/exam/create",
-  path: "/exam/create",
-  getParentRoute: () => rootRouteImport,
-} as any);
-const ExamIdRoute = ExamIdRouteImport.update({
-  id: "/exam/$id",
-  path: "/exam/$id",
-  getParentRoute: () => rootRouteImport,
-} as any);
-const ExamEditIdRoute = ExamEditIdRouteImport.update({
-  id: "/exam/edit/$id",
-  path: "/exam/edit/$id",
+const LibraryMaterialIdRoute = LibraryMaterialIdRouteImport.update({
+  id: "/library/$materialId",
+  path: "/library/$materialId",
   getParentRoute: () => rootRouteImport,
 } as any);
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
-  "/exam/$id": typeof ExamIdRoute;
-  "/exam/create": typeof ExamCreateRoute;
+  "/library/$materialId": typeof LibraryMaterialIdRoute;
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
-  "/exam": typeof ExamIndexRoute;
+  "/library": typeof LibraryIndexRoute;
   "/login": typeof LoginIndexRoute;
   "/privacy": typeof PrivacyIndexRoute;
   "/profile": typeof ProfileIndexRoute;
@@ -99,11 +86,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
-  "/exam/$id": typeof ExamIdRoute;
-  "/exam/create": typeof ExamCreateRoute;
+  "/library/$materialId": typeof LibraryMaterialIdRoute;
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
-  "/exam": typeof ExamIndexRoute;
+  "/library": typeof LibraryIndexRoute;
   "/login": typeof LoginIndexRoute;
   "/privacy": typeof PrivacyIndexRoute;
   "/profile": typeof ProfileIndexRoute;
@@ -114,11 +100,10 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   "/": typeof IndexRoute;
-  "/exam/$id": typeof ExamIdRoute;
-  "/exam/create": typeof ExamCreateRoute;
+  "/library/$materialId": typeof LibraryMaterialIdRoute;
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
-  "/exam/": typeof ExamIndexRoute;
+  "/library/": typeof LibraryIndexRoute;
   "/login/": typeof LoginIndexRoute;
   "/privacy/": typeof PrivacyIndexRoute;
   "/profile/": typeof ProfileIndexRoute;
@@ -130,11 +115,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | "/"
-    | "/exam/$id"
-    | "/exam/create"
+    | "/library/$materialId"
     | "/about"
     | "/dashboard"
-    | "/exam"
+    | "/library"
     | "/login"
     | "/privacy"
     | "/profile"
@@ -144,11 +128,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo;
   to:
     | "/"
-    | "/exam/$id"
-    | "/exam/create"
+    | "/library/$materialId"
     | "/about"
     | "/dashboard"
-    | "/exam"
+    | "/library"
     | "/login"
     | "/privacy"
     | "/profile"
@@ -158,11 +141,10 @@ export interface FileRouteTypes {
   id:
     | "__root__"
     | "/"
-    | "/exam/$id"
-    | "/exam/create"
+    | "/library/$materialId"
     | "/about/"
     | "/dashboard/"
-    | "/exam/"
+    | "/library/"
     | "/login/"
     | "/privacy/"
     | "/profile/"
@@ -173,11 +155,10 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
-  ExamIdRoute: typeof ExamIdRoute;
-  ExamCreateRoute: typeof ExamCreateRoute;
+  LibraryMaterialIdRoute: typeof LibraryMaterialIdRoute;
   AboutIndexRoute: typeof AboutIndexRoute;
   DashboardIndexRoute: typeof DashboardIndexRoute;
-  ExamIndexRoute: typeof ExamIndexRoute;
+  LibraryIndexRoute: typeof LibraryIndexRoute;
   LoginIndexRoute: typeof LoginIndexRoute;
   PrivacyIndexRoute: typeof PrivacyIndexRoute;
   ProfileIndexRoute: typeof ProfileIndexRoute;
@@ -230,11 +211,11 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof LoginIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
-    "/exam/": {
-      id: "/exam/";
-      path: "/exam";
-      fullPath: "/exam";
-      preLoaderRoute: typeof ExamIndexRouteImport;
+    "/library/": {
+      id: "/library/";
+      path: "/library";
+      fullPath: "/library";
+      preLoaderRoute: typeof LibraryIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/dashboard/": {
@@ -251,25 +232,11 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AboutIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
-    "/exam/create": {
-      id: "/exam/create";
-      path: "/exam/create";
-      fullPath: "/exam/create";
-      preLoaderRoute: typeof ExamCreateRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/exam/$id": {
-      id: "/exam/$id";
-      path: "/exam/$id";
-      fullPath: "/exam/$id";
-      preLoaderRoute: typeof ExamIdRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/exam/edit/$id": {
-      id: "/exam/edit/$id";
-      path: "/exam/edit/$id";
-      fullPath: "/exam/edit/$id";
-      preLoaderRoute: typeof ExamEditIdRouteImport;
+    "/library/$materialId": {
+      id: "/library/$materialId";
+      path: "/library/$materialId";
+      fullPath: "/library/$materialId";
+      preLoaderRoute: typeof LibraryMaterialIdRouteImport;
       parentRoute: typeof rootRouteImport;
     };
   }
@@ -277,11 +244,10 @@ declare module "@tanstack/react-router" {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ExamIdRoute: ExamIdRoute,
-  ExamCreateRoute: ExamCreateRoute,
+  LibraryMaterialIdRoute: LibraryMaterialIdRoute,
   AboutIndexRoute: AboutIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
-  ExamIndexRoute: ExamIndexRoute,
+  LibraryIndexRoute: LibraryIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   PrivacyIndexRoute: PrivacyIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,

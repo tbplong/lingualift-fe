@@ -92,7 +92,6 @@ export default function MiddleContent({
     };
   }, []);
 
-  // ✅ Ưu tiên API. Nếu chưa có (null) fallback sang props.
   const uiStats: Stats = useMemo(() => {
     if (!summary) return stats;
 

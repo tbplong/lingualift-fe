@@ -8,9 +8,6 @@ import RightSidebar from "@/components/dashboard/layout/rightsidebar";
 import MiddleContent from "@/components/dashboard/layout/middle";
 import { Search } from "lucide-react";
 
-// ✅ CHỌN 1:
-// - Nếu routeTree.gen.ts có key '/dashboard/': dùng "/dashboard/"
-// - Nếu routeTree.gen.ts có key '/dashboard': dùng "/dashboard"
 export const Route = createFileRoute("/dashboard/")({
   beforeLoad: () => {
     const token = storage.getItem("token");
@@ -50,28 +47,19 @@ type UserProfile = {
   firstName: string;
   lastName: string;
   email: string;
-  level: string;
-  xp: number;
-  rank: number;
-  streak: number;
-  avatarLetter: string;
+  avatarLetter?: string;
 };
 
 type ApiUser = {
   firstName?: string;
   lastName?: string;
   email?: string;
-  level?: string;
-  xp?: number;
-  rank?: number;
-  streak?: number;
 };
 
 type DashboardSummary = {
   timeThisWeekMin?: number;
   completed?: number;
   accuracyPercent?: number;
-
   weeklyMinutes?: number;
   quizzesCompleted?: number;
   accuracy?: number;
@@ -166,10 +154,6 @@ function RouteComponent() {
           firstName: p.firstName ?? "User",
           lastName: p.lastName ?? "",
           email: p.email ?? "user@example.com",
-          level: p.level ?? "A0",
-          xp: p.xp ?? 0,
-          rank: p.rank ?? 999,
-          streak: p.streak ?? 0,
           avatarLetter: (p.firstName ?? "U").charAt(0).toUpperCase(),
         });
 
@@ -189,10 +173,6 @@ function RouteComponent() {
               firstName: "User",
               lastName: "",
               email: "user@example.com",
-              level: "A0",
-              xp: 0,
-              rank: 999,
-              streak: 0,
               avatarLetter: "U",
             },
         );
