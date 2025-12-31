@@ -15,8 +15,10 @@ import { Route as SignupIndexRouteImport } from "./routes/signup/index";
 import { Route as ProfileIndexRouteImport } from "./routes/profile/index";
 import { Route as PrivacyIndexRouteImport } from "./routes/privacy/index";
 import { Route as LoginIndexRouteImport } from "./routes/login/index";
+import { Route as LibraryIndexRouteImport } from "./routes/library/index";
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index";
 import { Route as AboutIndexRouteImport } from "./routes/about/index";
+import { Route as LibraryMaterialIdRouteImport } from "./routes/library/$materialId";
 
 const IndexRoute = IndexRouteImport.update({
   id: "/",
@@ -48,6 +50,11 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   path: "/login/",
   getParentRoute: () => rootRouteImport,
 } as any);
+const LibraryIndexRoute = LibraryIndexRouteImport.update({
+  id: "/library/",
+  path: "/library/",
+  getParentRoute: () => rootRouteImport,
+} as any);
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: "/dashboard/",
   path: "/dashboard/",
@@ -58,11 +65,18 @@ const AboutIndexRoute = AboutIndexRouteImport.update({
   path: "/about/",
   getParentRoute: () => rootRouteImport,
 } as any);
+const LibraryMaterialIdRoute = LibraryMaterialIdRouteImport.update({
+  id: "/library/$materialId",
+  path: "/library/$materialId",
+  getParentRoute: () => rootRouteImport,
+} as any);
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
+  "/library/$materialId": typeof LibraryMaterialIdRoute;
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
+  "/library": typeof LibraryIndexRoute;
   "/login": typeof LoginIndexRoute;
   "/privacy": typeof PrivacyIndexRoute;
   "/profile": typeof ProfileIndexRoute;
@@ -71,8 +85,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
+  "/library/$materialId": typeof LibraryMaterialIdRoute;
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
+  "/library": typeof LibraryIndexRoute;
   "/login": typeof LoginIndexRoute;
   "/privacy": typeof PrivacyIndexRoute;
   "/profile": typeof ProfileIndexRoute;
@@ -82,8 +98,10 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   "/": typeof IndexRoute;
+  "/library/$materialId": typeof LibraryMaterialIdRoute;
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/library/": typeof LibraryIndexRoute;
   "/login/": typeof LoginIndexRoute;
   "/privacy/": typeof PrivacyIndexRoute;
   "/profile/": typeof ProfileIndexRoute;
@@ -94,8 +112,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | "/"
+    | "/library/$materialId"
     | "/about"
     | "/dashboard"
+    | "/library"
     | "/login"
     | "/privacy"
     | "/profile"
@@ -104,8 +124,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo;
   to:
     | "/"
+    | "/library/$materialId"
     | "/about"
     | "/dashboard"
+    | "/library"
     | "/login"
     | "/privacy"
     | "/profile"
@@ -114,8 +136,10 @@ export interface FileRouteTypes {
   id:
     | "__root__"
     | "/"
+    | "/library/$materialId"
     | "/about/"
     | "/dashboard/"
+    | "/library/"
     | "/login/"
     | "/privacy/"
     | "/profile/"
@@ -125,8 +149,10 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
+  LibraryMaterialIdRoute: typeof LibraryMaterialIdRoute;
   AboutIndexRoute: typeof AboutIndexRoute;
   DashboardIndexRoute: typeof DashboardIndexRoute;
+  LibraryIndexRoute: typeof LibraryIndexRoute;
   LoginIndexRoute: typeof LoginIndexRoute;
   PrivacyIndexRoute: typeof PrivacyIndexRoute;
   ProfileIndexRoute: typeof ProfileIndexRoute;
@@ -178,6 +204,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof LoginIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/library/": {
+      id: "/library/";
+      path: "/library";
+      fullPath: "/library";
+      preLoaderRoute: typeof LibraryIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     "/dashboard/": {
       id: "/dashboard/";
       path: "/dashboard";
@@ -192,13 +225,22 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AboutIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/library/$materialId": {
+      id: "/library/$materialId";
+      path: "/library/$materialId";
+      fullPath: "/library/$materialId";
+      preLoaderRoute: typeof LibraryMaterialIdRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LibraryMaterialIdRoute: LibraryMaterialIdRoute,
   AboutIndexRoute: AboutIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  LibraryIndexRoute: LibraryIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   PrivacyIndexRoute: PrivacyIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,

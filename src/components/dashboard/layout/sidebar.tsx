@@ -1,5 +1,5 @@
 // src/components/layout/Sidebar.tsx
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { ReactNode } from "react";
 import { toast } from "react-toastify";
 import {
@@ -10,8 +10,25 @@ import {
   LogOut,
 } from "lucide-react";
 
+import storage from "@/utils/storage";
+import AuthService from "@/services/auth/auth.service";
+
 export default function Sidebar() {
   const pathname = useRouterState().location.pathname;
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await AuthService.logout();
+      toast.success("Logged out");
+    } catch (err) {
+      console.error(err);
+      toast.info("Logged out");
+    } finally {
+      storage.removeItem("token");
+      navigate({ to: "/login", replace: true });
+    }
+  };
 
   return (
     <aside className="w-20 lg:w-64 bg-white border-r border-slate-200 flex flex-col justify-between z-20 transition-all duration-300">
@@ -28,28 +45,28 @@ export default function Sidebar() {
         {/* Menu */}
         <nav className="px-3 lg:px-4 space-y-2 mt-4">
           <NavItem
-            to="#"
+            to="/dashboard"
             icon={<LayoutDashboard size={20} />}
             label="Dashboard"
             active={pathname === "/dashboard"}
           />
 
           <NavItem
-            to="#"
+            to="/practice"
             icon={<PlusCircle size={20} />}
             label="New Practice"
             active={pathname.startsWith("/practice")}
           />
 
           <NavItem
-            to="#"
+            to="/library"
             icon={<Library size={20} />}
             label="Quiz Library"
             active={pathname.startsWith("/library")}
           />
 
           <NavItem
-            to="#"
+            to="/profile"
             icon={<User size={20} />}
             label="Profile"
             active={pathname.startsWith("/profile")}
@@ -60,7 +77,7 @@ export default function Sidebar() {
       {/* ========== BOTTOM ========== */}
       <div className="p-4 border-t border-slate-100 mb-4">
         <button
-          onClick={() => toast.info("Logging out...")}
+          onClick={handleLogout}
           className="w-full flex items-center justify-center lg:justify-start gap-3 py-3 px-4
           text-slate-500 font-medium rounded-xl
           hover:bg-red-50 hover:text-red-600 transition-all"
