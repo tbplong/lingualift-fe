@@ -2,12 +2,7 @@
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import CustomGoogleButton from "@/components/ui/button/custom-google-button";
-import {
-  createFileRoute,
-  redirect,
-  useNavigate,
-  useSearch,
-} from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { toast } from "react-toastify";
 import { useAuthStore } from "@/stores";
 import AuthService from "@/services/auth/auth.service";
@@ -40,10 +35,6 @@ function RouteComponent() {
   const { setToken, isAuthenticated, setIsAuthenticated } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const selected = useSearch({
-    from: "/login/",
-    select: (search) => search.next,
-  });
 
   const [values, setValues] = useState<FormValues>({
     email: "",
@@ -75,12 +66,9 @@ function RouteComponent() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate({
-        to: selected || "/dashboard",
-        replace: true,
-      });
+      navigate({ to: "/dashboard", replace: true });
     }
-  }, [isAuthenticated, navigate, selected]);
+  }, [isAuthenticated, navigate]);
 
   function validateField(
     field: keyof FormValues,
@@ -132,12 +120,24 @@ function RouteComponent() {
 
     if (!next.email && !next.password) {
       try {
-        const { data } = await AuthService.login(values.email, values.password);
+        setLoading(true);
+
+        const { data } = await AuthService.login(
+          values.email.trim(),
+          values.password,
+        );
+
         storage.setItem("token", data.accessToken);
+        setToken(data.accessToken);
+        setIsAuthenticated(true);
+
         toast.success("Signed in successfully! Redirecting…");
-        navigate({ to: "/dashboard" });
-      } catch (err) {
-        toast.error(`${err}. Please try again.`);
+
+        navigate({ to: "/dashboard", replace: true });
+      } catch (err: unknown) {
+        handleAxiosError(err, (message: string) => toast.error(message));
+      } finally {
+        setLoading(false);
       }
     }
   }
@@ -150,7 +150,7 @@ function RouteComponent() {
         </div>
       ) : (
         <div className="w-full max-w-md relative">
-          <h1 className="text-4xl font-bold text-primary text-center xl:text-5xl">
+          <h1 className="text-4xl font-bold text-primary text-center md:3xl: xl:text-5xl">
             LingualLift
           </h1>
 

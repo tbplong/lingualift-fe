@@ -1,5 +1,3 @@
-import "../index.css";
-import "../App.css";
 import { useEffect, useState } from "react";
 
 export function Header() {

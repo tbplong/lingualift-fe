@@ -1,0 +1,9 @@
+#level-filter-slider .range-slider__range {
+  background: #0329e9;
+}
+
+#level-filter-slider .range-slider__thumb {
+  background: #0329e9;
+  width: 16px;
+  height: 16px;
+}

@@ -1,7 +1,12 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { ReactNode, useMemo } from "react";
 
-import { ChatIcon, HomeIcon, ProfileIcon } from "@/components/icons";
+import {
+  ChatIcon,
+  DocumentIcon,
+  HomeIcon,
+  ProfileIcon,
+} from "@/components/icons";
 import {
   // FACEBOOK_GROUP_URL,
   // GROUP_FACEBOOK_URL,
@@ -120,6 +125,16 @@ const SidebarDesktop = ({ isManager, opened }: SidebarDesktopProps) => {
           >
             <ProfileIcon
               className={`${router.location.pathname.startsWith("/profile") ? "fill-white" : "fill-tertiary group-hover:fill-white"} size-6 duration-200 ease-in-out `}
+            />
+          </Item>
+          <Item
+            opened={opened}
+            name="Exam"
+            route="/exam"
+            current={router.location.pathname}
+          >
+            <DocumentIcon
+              className={`${router.location.pathname.startsWith("/exam") ? "fill-white" : "fill-tertiary group-hover:fill-white"} size-6 duration-200 ease-in-out `}
             />
           </Item>
         </div>
