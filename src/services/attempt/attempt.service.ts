@@ -34,13 +34,16 @@ const AttemptService = {
   },
 
   // Get all attempts for a specific quiz
-  getAttemptsByQuizId: async (quizId: string, completedOnly: boolean) => {
+  getAttemptsByQuizId: async (quizId: string, completedOnly?: boolean) => {
     return await axios.get<AttemptsResponse>(
       `${url}/?quizId=${quizId}&completedOnly=${completedOnly}`,
     );
   },
 
-  updateAttemptById: async (attemptId: string, updateAttempt: QuizAttempt) => {
+  updateAttemptById: async (
+    attemptId: string,
+    updateAttempt: Partial<QuizAttempt>,
+  ) => {
     return await axios.patch<QuizAttempt>(`${url}/${attemptId}`, updateAttempt);
   },
 

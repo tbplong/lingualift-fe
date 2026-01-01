@@ -8,6 +8,7 @@ export interface QuizAttempt {
   timeTaken: number; // in seconds
   score?: number;
   totalQuestions?: number;
+  isCompleted?: boolean;
   answers: UserAnswer[];
   markedForReview: number[]; // question indices marked for review (1-indexed)
 }

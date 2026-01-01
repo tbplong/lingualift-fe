@@ -1,5 +1,8 @@
 import { Setting, Trash } from "@/components/icons";
 import StudyLayout from "@/components/study-layout";
+import AttemptService, {
+  CreateAttemptRequest,
+} from "@/services/attempt/attempt.service";
 import QuizService from "@/services/quiz/quiz.service";
 import { QuizsResponse } from "@/services/quiz/response/quiz.response";
 import { useUserStore } from "@/stores/user.store";
@@ -14,9 +17,41 @@ export const Route = createFileRoute("/quiz/")({
 function RouteComponent() {
   const { user } = useUserStore();
   const navigate = useNavigate();
-  const takeExam = (id: string) => {
+  const [isCreatingAttempt, setIsCreatingAttempt] = useState<string | null>(
+    null,
+  );
+
+  // Navigate to quiz overview page when clicking the title
+  const viewQuiz = (id: string) => {
     navigate({ to: `/quiz/${id}` });
   };
+
+  // Create a new attempt and navigate to quiz attempt page
+  const takeExam = async (quiz: {
+    _id: string;
+    title: string;
+    questionsNo: number;
+  }) => {
+    if (isCreatingAttempt) return; // Prevent double-click
+    try {
+      setIsCreatingAttempt(quiz._id);
+      const newAttemptData: CreateAttemptRequest = {
+        quizId: quiz._id,
+        quizTitle: quiz.title,
+        startTime: new Date().toISOString(),
+        totalQuestions: quiz.questionsNo,
+        isCompleted: false,
+        answers: [],
+        markedForReview: [],
+      };
+      const createRes = await AttemptService.createAttempt(newAttemptData);
+      navigate({ to: `/quiz/${quiz._id}/${createRes.data._id}` });
+    } catch (error) {
+      console.error("Failed to create attempt", error);
+      setIsCreatingAttempt(null);
+    }
+  };
+
   const createExam = () => {
     navigate({ to: `/quiz/create` });
   };
@@ -74,7 +109,10 @@ function RouteComponent() {
                   className="card card-md bg-white border-2 border-tertiary-700 shadow-lg h-auto rounded-2xl"
                 >
                   <div className="card-body p-4 flex flex-col justify-between">
-                    <h2 className="card-title text-secondary font-bold">
+                    <h2
+                      className="card-title text-secondary font-bold cursor-pointer hover:underline"
+                      onClick={() => viewQuiz(quiz._id)}
+                    >
                       {quiz.title}
                     </h2>
                     <div className="text-tertiary">
@@ -131,11 +169,19 @@ function RouteComponent() {
                         <div
                           className="card-actions flex-1"
                           onClick={() => {
-                            takeExam(quiz._id);
+                            takeExam(quiz);
                           }}
                         >
-                          <button className="btn w-full rounded-lg text-lg text-white bg-primary border-2 border-primary hover:text-primary hover:bg-white hover:border-primary shadow-sm">
-                            Take Exam
+                          <button
+                            className={clsx(
+                              "btn w-full rounded-lg text-lg text-white bg-primary border-2 border-primary hover:text-primary hover:bg-white hover:border-primary shadow-sm",
+                              isCreatingAttempt === quiz._id && "loading",
+                            )}
+                            disabled={isCreatingAttempt === quiz._id}
+                          >
+                            {isCreatingAttempt === quiz._id
+                              ? "Creating..."
+                              : "Take Exam"}
                           </button>
                         </div>
                       </div>
