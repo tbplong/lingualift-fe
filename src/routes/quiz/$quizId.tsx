@@ -21,27 +21,21 @@ export const Route = createFileRoute("/quiz/$quizId")({
 function RouteComponent() {
   const { quizId } = Route.useParams();
 
-  // const exam: QuizCreateREQ = mockQuiz;
   const [exam, setExam] = useState<QuizContentRESP | null>(null);
   const [openSub, setOpenSub] = useState<boolean>(false);
   const [current, setCurrent] = useState<number>(1);
   const [review, setReview] = useState<boolean[]>([]);
   const [hasPassage, setHasPassage] = useState<number[]>([]);
   const [time, setTime] = useState<number>(0);
-  const timer = useRef<HTMLDivElement | null>(null);
   const [ans, setAns] = useState<Record<number, number>>({});
   const [attemptId, setAttemptId] = useState<string | null>(null);
-  // const [choose, setChoose] = useState<Record<number, boolean>>({
-  //   0: false,
-  //   1: false,
-  //   2: false,
-  //   3: false,
-  // });
   const [score, setScore] = useState<number | null>(null);
+  const [title, setTitle] = useState<string>("");
+
+  const timer = useRef<HTMLDivElement | null>(null);
   const ansRef = useRef(ans);
   const reviewRef = useRef(review);
   const isSubmitted = score !== null;
-  const [title, setTitle] = useState<string>("");
 
   // Cập nhật Ref mỗi khi state thay đổi
   useEffect(() => {
@@ -50,6 +44,7 @@ function RouteComponent() {
   useEffect(() => {
     reviewRef.current = review;
   }, [review]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -280,6 +275,23 @@ function RouteComponent() {
     // });
   };
 
+  const getQuestionType = (
+    type: "multiple_choice" | "fill_blank" | "arrangement" | "matching",
+  ) => {
+    switch (type) {
+      case "multiple_choice":
+        return "Multiple Choice";
+      case "fill_blank":
+        return "Fill In The Blank";
+      case "arrangement":
+        return "Ordering";
+      case "matching":
+        return "Matching";
+      default:
+        return "Không xác định";
+    }
+  };
+
   const handleFinalSubmit = async (
     currentAttemptId: string,
     currentExam: QuizContentRESP,
@@ -337,6 +349,7 @@ function RouteComponent() {
   const numQ: number = exam.questionsNo;
   const questions = exam.questions;
   const question = questions[current - 1];
+  const questionType = getQuestionType(question.type);
   const content = question.content;
   const optList = question.answerList;
   const progress: number = (time / (exam.time * 60)) * 100;
@@ -484,7 +497,8 @@ function RouteComponent() {
             </button>
           </div>
 
-          <p className="w-full h-69 mt-4 mb-6 border-x-0 text-lg overflow-y-auto content-center text-justify pr-1 whitespace-pre-line">
+          <span className="font-semibold">{questionType}</span>
+          <p className="w-full h-69 mt-2 mb-6 border-x-0 text-lg overflow-y-auto content-center text-justify pr-1 whitespace-pre-line">
             {passage}
           </p>
           <span className="font-bold text-xl text-justify wrap-normal w-full h-14 mb-4 content-center block">
