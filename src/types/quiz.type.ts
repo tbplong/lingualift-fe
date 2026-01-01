@@ -23,7 +23,7 @@ export type Question = {
   isGroupQ: boolean; // true if part of a passage group
 
   answerList: AnswerOption[]; // the options (A, B, C, D)
-  answerKey: number | number[]; // correct option index or indices
+  answerKey: number; // correct option index or indices
   explanation?: string;
 };
 

@@ -3,8 +3,12 @@ import AnsBox from "@/pages/quiz/AnsBox";
 import Chosen from "@/pages/quiz/Chosen";
 import ConfirmSubmission from "@/pages/quiz/ConfirmSubmission";
 import { timeFormat } from "@/pages/quiz/timer";
+import AttemptService, {
+  CreateAttemptRequest,
+} from "@/services/attempt/attempt.service";
 import QuizService from "@/services/quiz/quiz.service";
 import { QuizContentRESP } from "@/services/quiz/response/quiz.response";
+import { UserAnswer } from "@/types/attempt.type";
 // import { mockQuiz } from "@/types/quiz.type";
 import { createFileRoute } from "@tanstack/react-router";
 import clsx from "clsx";
@@ -26,6 +30,7 @@ function RouteComponent() {
   const [time, setTime] = useState<number>(0);
   const timer = useRef<HTMLDivElement | null>(null);
   const [ans, setAns] = useState<Record<number, number>>({});
+  const [attemptId, setAttemptId] = useState<string | null>(null);
   // const [choose, setChoose] = useState<Record<number, boolean>>({
   //   0: false,
   //   1: false,
@@ -33,13 +38,101 @@ function RouteComponent() {
   //   3: false,
   // });
   const [score, setScore] = useState<number | null>(null);
+  const ansRef = useRef(ans);
+  const reviewRef = useRef(review);
   const isSubmitted = score !== null;
+  const [title, setTitle] = useState<string>("");
 
+  // Cập nhật Ref mỗi khi state thay đổi
+  useEffect(() => {
+    ansRef.current = ans;
+  }, [ans]);
+  useEffect(() => {
+    reviewRef.current = review;
+  }, [review]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await QuizService.getQuizContent(quizId);
-        setExam(res.data);
+        // BƯỚC 1: Lấy nội dung Quiz
+        const quizRes = await QuizService.getQuizContent(quizId);
+        const quizData = quizRes.data;
+        console.log(quizData);
+        setExam(quizData);
+        setTitle(quizData.title);
+
+        // --- LOGIC HAS PASSAGE (Thay thế vòng lặp for cũ) ---
+        const passageIndices: number[] = [];
+        quizData.questions.forEach((q, i) => {
+          if (q.passage) passageIndices.push(i);
+        });
+        setHasPassage(passageIndices);
+
+        // BƯỚC 2: Check xem user đã có lượt làm bài nào cho Quiz này chưa (chưa hoàn thành)
+        const attemptRes = await AttemptService.getAttemptsByQuizId(
+          quizId,
+          false,
+        );
+        const existingAttempts = attemptRes.data.attempts;
+        console.log(existingAttempts);
+
+        // Khởi tạo giá trị mặc định (Default)
+        const initialAns: Record<number, number> = {};
+        const initialReview: boolean[] = new Array(
+          quizData.questionsNo + 1,
+        ).fill(false);
+        let initialTime = quizData.time * 60;
+
+        for (let key = 1; key <= quizData.questionsNo; key++) {
+          initialAns[key] = -1;
+        }
+
+        if (existingAttempts.length > 0) {
+          const last = existingAttempts[0];
+
+          // Nếu đã có lượt đang làm, lấy ID lượt đó
+          console.log("Resuming existing attempt...");
+          setAttemptId(last._id);
+          console.log(last);
+          if (last.answers) {
+            last.answers.forEach((a: UserAnswer) => {
+              initialAns[a.questionIndex] = a.selectedAnswer;
+            });
+          }
+
+          if (last.markedForReview) {
+            last.markedForReview.forEach((idx: number) => {
+              if (idx < initialReview.length) initialReview[idx] = true;
+            });
+          }
+
+          const elapsed = last.timeTaken || 0;
+          initialTime = quizData.time * 60 - elapsed;
+
+          // (Tùy chọn) Nếu bạn muốn load lại đáp án cũ đã lưu:
+          // setAns(existingAttempts[0].answers);
+        } else {
+          // BƯỚC 3: Nếu chưa có, tạo mới một lượt làm bài (POST)
+          console.log("Creating new attempt...");
+
+          console.log(quizData._id);
+          const newAttemptData: CreateAttemptRequest = {
+            quizId: quizData._id,
+            quizTitle: quizData.title,
+            startTime: new Date().toISOString(),
+            totalQuestions: quizData.questionsNo,
+            isCompleted: false,
+            answers: [], // Khởi tạo mảng rỗng
+            markedForReview: [],
+          };
+
+          console.log(quizData._id);
+          const createRes = await AttemptService.createAttempt(newAttemptData);
+          setAttemptId(createRes.data._id);
+        }
+        // CẬP NHẬT STATE 1 LẦN DUY NHẤT ĐỂ TRÁNH XUNG ĐỘT
+        setAns(initialAns);
+        setReview(initialReview);
+        setTime(initialTime > 0 ? initialTime : 0);
       } catch (error) {
         console.error("Failed to fetch quiz", error);
       }
@@ -47,43 +140,99 @@ function RouteComponent() {
     fetchData();
   }, [quizId]);
 
+  // useEffect(() => {
+  //   if (!exam) return;
+  //   setTime(60 * exam.time);
+  //   console.log(exam);
+
+  //   for (let i = 0; i < exam.questionsNo; i++) {
+  //     if (exam.questions[i].passage) setHasPassage((prev) => [...prev, i]);
+  //   }
+
+  //   for (let key = 1; key <= exam.questionsNo; key++) {
+  //     setAns((prev) => ({
+  //       ...prev,
+  //       [key]: -1,
+  //     }));
+  //     setReview((prev) => ({
+  //       ...prev,
+  //       [key]: false,
+  //     }));
+  //   }
+  // }, [exam]);
+
   useEffect(() => {
-    if (!exam) return;
-    setTime(60 * exam.time);
-    console.log(exam);
-
-    for (let i = 0; i < exam.questionsNo; i++) {
-      if (exam.questions[i].passage) setHasPassage((prev) => [...prev, i]);
-    }
-
-    for (let key = 1; key <= exam.questionsNo; key++) {
-      setAns((prev) => ({
-        ...prev,
-        [key]: -1,
-      }));
-      setReview((prev) => ({
-        ...prev,
-        [key]: false,
-      }));
-    }
-  }, [exam]);
-
-  useEffect(() => {
-    if (!exam) return;
+    if (!exam || !attemptId || isSubmitted) return;
     const timerID = setInterval(() => {
       setTime((prev) => {
         if (prev <= 0) {
           clearInterval(timerID);
-          alert("Time's up!");
+          handleFinalSubmit(
+            attemptId,
+            exam,
+            title,
+            ansRef.current,
+            reviewRef.current,
+            0,
+          );
           if (timer.current) timer.current.innerHTML = timeFormat(0);
           return 0;
         }
         const next = prev - 1;
+        if (next > 0 && next % 1 === 0) {
+          handleAutoSync(
+            attemptId,
+            exam,
+            title,
+            ansRef.current,
+            reviewRef.current,
+            next,
+          );
+        }
         return next;
       });
     }, 1000);
     return () => clearInterval(timerID);
-  }, [exam]);
+  }, [exam, attemptId, isSubmitted, title]);
+
+  // 1. Hàm Sync nhận tham số
+  const handleAutoSync = async (
+    currentAttemptId: string,
+    currentExam: QuizContentRESP,
+    currentTitle: string,
+    currentAns: Record<number, number>,
+    currentReview: boolean[],
+    remainingTime: number,
+  ) => {
+    if (!currentAttemptId || !currentExam || !Array.isArray(currentReview))
+      return;
+
+    const formattedAnswers: UserAnswer[] = Object.entries(currentAns).map(
+      ([idx, selected]) => ({
+        questionIndex: Number(idx),
+        selectedAnswer: selected,
+        isCorrect: false,
+      }),
+    );
+
+    const markedIndices = currentReview
+      .map((val, idx) => (val ? idx : -1))
+      .filter((idx) => idx > 0);
+
+    const syncData = {
+      _id: currentAttemptId,
+      timeTaken: currentExam.time * 60 - remainingTime,
+      answers: formattedAnswers,
+      markedForReview: markedIndices,
+    };
+
+    try {
+      await AttemptService.updateAttemptById(currentAttemptId, syncData);
+      console.log("Auto-save successful");
+    } catch (err) {
+      console.error("Auto-save failed", err);
+    }
+  };
 
   const chooseAns = (chooseNo: number) => {
     // for (let i = 0; i < 4; i++) {
@@ -131,22 +280,57 @@ function RouteComponent() {
     // });
   };
 
-  const submitQuiz = () => {
-    if (!exam || !exam.questions) return;
-    let correctCount = 0;
-    exam.questions.forEach((q, i) => {
-      // Lưu ý: ans dùng key bắt đầu từ 1, còn index mảng bắt đầu từ 0
-      // Kiểm tra kỹ xem bạn đang dùng ans[index] hay ans[index + 1]
-      const userAnswer = ans[i + 1];
+  const handleFinalSubmit = async (
+    currentAttemptId: string,
+    currentExam: QuizContentRESP,
+    currentTitle: string,
+    currentAns: Record<number, number>,
+    currentReview: boolean[],
+    currentTime: number,
+  ) => {
+    if (!currentAttemptId || !currentExam) return;
 
-      if (userAnswer === q.answerKey) {
-        correctCount++;
-      }
+    let correctCount = 0;
+    currentExam.questions.forEach((q, i) => {
+      if (currentAns[i + 1] === q.answerKey) correctCount++;
     });
-    setScore(correctCount);
-    setOpenSub(false);
+
+    const formattedAnswers: UserAnswer[] = Object.entries(currentAns).map(
+      ([idx, selected]) => ({
+        questionIndex: Number(idx),
+        selectedAnswer: selected,
+        isCorrect:
+          currentAns[Number(idx)] ===
+          currentExam.questions[Number(idx) - 1].answerKey,
+      }),
+    );
+
+    const markedIndices = currentReview
+      .map((val, idx) => (val ? idx : -1))
+      .filter((idx) => idx > 0);
+
+    const finalData = {
+      _id: currentAttemptId,
+      timeTaken: currentExam.time * 60 - currentTime,
+      answers: formattedAnswers,
+      markedForReview: markedIndices,
+      score: correctCount,
+      isCompleted: true,
+    };
+
+    try {
+      await AttemptService.updateAttemptById(currentAttemptId, finalData);
+      setScore(correctCount); // Setter của useState là an toàn
+      setOpenSub(false);
+      alert(
+        `Nộp bài thành công! Điểm: ${correctCount}/${currentExam.questionsNo}`,
+      );
+    } catch (err) {
+      console.error("Submit failed", err);
+    }
   };
-  console.log(ans);
+
+  // console.log(ans);
   if (!exam || !Array.isArray(exam.questions) || exam.questions.length === 0) {
     return <div className="p-10 text-center">Loading Quiz Data...</div>;
   }
@@ -212,7 +396,11 @@ function RouteComponent() {
           <div className="flex flex-row justify-between items-center w-52">
             <button
               onClick={() =>
-                setReview((prev) => ({ ...prev, [current]: !review[current] }))
+                setReview((prev) => {
+                  const nextReview = [...prev]; // Copy mảng cũ
+                  nextReview[current] = !nextReview[current]; // Cập nhật phần tử tại vị trí current
+                  return nextReview; // Trả về mảng mới
+                })
               }
               className="btn bg-white border-2 border-tertiary p-2 rounded-md w-auto h-10 drop-shadow-lg"
             >
@@ -356,12 +544,15 @@ function RouteComponent() {
                   loadQuiz={loadQuiz}
                   isCurrent={Number(key) === current}
                   isReview={review[Number(key)]}
+                  isSubmitted={isSubmitted}
+                  correctAnswer={exam.questions[Number(key) - 1].answerKey}
                 />
               );
             })}
           </div>
           <button
             onClick={() => setOpenSub(true)}
+            disabled={isSubmitted} // Không cho bấm sau khi đã nộp
             className="btn h-16 absolute bottom-8 w-59 bg-secondary hover:border-2 hover:bg-white hover:border-secondary rounded-xl text-white hover:text-secondary text-3xl font-semibold transition-all duration-100 cursor-pointer"
           >
             Submit
@@ -373,7 +564,18 @@ function RouteComponent() {
         onClose={async () => {
           setOpenSub(false);
         }}
-        confirmSubmit={submitQuiz}
+        confirmSubmit={() => {
+          if (attemptId && exam) {
+            handleFinalSubmit(
+              attemptId,
+              exam,
+              title,
+              ansRef.current,
+              reviewRef.current,
+              time,
+            );
+          }
+        }}
       ></ConfirmSubmission>
     </div>
   );

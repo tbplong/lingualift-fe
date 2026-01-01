@@ -1,6 +1,7 @@
 import { Setting, Trash } from "@/components/icons";
 import QuizService from "@/services/quiz/quiz.service";
 import { QuizsResponse } from "@/services/quiz/response/quiz.response";
+import { useUserStore } from "@/stores/user.store";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
@@ -10,7 +11,7 @@ export const Route = createFileRoute("/quiz/")({
 });
 
 function RouteComponent() {
-  const isManager: boolean = true;
+  const { user } = useUserStore();
   const navigate = useNavigate();
   const takeExam = (id: string) => {
     navigate({ to: `/quiz/${id}` });
@@ -39,16 +40,18 @@ function RouteComponent() {
   }
   return (
     <>
-      <div className="flex flex-row px-10 py-4 justify-end">
-        <div
-          className="btn border-2 border-secondary text-white text-xl bg-secondary hover:shadow-md hover:-translate-y-0.5 transition-all w-fit p-2 rounded-lg font-semibold"
-          onClick={() => {
-            createExam();
-          }}
-        >
-          Create New Exam
+      {user?.isManager && (
+        <div className="flex flex-row px-10 py-4 justify-end">
+          <div
+            className="btn border-2 border-secondary text-white text-xl bg-secondary hover:shadow-md hover:-translate-y-0.5 transition-all w-fit p-2 rounded-lg font-semibold"
+            onClick={() => {
+              createExam();
+            }}
+          >
+            Create New Exam
+          </div>
         </div>
-      </div>
+      )}
       <div className="px-10 grid grid-cols-4 gap-6 w-full">
         {Object.entries(exams.quizs).map(([key, quiz]) => {
           return (
@@ -68,7 +71,7 @@ function RouteComponent() {
                     <div
                       className={clsx(
                         "card-actions w-10",
-                        isManager ? "" : "hidden",
+                        user?.isManager ? "" : "hidden",
                       )}
                     >
                       <button
@@ -99,7 +102,7 @@ function RouteComponent() {
                     <div
                       className={clsx(
                         "card-actions w-10",
-                        isManager ? "" : "hidden",
+                        user?.isManager ? "" : "hidden",
                       )}
                     >
                       <button

@@ -8,15 +8,18 @@ export interface CreateAttemptRequest {
   quizId: string;
   quizTitle: string;
   startTime: string;
-  endTime: string;
-  timeTaken: number;
-  score: number;
+
   totalQuestions: number;
   answers: {
     questionIndex: number;
     selectedAnswer: number;
-    isCorrect: boolean;
+    // isCorrect: boolean;
   }[];
+  endTime?: string;
+  timeTaken?: number;
+  score?: number;
+  remainingTime?: number;
+  isCompleted?: boolean; // Mặc định thường là false khi POST
   markedForReview?: number[];
 }
 
@@ -31,8 +34,14 @@ const AttemptService = {
   },
 
   // Get all attempts for a specific quiz
-  getAttemptsByQuizId: async (quizId: string) => {
-    return await axios.get<AttemptsResponse>(`${url}/?quizId=${quizId}`);
+  getAttemptsByQuizId: async (quizId: string, completedOnly: boolean) => {
+    return await axios.get<AttemptsResponse>(
+      `${url}/?quizId=${quizId}&completedOnly=${completedOnly}`,
+    );
+  },
+
+  updateAttemptById: async (attemptId: string, updateAttempt: QuizAttempt) => {
+    return await axios.patch<QuizAttempt>(`${url}/${attemptId}`, updateAttempt);
   },
 
   // Get a specific attempt by ID

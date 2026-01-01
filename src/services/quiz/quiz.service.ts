@@ -2,6 +2,7 @@ import { API_URL } from "@/config/env";
 import { Quiz } from "@/types/quiz.type";
 import axios from "@/utils/custom-axios";
 import { QuizCreateREQ } from "./request/quiz.request";
+import { QuizsResponse } from "./response/quiz.response";
 
 const url = `${API_URL}/v1/quizs`;
 
@@ -13,7 +14,7 @@ const QuizService = {
     return await axios.get<Quiz>(`${url}/${id}`);
   },
   getQuizsMeta: async () => {
-    return await axios.get<Quiz>(`${url}/`);
+    return await axios.get<QuizsResponse>(`${url}/`);
   },
   updateQuiz: async (id: string, data: QuizCreateREQ) => {
     return await axios.patch<Quiz>(`${url}/${id}`, data);
