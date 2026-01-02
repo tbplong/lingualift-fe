@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ProfileIcon, YoutubeColor, YoutubeWhite } from "./icons";
+import { YoutubeColor, YoutubeWhite } from "./icons";
 import { MessengerColor, MessengerWhite } from "./icons";
 import { FacebookColor, FacebookWhite } from "./icons";
 import { TiktokColor, TiktokWhite } from "./icons";
@@ -63,17 +63,21 @@ export function Header() {
         "
             >
               {" "}
-              <div
+              {/* <div
                 style={{ backgroundImage: `url(${user?.picture})` }}
                 className={`${user?.picture ? "" : "flex items-center justify-center bg-tertiary"} relative size-8 rounded-full bg-cover xl:size-10`}
               >
                 {user?.picture ? (
-                  <></>
+                  <img
+                    src={user?.picture}
+                    alt="Profile"
+                    className="size-8 rounded-full"
+                  />
                 ) : (
                   <ProfileIcon className="size-8 fill-white" />
                 )}
-              </div>
-              <span className="ml-4">Đến trang chủ</span>
+              </div> */}
+              <span className="ml-4">To Study Place</span>
             </Link>
           ) : (
             <Link
@@ -144,9 +148,8 @@ export function Header() {
                 <nav className="col-span-12 lg:col-span-7 flex items-center">
                   <ul className="w-full space-y-6 md:space-y-9">
                     {[
-                      { label: "KHOÁ HỌC", href: "/courses" },
-                      { label: "TRANG HỌC TẬP", href: "/study" },
-                      { label: "ĐỐI TÁC", href: "/partners" },
+                      { label: "STUDY PLACE", href: "/dashboard" },
+                      { label: "PRIVACY & POLICY", href: "/privacy" },
                     ].map((item) => (
                       <li key={item.label} className="group">
                         <Link
@@ -157,12 +160,10 @@ export function Header() {
                           <span className="absolute left-0 -bottom-2 h-[3px] w-0 bg-primary transition-all duration-300 group-hover:w-full"></span>
                         </Link>
                         <p className="mt-2 text-slate-500 text-base md:text-lg opacity-0 group-hover:opacity-100 transition">
-                          {item.label === "KHOÁ HỌC" &&
-                            "Danh mục, lịch khai giảng, học phí"}
-                          {item.label === "TRANG HỌC TẬP" &&
-                            "Bài giảng, tài liệu, bài tập"}
-                          {item.label === "ĐỐI TÁC" &&
-                            "Kết nối trường học & doanh nghiệp"}
+                          {item.label === "STUDY PLACE" &&
+                            "Access your personalized study dashboard"}
+                          {item.label === "PRIVACY & POLICY" &&
+                            "Read our privacy policy to learn more about how we handle your data."}
                         </p>
                       </li>
                     ))}
@@ -178,7 +179,7 @@ export function Header() {
                       id="contact-title"
                       className="text-2xl md:text-3xl font-bold text-yellow-500"
                     >
-                      Thông tin liên hệ
+                      Contact Information
                     </h3>
 
                     <ul className="mt-5 space-y-4 text-slate-700">
@@ -214,10 +215,10 @@ export function Header() {
                           />
                         </svg>
                         <a
-                          href="mailto:sang.truong2005@hcmut.edu.vn"
+                          href="mailto:lingualift@gmail.com"
                           className="truncate hover:text-blue-700"
                         >
-                          sang.truong2005@hcmut.edu.vn
+                          lingualift@gmail.com
                         </a>
                       </li>
                       <li className="flex items-center gap-3">
@@ -232,13 +233,13 @@ export function Header() {
                             d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 119.5 9 2.5 2.5 0 0112 11.5z"
                           />
                         </svg>
-                        <span>Việt Nam</span>
+                        <span>Vietnam</span>
                       </li>
                     </ul>
 
                     <div className="mt-8">
                       <h4 className="text-lg font-semibold text-slate-800 mb-4">
-                        Kết nối với Chúng Tôi
+                        Connecting with us
                       </h4>
                       <div className="flex flex-wrap gap-4 mb-6">
                         <a
@@ -281,16 +282,16 @@ export function Header() {
 
                     <div className="mt-8 flex flex-wrap gap-3">
                       <a
-                        href="/contact"
+                        href="mailto:lingualift@gmail.com"
                         className="px-4 py-2 rounded-xl bg-primary-600 text-white hover:bg-primary"
                       >
-                        Liên hệ ngay
+                        Contact Us
                       </a>
                       <a
-                        href="/about"
+                        href="/"
                         className="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50"
                       >
-                        Về chúng tôi
+                        About Us
                       </a>
                     </div>
                   </section>

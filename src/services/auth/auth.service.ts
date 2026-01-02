@@ -45,7 +45,7 @@ const AuthService = {
     }>(`${url}/google`, { idToken });
   },
   logout: async () => {
-    await axios.post<void>(`${url}/logout`);
+    await axios.delete<void>(`${url}/logout`);
   },
 };
 

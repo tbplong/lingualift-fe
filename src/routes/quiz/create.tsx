@@ -1,11 +1,18 @@
 import { QuestionItem, QuestionItemRef } from "@/pages/quiz/QuestionItem";
 import QuizService from "@/services/quiz/quiz.service";
 import { QuizCreateREQ } from "@/services/quiz/request/quiz.request";
-import { mockQuiz, Question } from "@/types";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Question } from "@/types";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 
 export const Route = createFileRoute("/quiz/create")({
+  beforeLoad: ({ context }) => {
+    if (!context.authContext.isManager) {
+      toast.error("You are not authorized to access this page.");
+      throw redirect({ to: "/" });
+    }
+  },
   component: RouteComponent,
 });
 
@@ -148,8 +155,8 @@ function RouteComponent() {
   };
 
   return (
-    <div className="flex flex-row items-center h-dvh w-full">
-      <div className="flex flex-col w-1/2 ml-3">
+    <div className="flex flex-row items-start h-dvh w-full">
+      <div className="flex flex-col w-1/2 ml-4 mt-4">
         <div className="flex flex-col">
           <span className="font-bold text-4xl text-primary">Title:</span>
           <input
@@ -197,7 +204,7 @@ function RouteComponent() {
           >
             New Question
           </button>
-          <button
+          {/* <button
             className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl"
             onClick={async () => {
               console.log((await QuizService.createQuiz(mockQuiz)).data);
@@ -205,7 +212,7 @@ function RouteComponent() {
             }}
           >
             Add by JSON
-          </button>
+          </button> */}
           {/* <button
             className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl"
             onClick={handleSaveChanges}

@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import MoveProTicker from "./Marquee";
 export default function Hero() {
   return (
@@ -45,8 +46,8 @@ export default function Hero() {
               </p>
 
               <div className="mt-7 2xs:mt-0 flex flex-wrap items-center gap-6 2xl:gap-8 pt-8 justify-center 2xl:justify-start">
-                <a
-                  href="#"
+                <Link
+                  to={"/dashboard"}
                   className="inline-flex items-center rounded-full bg-primary text-white font-medium shadow-sm
                              px-5 py-3 text-sm
                              sm:px-6 sm:py-3.5 sm:text-lg
@@ -56,13 +57,7 @@ export default function Hero() {
                              active:scale-[0.99] transition whitespace-nowrap"
                 >
                   Get Started
-                </a>
-                <a
-                  href="#"
-                  className="text-blue-700 underline-offset-4 hover:underline text-base sm:text-lg 2xl:text-2xl"
-                >
-                  Schedule a Call
-                </a>
+                </Link>
               </div>
 
               <div className="mt-6 sm:mt-8 md:mt-15 2xl:mt-20 2xl:col-span-6 2xl:col-start-1 2xl:self-start text-center">

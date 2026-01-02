@@ -1,18 +1,24 @@
 // src/components/layout/Sidebar.tsx
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { ReactNode } from "react";
-import { toast } from "react-toastify";
 import {
   LayoutDashboard,
   PlusCircle,
   Library,
   User,
   LogOut,
+  Book,
 } from "lucide-react";
+import { useUserStore } from "@/stores/user.store";
+import AuthService from "@/services/auth/auth.service";
+import storage from "@/utils/storage";
+import { useAuthStore } from "@/stores";
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const pathname = useRouterState().location.pathname;
+  const { user, setUser } = useUserStore();
+  const { setToken, setIsAuthenticated } = useAuthStore();
 
   return (
     <aside className="w-20 lg:w-64 xl:w-72 bg-white border-r border-slate-200 flex flex-col justify-between z-20 transition-all duration-300">
@@ -41,32 +47,61 @@ export default function Sidebar() {
           />
 
           <NavItem
-            to="/quiz"
-            icon={<PlusCircle size={20} />}
-            label="New Practice"
-            active={pathname.startsWith("/practice")}
+            to="/exam"
+            icon={<Book size={20} />}
+            label="Exam"
+            active={pathname === "/exam"}
           />
 
           <NavItem
-            to="#"
+            to="/quiz"
             icon={<Library size={20} />}
             label="Quiz Library"
-            active={pathname.startsWith("/library")}
+            active={pathname === "/quiz"}
           />
 
           <NavItem
             to="/profile"
             icon={<User size={20} />}
             label="Profile"
-            active={pathname.startsWith("/profile")}
+            active={pathname === "/profile"}
           />
         </nav>
+
+        {user?.isManager && (
+          <>
+            <h1 className="px-3 lg:px-4 text-lg font-bold text-slate-500 tracking-wider mt-4">
+              Admin Panel
+            </h1>
+            <nav className="px-3 lg:px-4 space-y-2 mt-4">
+              <NavItem
+                to="/exam/create"
+                icon={<Book size={20} />}
+                label="Create Exam"
+                active={pathname === "/exam/create"}
+              />
+              <NavItem
+                to="/quiz/create"
+                icon={<PlusCircle size={20} />}
+                label="Create Quiz"
+                active={pathname === "/quiz/create"}
+              />
+            </nav>
+          </>
+        )}
       </div>
 
       {/* ========== BOTTOM ========== */}
       <div className="p-4 border-t border-slate-100 mb-4">
         <button
-          onClick={() => toast.info("Logging out...")}
+          onClick={async () => {
+            await AuthService.logout();
+            storage.removeItem("token");
+            setIsAuthenticated(false);
+            setToken("");
+            setUser(null);
+            navigate({ to: "/" });
+          }}
           className="w-full flex items-center justify-center lg:justify-start gap-3 py-3 px-4
           text-slate-500 font-medium rounded-xl
           hover:bg-red-50 hover:text-red-600 transition-all"
