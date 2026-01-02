@@ -468,7 +468,7 @@ function RouteComponent() {
             </button>
 
             <span className="font-semibold flex justify-center items-center w-36 text-tertiary text-2xl">
-              Quesion {current}
+              Question {current}
             </span>
             <button
               onClick={() => {

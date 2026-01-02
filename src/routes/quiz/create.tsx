@@ -83,17 +83,17 @@ function RouteComponent() {
   );
 
   // 2. Hàm Save Changes chính
-  const handleSaveChanges = () => {
-    // Thu thập dữ liệu từ tất cả các con
-    const updatedQuestions = questionRefs.current.map((ref, i) => {
-      if (ref) return ref.getData();
-      return questions[i]; // Fallback nếu ref bị null
-    });
+  // const handleSaveChanges = () => {
+  //   // Thu thập dữ liệu từ tất cả các con
+  //   const updatedQuestions = questionRefs.current.map((ref, i) => {
+  //     if (ref) return ref.getData();
+  //     return questions[i]; // Fallback nếu ref bị null
+  //   });
 
-    setQuestions(updatedQuestions);
-    console.log("Dữ liệu đã được đồng bộ lên State chính:", updatedQuestions);
-    alert("Local changes saved to main state!");
-  };
+  //   setQuestions(updatedQuestions);
+  //   console.log("Dữ liệu đã được đồng bộ lên State chính:", updatedQuestions);
+  //   alert("Local changes saved to main state!");
+  // };
 
   const handleCreateExam = async () => {
     // Trước khi tạo Exam, cũng nên thực hiện save 1 lần để đảm bảo data mới nhất
@@ -211,12 +211,12 @@ function RouteComponent() {
           >
             Add by JSON
           </button>
-          <button
+          {/* <button
             className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl"
             onClick={handleSaveChanges}
           >
             Save Changes
-          </button>
+          </button> */}
           <button
             className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl"
             onClick={handleCreateExam}
