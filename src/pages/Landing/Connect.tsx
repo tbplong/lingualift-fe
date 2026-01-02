@@ -20,7 +20,7 @@ export function Connect() {
         <span className="text-primary">Chúng Tôi</span>
       </h2>
 
-      <div className="relative mt-6 sm:mt-8 w-[92vw] max-w-[1400px] mx-auto flex justify-center">
+      <div className="relative mt-6 sm:mt-8 w-[75vw] max-w-[1400px] mx-auto flex justify-center">
         <div className="relative bg-primary rounded-md px-4 sm:px-6 md:px-10 py-6 sm:py-10 md:py-14 w-full">
           <div className="absolute inset-0 translate-x-2 translate-y-2 sm:translate-x-4 sm:translate-y-4 bg-secondary rounded-md -z-10"></div>
 

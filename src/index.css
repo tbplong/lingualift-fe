@@ -119,25 +119,39 @@
   /* Project Theme */
   /* Primary */
   --color-primary: #0329e9;
-  --color-primary-100: #d1e4fb;
-  --color-primary-200: #007def;
-  --color-primary-300: #6c89f3;
+  --color-primary-100: #87beff;
+  --color-primary-200: #5893ff;
+  --color-primary-300: #3369ff;
   --color-primary-600: #2563eb;
-  --color-primary-700: #021ba8;
+  --color-primary-700: #092bca;
   --color-primary-1200: #0b2a6f;
 
   /* Secondary */
   --color-secondary: #f9ba08;
-  --color-secondary-300: #fcd75e;
-  --color-secondary-700: #c18706;
-  --color-secondary-100: #fef3c7;
+  --color-secondary-100: #fffac6;
+  --color-secondary-300: #ffe94a;
+  --color-secondary-700: #dd8f02;
+  --color-secondary-900: #b76706;
 
   /* Tertiary */
   --color-tertiary: #3d4863;
-  --color-tertiary-300: #7c86a3;
-  --color-tertiary-700: #242c3f;
-  --color-tertiary-100: #afb9ca;
-  --color-tertiary-000: #ebeff3;
+  --color-tertiary-000: #ebedf3;
+  --color-tertiary-100: #adb7cc;
+  --color-tertiary-300: #617396;
+  --color-tertiary-700: #364056;
+  --color-tertiary-900: #313749;
+
+  /* Quaternary */
+  --color-quaternary: #ff2323;
+  --color-quaternary-100: #ffdddd;
+  --color-quaternary-300: #ff9494;
+  --color-quaternary-700: #d70000;
+  --color-quaternary-900: #920a0a;
+
+  /* Success */
+  --color-success: #3dc13c;
+  --color-success-300: #81c995;
+  --color-success-700: #108b31;
 
   --color-blue: #4285f4;
   --color-blue-300: #8ab4f8;
