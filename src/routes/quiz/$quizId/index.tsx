@@ -55,23 +55,31 @@ const calculateQuizStats = (attempts: QuizAttempt[]) => {
   }
 
   const scores = completedAttempts.map(
-    (a) => (a.score / a.totalQuestions) * 100,
+    (a) => ((a.score ?? 0) / (a.totalQuestions ?? 1)) * 100,
   );
   const averageScore = scores.reduce((acc, s) => acc + s, 0) / scores.length;
   const bestScore = Math.max(...scores);
 
   let improvement = 0;
   if (completedAttempts.length >= 2) {
-    const sortedAttempts = [...completedAttempts].sort(
-      (a, b) => new Date(a.endTime).getTime() - new Date(b.endTime).getTime(),
-    );
-    const firstScore =
-      (sortedAttempts[0].score / sortedAttempts[0].totalQuestions) * 100;
-    const lastScore =
-      (sortedAttempts[sortedAttempts.length - 1].score /
-        sortedAttempts[sortedAttempts.length - 1].totalQuestions) *
-      100;
-    improvement = lastScore - firstScore;
+    const sortedAttempts = [...completedAttempts]
+      .filter((a) => a.endTime && a.score !== undefined && a.totalQuestions)
+      .sort(
+        (a, b) =>
+          new Date(a.endTime!).getTime() - new Date(b.endTime!).getTime(),
+      );
+
+    if (sortedAttempts.length >= 2) {
+      const firstScore =
+        ((sortedAttempts[0].score ?? 0) /
+          (sortedAttempts[0].totalQuestions ?? 1)) *
+        100;
+      const lastScore =
+        ((sortedAttempts[sortedAttempts.length - 1].score ?? 0) /
+          (sortedAttempts[sortedAttempts.length - 1].totalQuestions ?? 1)) *
+        100;
+      improvement = lastScore - firstScore;
+    }
   }
 
   return {
@@ -192,6 +200,7 @@ function RouteComponent() {
   }
 
   const getScoreColor = (score: number, total: number) => {
+    if (!score || !total) return "text-quaternary";
     const percentage = (score / total) * 100;
     if (percentage >= 80) return "text-success";
     if (percentage >= 60) return "text-secondary-700";
@@ -199,6 +208,7 @@ function RouteComponent() {
   };
 
   const getScoreBgColor = (score: number, total: number) => {
+    if (!score || !total) return "bg-quaternary/10";
     const percentage = (score / total) * 100;
     if (percentage >= 80) return "bg-success/10";
     if (percentage >= 60) return "bg-secondary/10";
@@ -260,7 +270,7 @@ function RouteComponent() {
                   <div className="flex items-center gap-3">
                     <Clock className="text-secondary" size={18} />
                     <span className="text-slate-700">
-                      Started {formatDate(attempt.startTime)}
+                      Started {formatDate(attempt.startTime ?? "")}
                     </span>
                   </div>
                   <ChevronRight className="text-secondary" size={20} />
@@ -368,15 +378,15 @@ function RouteComponent() {
 
                     {/* Score Badge */}
                     <div
-                      className={`w-14 h-14 rounded-2xl flex flex-col items-center justify-center ${getScoreBgColor(attempt.score, attempt.totalQuestions)}`}
+                      className={`w-14 h-14 rounded-2xl flex flex-col items-center justify-center ${getScoreBgColor(attempt.score ?? 0, attempt.totalQuestions ?? 1)}`}
                     >
                       <span
-                        className={`text-xl font-bold ${getScoreColor(attempt.score, attempt.totalQuestions)}`}
+                        className={`text-xl font-bold ${getScoreColor(attempt.score ?? 0, attempt.totalQuestions ?? 1)}`}
                       >
-                        {attempt.score}
+                        {attempt.score ?? 0}
                       </span>
                       <span className="text-[10px] text-slate-400">
-                        /{attempt.totalQuestions}
+                        /{attempt.totalQuestions ?? 0}
                       </span>
                     </div>
 
@@ -384,18 +394,22 @@ function RouteComponent() {
                     <div>
                       <h4 className="font-semibold text-slate-800 group-hover:text-primary transition-colors">
                         {Math.round(
-                          (attempt.score / attempt.totalQuestions) * 100,
+                          ((attempt.score ?? 0) /
+                            (attempt.totalQuestions ?? 1)) *
+                            100,
                         )}
                         % Score
                       </h4>
                       <div className="flex items-center gap-4 mt-1">
                         <span className="flex items-center gap-1 text-sm text-slate-400">
                           <Calendar size={14} />
-                          {formatDate(attempt.endTime)}
+                          {attempt.endTime
+                            ? formatDate(attempt.endTime)
+                            : "Unknown date"}
                         </span>
                         <span className="flex items-center gap-1 text-sm text-slate-400">
                           <Clock size={14} />
-                          {formatTimeTaken(attempt.timeTaken)}
+                          {formatTimeTaken(attempt.timeTaken ?? 0)}
                         </span>
                       </div>
                     </div>

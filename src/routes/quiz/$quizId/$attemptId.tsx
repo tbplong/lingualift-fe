@@ -110,7 +110,7 @@ function RouteComponent() {
 
         if (attempt.isCompleted) {
           // Completed attempt - set score inView mode
-          setScore(attempt.score);
+          setScore(attempt.score ?? null);
           // Initialize marked for review from attempt data
           if (attempt.markedForReview) {
             setMarkedForReview(new Set(attempt.markedForReview));
@@ -523,11 +523,13 @@ function RouteComponent() {
               <div className="flex items-center gap-2">
                 <Trophy
                   className={clsx(
-                    displayScore / totalQuestions >= 0.8
-                      ? "text-success"
-                      : displayScore / totalQuestions >= 0.6
-                        ? "text-secondary"
-                        : "text-quaternary",
+                    displayScore && totalQuestions
+                      ? displayScore / totalQuestions >= 0.8
+                        ? "text-success"
+                        : displayScore / totalQuestions >= 0.6
+                          ? "text-secondary"
+                          : "text-quaternary"
+                      : "",
                   )}
                   size={18}
                 />
@@ -536,11 +538,13 @@ function RouteComponent() {
                   <span
                     className={clsx(
                       "font-bold",
-                      displayScore / totalQuestions >= 0.8
-                        ? "text-success"
-                        : displayScore / totalQuestions >= 0.6
-                          ? "text-secondary"
-                          : "text-quaternary",
+                      displayScore && totalQuestions
+                        ? displayScore / totalQuestions >= 0.8
+                          ? "text-success"
+                          : displayScore / totalQuestions >= 0.6
+                            ? "text-secondary"
+                            : "text-quaternary"
+                        : "",
                     )}
                   >
                     {displayScore}/{totalQuestions}
@@ -782,7 +786,9 @@ function RouteComponent() {
                   <div className="flex justify-between">
                     <span className="text-slate-500">Wrong</span>
                     <span className="font-semibold text-quaternary">
-                      {totalQuestions - displayScore}
+                      {totalQuestions && displayScore
+                        ? totalQuestions - displayScore
+                        : ""}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -797,7 +803,7 @@ function RouteComponent() {
               <div className="mt-4 p-3 bg-slate-50 rounded-xl">
                 <p className="text-xs text-slate-400 mb-1">Completed on</p>
                 <p className="text-sm font-medium text-slate-600">
-                  {formatDate(attemptData.endTime)}
+                  {formatDate(attemptData.endTime ?? "")}
                 </p>
               </div>
             </div>
