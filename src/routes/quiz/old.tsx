@@ -14,7 +14,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 
-export const Route = createFileRoute("/quiz/$quizId")({
+export const Route = createFileRoute("/quiz/old")({
   component: RouteComponent,
 });
 
@@ -353,25 +353,22 @@ function RouteComponent() {
   const content = question.content;
   const optList = question.answerList;
   const progress: number = (time / (exam.time * 60)) * 100;
-  let passage: string | undefined = question.passage;
-  // if (question.isGroupQ) {
-  //   hasPassage.forEach((i) => {
-  //     if (questions[i].groupId === question.groupId) {
-  //       passage = questions[i].passage;
-  //       return;
-  //     }
-  //   });
-  // } else if (question.passage) passage = question.passage;
-  if (question.isGroupQ && !passage) {
-    // Tìm passage từ các câu hỏi khác trong cùng group
-    const parentIndex = hasPassage.find(
-      (i) => questions[i].groupId === question.groupId,
-    );
-    if (parentIndex !== undefined) {
-      passage = questions[parentIndex].passage;
+  let passage: string | undefined = undefined; // Khởi tạo rỗng
+
+  if (question?.isGroupQ) {
+    // Chỉ khi isGroupQ = true mới lấy passage
+    passage = question.passage;
+
+    // Nếu câu này không có passage riêng thì mới đi tìm trong Group
+    if (!passage) {
+      const parentIndex = hasPassage.find(
+        (i) => questions[i].groupId === question.groupId,
+      );
+      if (parentIndex !== undefined) {
+        passage = questions[parentIndex].passage;
+      }
     }
   }
-
   return (
     <div className={clsx("drawer drawer-end h-dvh")}>
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
