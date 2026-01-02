@@ -139,8 +139,42 @@ function RouteComponent() {
   const handleStartNewAttempt = async () => {
     if (!quizMeta || isCreatingAttempt) return;
 
+    // Check if there are any in-progress attempts
+    const inProgressAttemptsList = attempts.filter((a) => !a.isCompleted);
+
+    // Show confirmation dialog
+    let shouldProceed = true;
+    if (inProgressAttemptsList.length > 0) {
+      shouldProceed = window.confirm(
+        `You have ${inProgressAttemptsList.length} in-progress attempt(s). Starting a new attempt will mark them as completed. Do you want to continue?`,
+      );
+    } else {
+      shouldProceed = window.confirm(
+        "Are you sure you want to start a new attempt?",
+      );
+    }
+
+    if (!shouldProceed) return;
+
     try {
       setIsCreatingAttempt(true);
+
+      // Mark all incomplete attempts as completed
+      if (inProgressAttemptsList.length > 0) {
+        await Promise.all(
+          inProgressAttemptsList.map((attempt) =>
+            AttemptService.updateAttemptById(attempt._id, {
+              isCompleted: true,
+              endTime: new Date().toISOString(),
+            }),
+          ),
+        );
+        console.log(
+          `Marked ${inProgressAttemptsList.length} in-progress attempt(s) as completed`,
+        );
+      }
+
+      // Create new attempt
       const newAttemptData: CreateAttemptRequest = {
         quizId: quizMeta._id,
         quizTitle: quizMeta.title,
