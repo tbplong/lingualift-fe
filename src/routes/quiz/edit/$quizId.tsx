@@ -1,4 +1,4 @@
-import { QuestionItem } from "@/pages/quiz/QuestionItem";
+import { QuestionItem, QuestionItemRef } from "@/pages/quiz/QuestionItem";
 import QuizService from "@/services/quiz/quiz.service";
 import { QuizCreateREQ } from "@/services/quiz/request/quiz.request";
 import { Question } from "@/types";
@@ -36,7 +36,7 @@ function EditRouteComponent() {
   });
 
   const [questions, setQuestions] = useState<Question[]>([]); // Khởi tạo rỗng để chờ load data
-
+  const questionRefs = useRef<(QuestionItemRef | null)[]>([]);
   // --- LOGIC MỚI: LOAD DATA TỪ API ---
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -45,15 +45,26 @@ function EditRouteComponent() {
         // Gọi API lấy nội dung Quiz cũ
         const res = await QuizService.getQuizContent(quizId);
 
-        if (res.data) {
-          console.log(res.data);
-          // Fill dữ liệu vào các field tương ứng
+        if (res.data && res.data.questions) {
+          const rawQuestions: Question[] = res.data.questions;
+
+          // BƯỚC "VÁ" DỮ LIỆU: Đồng bộ passage cho tất cả câu chung Group
+          const patchedQuestions = rawQuestions.map((q) => {
+            if (q.isGroupQ && q.groupId && !q.passage) {
+              // Tìm câu hỏi "gốc" trong mảng vừa lấy về có chứa passage của Group này
+              const source = rawQuestions.find(
+                (item) => item.groupId === q.groupId && item.passage,
+              );
+              return { ...q, passage: source?.passage || "" };
+            }
+            return q;
+          });
+
           setBaseTitle(res.data.title);
           setBaseTime(res.data.time);
-          setQuestions(res.data.questions || []);
+          setQuestions(patchedQuestions); // Set mảng đã được đồng bộ passage
 
-          // Cập nhật ref để tránh scroll xuống cuối khi vừa load xong
-          prevLengthRef.current = (res.data.questions || []).length;
+          prevLengthRef.current = patchedQuestions.length;
         }
       } catch (error) {
         console.error("Failed to load quiz data", error);
@@ -112,46 +123,62 @@ function EditRouteComponent() {
     ),
   );
 
-  // 2. Logic thay đổi câu hỏi
-  const handleQuestionChange = (
+  const syncLocalToMainState = () => {
+    const updated = questionRefs.current.map((ref, i) =>
+      ref ? ref.getData() : questions[i],
+    );
+    setQuestions(updated);
+    return updated; // Trả về để dùng ngay nếu cần
+  };
+
+  const handleUpdateExam = async () => {
+    // Đồng bộ data từ các Ref (bản nháp) về mảng chính
+    const finalQuestions = syncLocalToMainState();
+
+    const payload = QuizCreateFactory(baseTitle, baseTime, finalQuestions);
+    try {
+      await QuizService.updateQuiz(quizId, payload);
+      alert("Update successful!");
+      backToQuiz();
+    } catch (error) {
+      console.error("Update failed", error);
+    }
+  };
+  const getPassageByGroupId = (groupId: string) => {
+    const sourceQ = questions.find((q) => q.groupId === groupId && q.passage);
+    return sourceQ?.passage || "";
+  };
+
+  const handleGroupSelect = (
     index: number,
-    field: keyof Question,
-    value: string | number | boolean | undefined,
+    selectedGroupId: string,
+    newPassage?: string,
   ) => {
     setQuestions((prev) => {
       const newQuestions = [...prev];
-      newQuestions[index] = { ...newQuestions[index], [field]: value };
+
+      // 1. Cập nhật cho câu hiện tại
+      newQuestions[index] = {
+        ...newQuestions[index],
+        isGroupQ: true, // Cập nhật trạng thái này
+        groupId: selectedGroupId,
+        passage:
+          newPassage !== undefined
+            ? newPassage
+            : getPassageByGroupId(selectedGroupId),
+      };
+
+      // Cập nhật cho các câu cùng group
+      if (newPassage !== undefined && selectedGroupId !== "") {
+        return newQuestions.map((q) =>
+          q.groupId === selectedGroupId
+            ? { ...q, passage: newPassage, isGroupQ: true }
+            : q,
+        );
+      }
+
       return newQuestions;
     });
-  };
-
-  // 3. Logic thay đổi đáp án
-  const handleAnswerChange = (index: number, ansKey: number, value: string) => {
-    setQuestions((prev) => {
-      const newQ = [...prev];
-      newQ[index].answerList = newQ[index].answerList.map((a) =>
-        a.key === ansKey ? { ...a, option: value } : a,
-      );
-      return newQ;
-    });
-  };
-
-  // 4. Logic Chọn Group (Quan trọng nhất)
-  const handleGroupSelect = (index: number, selectedGroupId: string) => {
-    if (selectedGroupId === "NEW_GROUP") {
-      // Reset để nhập mới
-      handleQuestionChange(index, "groupId", "");
-      handleQuestionChange(index, "passage", "");
-    } else {
-      // Điền ID và Tự động lấy Passage từ câu hỏi gốc
-      handleQuestionChange(index, "groupId", selectedGroupId);
-      const sourceQ = questions.find(
-        (q) => q.groupId === selectedGroupId && q.passage,
-      );
-      if (sourceQ) {
-        handleQuestionChange(index, "passage", sourceQ.passage);
-      }
-    }
   };
 
   const deleteQuestion = (index: number) => {
@@ -234,24 +261,7 @@ function EditRouteComponent() {
 
           <button
             className="btn flex-1 border-none text-xl bg-green-600 hover:bg-green-700 text-white rounded-2xl"
-            onClick={async () => {
-              // GỌI HÀM UPDATE
-              // Giả sử service có hàm updateQuiz, nếu chưa có thì bạn cần thêm vào service
-              // QuizService.updateQuiz(quizId, payload)
-              try {
-                console.log(
-                  (
-                    await QuizService.updateQuiz(
-                      quizId,
-                      QuizCreateFactory(baseTitle, baseTime, questions),
-                    )
-                  ).data,
-                );
-                backToQuiz();
-              } catch (error) {
-                console.error("Update failed", error);
-              }
-            }}
+            onClick={handleUpdateExam}
           >
             Update Exam
           </button>
@@ -263,14 +273,16 @@ function EditRouteComponent() {
       >
         {questions.map((q, index) => (
           <QuestionItem
-            key={index} // Tốt nhất nên dùng key={q.id} nếu có
+            key={q.id || index} // Tốt nhất nên dùng key={q.id} nếu có
             index={index}
             q={q}
             existingGroups={existingGroups as string[]}
-            onChange={handleQuestionChange}
             onGroupSelect={handleGroupSelect}
-            onAnswerChange={handleAnswerChange}
             onDelete={deleteQuestion}
+            getPassageByGroupId={getPassageByGroupId}
+            ref={(el) => {
+              questionRefs.current[index] = el;
+            }}
           />
         ))}
       </div>

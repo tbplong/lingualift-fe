@@ -1,4 +1,4 @@
-import { QuestionItem } from "@/pages/quiz/QuestionItem";
+import { QuestionItem, QuestionItemRef } from "@/pages/quiz/QuestionItem";
 import QuizService from "@/services/quiz/quiz.service";
 import { QuizCreateREQ } from "@/services/quiz/request/quiz.request";
 import { mockQuiz, Question } from "@/types";
@@ -20,7 +20,7 @@ function RouteComponent() {
     content: "",
     passage: undefined,
     type: "multiple_choice",
-    isGroupQ: true,
+    isGroupQ: false,
     answerList: [
       { key: 0, option: "" },
       { key: 1, option: "" },
@@ -31,6 +31,13 @@ function RouteComponent() {
     explanation: undefined,
   });
   const [questions, setQuestions] = useState<Question[]>([baseQuestion(1)]);
+  const questionRefs = useRef<(QuestionItemRef | null)[]>([]);
+
+  // Đảm bảo mảng ref luôn khớp với số lượng câu hỏi
+  useEffect(() => {
+    questionRefs.current = questionRefs.current.slice(0, questions.length);
+  }, [questions.length]);
+
   const addDummy = () => {
     setQuestions((prev) => [...prev, baseQuestion(questions.length + 1)]);
   };
@@ -50,18 +57,21 @@ function RouteComponent() {
     };
   };
   const prevLengthRef = useRef(questions.length);
+
   useEffect(() => {
-    // Chỉ cuộn nếu số lượng câu hỏi TĂNG lên (tức là vừa Add Dummy)
-    if (questions.length > prevLengthRef.current) {
-      if (listRef.current) {
-        listRef.current.scrollTo({
-          top: listRef.current.scrollHeight,
-          behavior: "smooth",
-        });
-      }
+    // 1. Đồng bộ Ref (Cắt bỏ những ref dư thừa khi xóa câu hỏi)
+    if (questionRefs.current.length > questions.length) {
+      questionRefs.current = questionRefs.current.slice(0, questions.length);
     }
 
-    // Cập nhật lại độ dài hiện tại để dùng cho lần so sánh sau
+    // 2. Cuộn xuống khi thêm câu mới
+    if (questions.length > prevLengthRef.current) {
+      listRef.current?.scrollTo({
+        top: listRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+
     prevLengthRef.current = questions.length;
   }, [questions.length]);
 
@@ -72,46 +82,66 @@ function RouteComponent() {
     ),
   );
 
-  // 2. Logic thay đổi câu hỏi
-  const handleQuestionChange = (
+  // 2. Hàm Save Changes chính
+  const handleSaveChanges = () => {
+    // Thu thập dữ liệu từ tất cả các con
+    const updatedQuestions = questionRefs.current.map((ref, i) => {
+      if (ref) return ref.getData();
+      return questions[i]; // Fallback nếu ref bị null
+    });
+
+    setQuestions(updatedQuestions);
+    console.log("Dữ liệu đã được đồng bộ lên State chính:", updatedQuestions);
+    alert("Local changes saved to main state!");
+  };
+
+  const handleCreateExam = async () => {
+    // Trước khi tạo Exam, cũng nên thực hiện save 1 lần để đảm bảo data mới nhất
+    const finalQuestions = questionRefs.current.map((ref, i) =>
+      ref ? ref.getData() : questions[i],
+    );
+
+    const payload = QuizCreateFactory(baseTitle, baseTime, finalQuestions);
+    await QuizService.createQuiz(payload);
+    navigate({ to: "/quiz" });
+  };
+
+  const getPassageByGroupId = (groupId: string) => {
+    const sourceQ = questions.find((q) => q.groupId === groupId && q.passage);
+    return sourceQ?.passage || "";
+  };
+
+  // Cập nhật logic xử lý Group ở Cha
+  const handleGroupSelect = (
     index: number,
-    field: keyof Question,
-    value: string | number | boolean | undefined,
+    selectedGroupId: string,
+    newPassage?: string,
   ) => {
     setQuestions((prev) => {
       const newQuestions = [...prev];
-      newQuestions[index] = { ...newQuestions[index], [field]: value };
+
+      // 1. Cập nhật cho câu hiện tại
+      newQuestions[index] = {
+        ...newQuestions[index],
+        isGroupQ: true, // Cập nhật trạng thái này
+        groupId: selectedGroupId,
+        passage:
+          newPassage !== undefined
+            ? newPassage
+            : getPassageByGroupId(selectedGroupId),
+      };
+
+      // Cập nhật cho các câu cùng group
+      if (newPassage !== undefined && selectedGroupId !== "") {
+        return newQuestions.map((q) =>
+          q.groupId === selectedGroupId
+            ? { ...q, passage: newPassage, isGroupQ: true }
+            : q,
+        );
+      }
+
       return newQuestions;
     });
-  };
-
-  // 3. Logic thay đổi đáp án
-  const handleAnswerChange = (index: number, ansKey: number, value: string) => {
-    setQuestions((prev) => {
-      const newQ = [...prev];
-      newQ[index].answerList = newQ[index].answerList.map((a) =>
-        a.key === ansKey ? { ...a, option: value } : a,
-      );
-      return newQ;
-    });
-  };
-
-  // 4. Logic Chọn Group (Quan trọng nhất)
-  const handleGroupSelect = (index: number, selectedGroupId: string) => {
-    if (selectedGroupId === "NEW_GROUP") {
-      // Reset để nhập mới
-      handleQuestionChange(index, "groupId", "");
-      handleQuestionChange(index, "passage", "");
-    } else {
-      // Điền ID và Tự động lấy Passage từ câu hỏi gốc
-      handleQuestionChange(index, "groupId", selectedGroupId);
-      const sourceQ = questions.find(
-        (q) => q.groupId === selectedGroupId && q.passage,
-      );
-      if (sourceQ) {
-        handleQuestionChange(index, "passage", sourceQ.passage);
-      }
-    }
   };
 
   const deleteQuestion = (index: number) => {
@@ -181,21 +211,15 @@ function RouteComponent() {
           >
             Add by JSON
           </button>
-          <button className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl">
+          <button
+            className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl"
+            onClick={handleSaveChanges}
+          >
             Save Changes
           </button>
           <button
             className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl"
-            onClick={async () => {
-              console.log(
-                (
-                  await QuizService.createQuiz(
-                    QuizCreateFactory(baseTitle, baseTime, questions),
-                  )
-                ).data,
-              );
-              backToQuiz();
-            }}
+            onClick={handleCreateExam}
           >
             Create Exam
           </button>
@@ -205,55 +229,18 @@ function RouteComponent() {
         ref={listRef}
         className="w-1/2 m-4 pl-4 border-l-0 border-r-4 h-24/25 overflow-y-scroll border-y-20 border-primary-200 bg-primary-200 rounded-2xl flex flex-col gap-2"
       >
-        {/* {Object.entries(questions).map(([key, q]) => {
-          return (
-            <div className='p-2 mx-1 bg-white border-4 border-secondary-300 h-fit rounded-2xl'>
-
-              <div className='flex flex-col ml-2'>
-                <div className='flex flex-row justify-between items-center'>
-                  <span className='text-2xl font-semibold'>Question {Number(key) + 1}</span>
-                  <select value={q.type} defaultValue="Choose Question Type" className="select appearance-none text-md font-semibold border-2 rounded-lg">
-                    <option disabled value="">Choose Question Type</option>
-                    <option value="multiple_choice">Multiple Choice</option>
-                    <option value="fill_blank">Fill in Blank</option>
-                    <option value="arrangement">Arrangement</option>
-                    <option value="matching">Matching</option>
-                  </select>
-                </div>
-                <div className={clsx('flex flex-row text-lg', q.isGroupQ ? '' : 'hidden')}>
-                  <div className='inline-flex mr-3'>
-                    <label>Group ID: </label>
-                    <input
-                      className='w-24 border-b-2 border-gray-300 focus:border-blue-500 outline-none px-1 transition-colors'
-                      value={q.groupId}
-                      placeholder=""
-                    />
-                  </div>
-                  <span className='w-40'>Passage: {q.passage}</span>
-                </div>
-                <span>Content: </span>
-                <input value={q.content}></input>
-                <div className='flex flex-col items-start'>
-                  <input type='bullet'></input>
-                  <input type='checkbox'></input>
-                  <input type='checkbox'></input>
-                  <input type='checkbox'></input>
-                </div>
-                <span>Explanation: {q.explanation}</span>
-              </div>
-            </div>
-          )
-        })} */}
         {questions.map((q, index) => (
           <QuestionItem
-            key={index} // Nên dùng ID nếu có, fallback index
+            key={q.id || index} // Nên dùng ID nếu có, fallback index
             index={index}
             q={q}
             existingGroups={existingGroups as string[]}
-            onChange={handleQuestionChange}
             onGroupSelect={handleGroupSelect}
-            onAnswerChange={handleAnswerChange}
             onDelete={deleteQuestion}
+            getPassageByGroupId={getPassageByGroupId}
+            ref={(el) => {
+              questionRefs.current[index] = el;
+            }}
           />
         ))}
       </div>

@@ -27,7 +27,7 @@ export type Question = {
   explanation?: string;
 };
 
-type AnswerOption = {
+export type AnswerOption = {
   key: number; // 1, 2, 3, 4 — or match A,B,C,D
   option: string; // e.g. "whose"
 };
