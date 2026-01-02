@@ -137,7 +137,19 @@ export const QuestionItem = forwardRef<QuestionItemRef, QuestionItemProps>(
             type="checkbox"
             className="checkbox checkbox-xs text-primary-200 bg-primary-100 rounded-sm"
             checked={localQ.isGroupQ}
-            onChange={(e) => updateLocal("isGroupQ", e.target.checked)}
+            onChange={(e) => {
+              const isChecked = e.target.checked;
+              if (!isChecked) {
+                setLocalQ((prev) => ({
+                  ...prev,
+                  isGroupQ: false,
+                  groupId: undefined,
+                  passage: undefined,
+                }));
+              } else {
+                updateLocal("isGroupQ", true);
+              }
+            }}
           />
         </div>
         {/* 2. Group Question Logic (Passage) */}

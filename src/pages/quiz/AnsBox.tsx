@@ -23,7 +23,7 @@ const AnsBox = ({
     if (ansVal === correctAnswer) return "bg-success border-success"; // Đúng
     return "bg-quaternary border-quaternary"; // Sai hoặc chưa trả lời
   };
-  console.log(isSubmitted);
+  // console.log(isSubmitted);
   return (
     <button
       onClick={() => loadQuiz(ansNum)}

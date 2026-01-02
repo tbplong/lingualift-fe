@@ -32,10 +32,27 @@ function RouteComponent() {
   });
   const [questions, setQuestions] = useState<Question[]>([baseQuestion(1)]);
   const questionRefs = useRef<(QuestionItemRef | null)[]>([]);
+  const prevLengthRef = useRef(questions.length);
 
-  // Đảm bảo mảng ref luôn khớp với số lượng câu hỏi
+  const navigate = useNavigate();
+  const backToQuiz = () => {
+    navigate({ to: "/quiz" });
+  };
+
   useEffect(() => {
+    // 1. Đồng bộ Ref: Luôn cắt mảng Ref để khớp với số lượng câu hỏi hiện tại
+    // Dù tăng hay giảm, slice(0, length) luôn đảm bảo mảng ref không dư thừa
     questionRefs.current = questionRefs.current.slice(0, questions.length);
+
+    // 2. Cuộn xuống khi thêm câu mới
+    if (questions.length > prevLengthRef.current) {
+      listRef.current?.scrollTo({
+        top: listRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+
+    prevLengthRef.current = questions.length;
   }, [questions.length]);
 
   const addDummy = () => {
@@ -56,31 +73,10 @@ function RouteComponent() {
       questions: questions,
     };
   };
-  const prevLengthRef = useRef(questions.length);
 
-  useEffect(() => {
-    // 1. Đồng bộ Ref (Cắt bỏ những ref dư thừa khi xóa câu hỏi)
-    if (questionRefs.current.length > questions.length) {
-      questionRefs.current = questionRefs.current.slice(0, questions.length);
-    }
-
-    // 2. Cuộn xuống khi thêm câu mới
-    if (questions.length > prevLengthRef.current) {
-      listRef.current?.scrollTo({
-        top: listRef.current.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-
-    prevLengthRef.current = questions.length;
-  }, [questions.length]);
-
-  // 1. Tính toán danh sách Group ID (Lọc rỗng và trùng)
-  const existingGroups = Array.from(
-    new Set(
-      questions.map((q) => q.groupId).filter((id) => id && id.trim() !== ""),
-    ),
-  );
+  const deleteQuestion = (index: number) => {
+    setQuestions((prev) => prev.filter((_, i) => i !== index));
+  };
 
   // 2. Hàm Save Changes chính
   // const handleSaveChanges = () => {
@@ -110,6 +106,13 @@ function RouteComponent() {
     const sourceQ = questions.find((q) => q.groupId === groupId && q.passage);
     return sourceQ?.passage || "";
   };
+
+  // 1. Tính toán danh sách Group ID (Lọc rỗng và trùng)
+  const existingGroups = Array.from(
+    new Set(
+      questions.map((q) => q.groupId).filter((id) => id && id.trim() !== ""),
+    ),
+  );
 
   // Cập nhật logic xử lý Group ở Cha
   const handleGroupSelect = (
@@ -144,14 +147,6 @@ function RouteComponent() {
     });
   };
 
-  const deleteQuestion = (index: number) => {
-    setQuestions((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const navigate = useNavigate();
-  const backToQuiz = () => {
-    navigate({ to: "/quiz" });
-  };
   return (
     <div className="flex flex-row items-center h-dvh w-full">
       <div className="flex flex-col w-1/2 ml-3">
@@ -218,7 +213,13 @@ function RouteComponent() {
             Save Changes
           </button> */}
           <button
-            className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl"
+            className="btn flex-1 border-none text-xl bg-gray-400 text-white rounded-2xl"
+            onClick={backToQuiz}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn flex-1 border-none text-xl  bg-green-600 hover:bg-green-700 text-white rounded-2xl"
             onClick={handleCreateExam}
           >
             Create Exam
@@ -231,6 +232,9 @@ function RouteComponent() {
       >
         {questions.map((q, index) => (
           <QuestionItem
+            ref={(el) => {
+              questionRefs.current[index] = el;
+            }}
             key={q.id || index} // Nên dùng ID nếu có, fallback index
             index={index}
             q={q}
@@ -238,9 +242,6 @@ function RouteComponent() {
             onGroupSelect={handleGroupSelect}
             onDelete={deleteQuestion}
             getPassageByGroupId={getPassageByGroupId}
-            ref={(el) => {
-              questionRefs.current[index] = el;
-            }}
           />
         ))}
       </div>

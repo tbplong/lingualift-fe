@@ -183,7 +183,7 @@ function RouteComponent() {
         }
         const next = prev - 1;
         // Auto-sync every 10 seconds (instead of every second to avoid race conditions)
-        if (next > 0 && next % 10 === 0) {
+        if (next > 0 && next % 1 === 0) {
           handleAutoSync(
             attemptId,
             exam,
@@ -416,13 +416,18 @@ function RouteComponent() {
   const optList = question?.answerList || [];
 
   // Get passage for grouped questions
-  let passage: string | undefined = question?.passage;
-  if (question?.isGroupQ && !passage) {
-    const parentIndex = hasPassage.find(
-      (i) => questions[i].groupId === question.groupId,
-    );
-    if (parentIndex !== undefined) {
-      passage = questions[parentIndex].passage;
+  let passage: string | undefined = undefined; // Khởi tạo rỗng
+
+  if (question?.isGroupQ) {
+    passage = question.passage;
+
+    if (!passage) {
+      const parentIndex = hasPassage.find(
+        (i) => questions[i].groupId === question.groupId,
+      );
+      if (parentIndex !== undefined) {
+        passage = questions[parentIndex].passage;
+      }
     }
   }
 

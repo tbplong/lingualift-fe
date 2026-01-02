@@ -35,14 +35,19 @@ function EditRouteComponent() {
     explanation: undefined,
   });
 
-  const [questions, setQuestions] = useState<Question[]>([]); // Khởi tạo rỗng để chờ load data
+  const [questions, setQuestions] = useState<Question[]>([]);
   const questionRefs = useRef<(QuestionItemRef | null)[]>([]);
-  // --- LOGIC MỚI: LOAD DATA TỪ API ---
+  const prevLengthRef = useRef(questions.length);
+
+  const navigate = useNavigate();
+  const backToQuiz = () => {
+    navigate({ to: "/quiz" });
+  };
+
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
         setIsLoading(true);
-        // Gọi API lấy nội dung Quiz cũ
         const res = await QuizService.getQuizContent(quizId);
 
         if (res.data && res.data.questions) {
@@ -77,10 +82,29 @@ function EditRouteComponent() {
       fetchQuizData();
     }
   }, [quizId]);
-  // -------------------------------------
+
+  useEffect(() => {
+    // 1. Đồng bộ Ref: Luôn cắt mảng Ref để khớp với số lượng câu hỏi hiện tại
+    // Dù tăng hay giảm, slice(0, length) luôn đảm bảo mảng ref không dư thừa
+    questionRefs.current = questionRefs.current.slice(0, questions.length);
+
+    // 2. Cuộn xuống khi thêm câu mới
+    if (questions.length > prevLengthRef.current) {
+      listRef.current?.scrollTo({
+        top: listRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+
+    prevLengthRef.current = questions.length;
+  }, [questions.length]);
 
   const addDummy = () => {
     setQuestions((prev) => [...prev, baseQuestion(questions.length + 1)]);
+  };
+
+  const deleteQuestion = (index: number) => {
+    setQuestions((prev) => prev.filter((_, i) => i !== index));
   };
 
   const QuizCreateFactory = (
@@ -98,30 +122,6 @@ function EditRouteComponent() {
       questions: questions,
     };
   };
-
-  const prevLengthRef = useRef(questions.length);
-
-  useEffect(() => {
-    // Chỉ cuộn nếu số lượng câu hỏi TĂNG lên (tức là vừa Add Dummy, không tính lúc load data ban đầu)
-    if (questions.length > prevLengthRef.current) {
-      if (listRef.current) {
-        listRef.current.scrollTo({
-          top: listRef.current.scrollHeight,
-          behavior: "smooth",
-        });
-      }
-    }
-
-    // Cập nhật lại độ dài hiện tại để dùng cho lần so sánh sau
-    prevLengthRef.current = questions.length;
-  }, [questions.length]);
-
-  // 1. Tính toán danh sách Group ID (Lọc rỗng và trùng)
-  const existingGroups = Array.from(
-    new Set(
-      questions.map((q) => q.groupId).filter((id) => id && id.trim() !== ""),
-    ),
-  );
 
   const syncLocalToMainState = () => {
     const updated = questionRefs.current.map((ref, i) =>
@@ -144,6 +144,14 @@ function EditRouteComponent() {
       console.error("Update failed", error);
     }
   };
+
+  // 1. Tính toán danh sách Group ID (Lọc rỗng và trùng)
+  const existingGroups = Array.from(
+    new Set(
+      questions.map((q) => q.groupId).filter((id) => id && id.trim() !== ""),
+    ),
+  );
+
   const getPassageByGroupId = (groupId: string) => {
     const sourceQ = questions.find((q) => q.groupId === groupId && q.passage);
     return sourceQ?.passage || "";
@@ -176,18 +184,8 @@ function EditRouteComponent() {
             : q,
         );
       }
-
       return newQuestions;
     });
-  };
-
-  const deleteQuestion = (index: number) => {
-    setQuestions((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const navigate = useNavigate();
-  const backToQuiz = () => {
-    navigate({ to: "/quiz" });
   };
 
   // Render Loading
