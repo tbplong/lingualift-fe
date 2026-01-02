@@ -72,8 +72,15 @@ function RouteComponent() {
   }, []);
   console.log(exams);
   if (!exams) {
-    return <div className="p-10 text-center">Loading Quiz Data...</div>;
+    return (
+      <>
+        <StudyLayout>
+          <div className="p-10 text-center">Loading Quiz Data...</div>;
+        </StudyLayout>
+      </>
+    );
   }
+
   const quizEntries = Object.entries(exams.quizs);
   return (
     <>

@@ -1,6 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import storage from "@/utils/storage";
 import UserService from "@/services/user/user.service";
 import DashboardService from "@/services/dashboard/dashboard.service";
 import Sidebar from "@/components/dashboard/layout/sidebar";
@@ -8,13 +7,11 @@ import RightSidebar from "@/components/dashboard/layout/rightsidebar";
 import MiddleContent from "@/components/dashboard/layout/middle";
 import { Search } from "lucide-react";
 
-// ✅ CHỌN 1:
-// - Nếu routeTree.gen.ts có key '/dashboard/': dùng "/dashboard/"
-// - Nếu routeTree.gen.ts có key '/dashboard': dùng "/dashboard"
 export const Route = createFileRoute("/dashboard/")({
-  beforeLoad: () => {
-    const token = storage.getItem("token");
-    if (!token) throw redirect({ to: "/login" });
+  beforeLoad: ({ context }) => {
+    if (!context.authContext.isAuthenticated) {
+      throw redirect({ to: "/login", search: { next: location.href } });
+    }
   },
   component: RouteComponent,
 });

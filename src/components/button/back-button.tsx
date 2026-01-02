@@ -16,7 +16,7 @@ type BackButtonProps = {
 const BackButton = ({
   onClick,
   className,
-  text = "Quay lại",
+  text = "Back",
   toRoutePath,
   textClass,
   icon,

@@ -13,7 +13,7 @@ export function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-8 sm:gap-10 md:gap-12 xl:gap-16 place-items-center sm:place-items-start text-center sm:text-left">
           <div className="min-w-0">
             <h3 className="text-yellow-400 font-bold mb-4 text-2xl sm:text-3xl">
-              Thông tin liên hệ
+              Contact Information
             </h3>
             <ul className="space-y-2 sm:space-y-3 text-base sm:text-lg leading-relaxed">
               <li>
@@ -26,10 +26,10 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="mailto:sang.truong2005@hcmut.edu.vn"
+                  href="mailto:lingualift@gmail.com"
                   className="text-white transition hover:text-yellow-300 block text-lg sm:text-2xl underline"
                 >
-                  Liên hệ qua email
+                  lingualift@gmail.com
                 </a>
               </li>
             </ul>
@@ -37,7 +37,7 @@ export function Footer() {
           {/* Column 3: Social */}
           <div className="flex flex-col justify-center">
             <h3 className="text-yellow-400 font-bold mb-4 text-2xl sm:text-3xl">
-              Kết nối với Chúng Tôi
+              Connect with us
             </h3>
             <div className="flex flex-nowrap sm:flex-wrap lg:flex-nowrap gap-4 mb-4 justify-center sm:justify-start">
               {/* Facebook */}
@@ -81,38 +81,20 @@ export function Footer() {
               </a>
             </div>
           </div>
-          {/* Column 2: Courses */}
-          <div>
-            <h3 className="text-yellow-400 font-bold mb-4 text-2xl sm:text-3xl">
-              Thông tin khoá học
-            </h3>
-            <a
-              className="text-white hover:text-yellow-300 text-lg sm:text-2xl"
-              href="#"
-            >
-              Danh sách khoá học
-            </a>
-          </div>
-
           {/* Column 4: About */}
           <div>
             <h3 className="text-yellow-400 font-bold mb-4 text-2xl sm:text-3xl">
-              Về chúng tôi
+              About us
             </h3>
             <ul className="space-y-2 sm:space-y-3 leading-relaxed text-lg sm:text-2xl">
               <li>
                 <a className="text-white hover:text-yellow-300" href="#">
-                  Giới thiệu
+                  Introduction
                 </a>
               </li>
               <li>
                 <a className="text-white hover:text-yellow-300" href="#">
-                  Điều khoản &amp; Bảo mật
-                </a>
-              </li>
-              <li>
-                <a className="text-white hover:text-yellow-300" href="#">
-                  Tuyển dụng
+                  Terms &amp; Privacy
                 </a>
               </li>
             </ul>

@@ -9,7 +9,7 @@ import {
   NationalExamTag,
   NationalExamTagValue,
 } from "@/types/national-exam.type";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { EXAM_MAX_DIFFICULTY } from ".";
@@ -27,6 +27,12 @@ import Loading from "@/components/ui/loading";
 import { FILENAME_REGEX } from "@/constants";
 
 export const Route = createFileRoute("/exam/create")({
+  beforeLoad: ({ context }) => {
+    if (!context.authContext.isManager) {
+      toast.error("You are not authorized to access this page.");
+      throw redirect({ to: "/" });
+    }
+  },
   component: RouteComponent,
 });
 

@@ -41,8 +41,8 @@ function RouteComponent() {
       lastName: user?.lastName || "",
     },
     validationSchema: Yup.object({
-      firstName: Yup.string().required("Vui lòng nhập tên của bạn!"),
-      lastName: Yup.string().required("Vui lòng nhập họ và tên đệm của bạn!"),
+      firstName: Yup.string().required("Please enter your name !"),
+      lastName: Yup.string().required("Please enter your last name!"),
     }),
     onSubmit: async (values) => {
       if (
@@ -59,9 +59,9 @@ function RouteComponent() {
           lastName: values.lastName,
         };
         await UserService.editProfile(userFormData);
-        toast.success("Cập nhật thông tin tài khoản thành công!");
+        toast.success("Account information updated successfully!");
       } catch (error) {
-        toast.error("Cập nhật thông tin tài khoản thất bại!");
+        toast.error("Failed to update account information!");
         console.error(error);
       } finally {
         setLoading(false);
@@ -76,9 +76,9 @@ function RouteComponent() {
       school: user?.highSchool || "",
     },
     validationSchema: Yup.object({
-      // birthday: Yup.date().required('Vui lòng nhập ngày sinh của bạn!'),
-      address: Yup.string().required("Vui lòng nhập địa chỉ của bạn!"),
-      school: Yup.string().required("Vui lòng nhập tên trường THPT của bạn!"),
+      // birthday: Yup.date().required('Please enter your date of birth!'),
+      address: Yup.string().required("Please enter your address!"),
+      school: Yup.string().required("Please enter your high school name!"),
     }),
     onSubmit: async (values) => {
       if (
@@ -95,9 +95,9 @@ function RouteComponent() {
           highSchool: values.school,
         };
         await UserService.editProfile(userFormData);
-        toast.success("Cập nhật thông tin tài khoản thành công!");
+        toast.success("Account information updated successfully!");
       } catch (error) {
-        toast.error("Cập nhật thông tin tài khoản thất bại!");
+        toast.error("Failed to update account information!");
         console.error(error);
       } finally {
         setLoading(false);
@@ -113,13 +113,16 @@ function RouteComponent() {
     },
     validationSchema: Yup.object({
       phone: Yup.string()
-        .matches(PHONE_REGEX, "Số điện thoại chưa đúng định dạng (10 số)")
-        .required("Vui lòng nhập số điện thoại của bạn!"),
+        .matches(
+          PHONE_REGEX,
+          "Phone number must be in correct format (10 digits)",
+        )
+        .required("Please enter your phone number!"),
       facebookName: Yup.string().required(
-        "Vui lòng nhập tên tài khoản Facebook của bạn!",
+        "Please enter your Facebook account name!",
       ),
       facebookUrl: Yup.string().required(
-        "Vui lòng nhập đường dẫn đến tài khoản Facebook của bạn!",
+        "Please enter the URL to your Facebook account!",
       ),
     }),
     onSubmit: async (values) => {
@@ -142,9 +145,9 @@ function RouteComponent() {
         };
         await UserService.editProfile(userFormData);
         console.log("called api");
-        toast.success("Cập nhật thông tin tài khoản thành công!");
+        toast.success("Account information updated successfully!");
       } catch (error) {
-        toast.error("Cập nhật thông tin tài khoản thất bại!");
+        toast.error("Failed to update account information!");
         console.error(error);
       } finally {
         setLoading(false);
@@ -161,7 +164,7 @@ function RouteComponent() {
       <StudyLayout>
         <div className="flex flex-1 flex-col items-start">
           <BackButton />
-          <Heading text={"Hồ sơ cá nhân"} className="mt-5 xl:mt-6" />
+          <Heading text={"User Profile"} className="mt-5 xl:mt-6" />
         </div>
         <div className="relative">
           <div className="mt-6 flex w-full flex-col items-start gap-y-4 md:mt-7 lg:mt-8 xl:mt-10">
@@ -171,7 +174,7 @@ function RouteComponent() {
                 className="flex min-h-80 w-full flex-col rounded-lg border border-tertiary-300 p-5 2xl:min-h-[24.5rem]"
               >
                 <span className="inline text-2xl font-bold">
-                  Thông tin tài khoản
+                  Account Information
                 </span>
                 <div className="relative flex w-full flex-col items-center gap-4 md:flex-row md:items-start md:gap-10">
                   <div className="mt-8 flex flex-row md:mt-5 xl:mt-6">
@@ -193,7 +196,7 @@ function RouteComponent() {
                           htmlFor="firstName"
                           className="text-xs font-bold xs:text-xs md:flex md:min-w-32 md:items-center md:text-sm 2xl:min-w-[9.5rem] 2xl:text-base"
                         >
-                          Tên
+                          First name
                           <span className="ml-1 text-primary">(*)</span>:
                         </label>
                         <input
@@ -204,7 +207,7 @@ function RouteComponent() {
                           onChange={accountInfoFormik.handleChange}
                           onBlur={accountInfoFormik.handleBlur}
                           value={accountInfoFormik.values.firstName}
-                          placeholder="Đây là tên mà giáo viên sẽ thấy"
+                          placeholder="This is the name that teachers will see"
                           className={`${accountInfoFormik.touched.firstName && accountInfoFormik.errors.firstName ? "border-red" : "border-tertiary"} w-full rounded-lg border border-solid px-3 py-2 text-xs focus:!border-primary disabled:opacity-50 xs:text-xs md:text-sm 2xl:text-base`}
                         />
                       </div>
@@ -222,7 +225,7 @@ function RouteComponent() {
                           htmlFor="lastName"
                           className="text-xs font-bold xs:text-xs md:flex md:min-w-32 md:items-center md:text-sm 2xl:min-w-[9.5rem] 2xl:text-base"
                         >
-                          Họ và tên đệm
+                          Last name
                           <span className="ml-1 text-primary">(*)</span>:
                         </label>
                         <input
@@ -233,7 +236,7 @@ function RouteComponent() {
                           onChange={accountInfoFormik.handleChange}
                           onBlur={accountInfoFormik.handleBlur}
                           value={accountInfoFormik.values.lastName}
-                          placeholder="Đây là tên mà giáo viên sẽ thấy"
+                          placeholder="This is the name that teachers will see"
                           className={`${accountInfoFormik.touched.lastName && accountInfoFormik.errors.lastName ? "border-red" : "border-tertiary"} w-full rounded-lg border border-solid px-3 py-2 text-xs focus:!border-primary disabled:opacity-50 xs:text-xs md:text-sm 2xl:text-base`}
                         />
                       </div>
@@ -253,7 +256,7 @@ function RouteComponent() {
                     disabled={loading}
                     className="mt-6 flex w-32 items-center justify-center rounded-lg bg-primary py-2 font-bold text-white duration-200 ease-in-out hover:bg-primary-700 disabled:bg-tertiary-300 lg:mt-8"
                   >
-                    Cập nhật
+                    Update
                   </button>
                 </div>
               </form>
@@ -262,7 +265,7 @@ function RouteComponent() {
                 className="flex min-h-80 w-full flex-col rounded-lg border border-tertiary-300 p-5 2xl:min-h-[24.5rem]"
               >
                 <span className="inline text-2xl font-bold">
-                  Thông tin khác
+                  Other Information
                 </span>
                 <div className="relative flex w-full flex-col gap-5 md:flex-row">
                   <div className="relative flex w-full flex-col">
@@ -272,7 +275,7 @@ function RouteComponent() {
                           htmlFor="address"
                           className="text-xs font-bold xs:text-xs md:flex md:min-w-[10.5rem] md:items-center md:text-sm 2xl:min-w-[12.5rem] 2xl:text-base"
                         >
-                          Địa chỉ
+                          Address
                           <span className="ml-1 text-primary">(*)</span>:
                         </label>
                         <input
@@ -283,7 +286,7 @@ function RouteComponent() {
                           onChange={personalInfoFormik.handleChange}
                           onBlur={personalInfoFormik.handleBlur}
                           value={personalInfoFormik.values.address}
-                          placeholder="Nhập địa chỉ nơi bạn cư trú"
+                          placeholder="Enter your residential address"
                           className={`${personalInfoFormik.touched.address && personalInfoFormik.errors.address ? "border-red" : "border-tertiary"} w-full rounded-lg border border-solid px-3 py-2 text-xs focus:!border-primary disabled:opacity-50 xs:text-xs md:text-sm 2xl:text-base`}
                         />
                       </div>
@@ -303,7 +306,7 @@ function RouteComponent() {
                           htmlFor="school"
                           className="text-xs font-bold xs:text-xs md:flex md:min-w-[10.5rem] md:items-center md:text-sm 2xl:min-w-[12.5rem] 2xl:text-base"
                         >
-                          Trường THPT{" "}
+                          High School{" "}
                           <span className="ml-1 text-primary">(*)</span>:
                         </label>
                         <input
@@ -314,7 +317,7 @@ function RouteComponent() {
                           onChange={personalInfoFormik.handleChange}
                           onBlur={personalInfoFormik.handleBlur}
                           value={personalInfoFormik.values.school}
-                          placeholder="Nhập tên trường THPT bạn đang theo học"
+                          placeholder="Enter the name of your high school"
                           className={`${personalInfoFormik.touched.school && personalInfoFormik.errors.school ? "border-red" : "border-tertiary"} w-full rounded-lg border border-solid px-3 py-2 text-xs focus:!border-primary disabled:opacity-50 xs:text-xs md:text-sm 2xl:text-base`}
                         />
                       </div>
@@ -336,7 +339,7 @@ function RouteComponent() {
                   disabled={loading}
                   className="mt-auto flex w-32 items-center justify-center self-end rounded-lg bg-primary py-2 font-bold text-white duration-200 ease-in-out hover:bg-primary-700 disabled:bg-tertiary-300"
                 >
-                  Cập nhật
+                  Update
                 </button>
               </form>
             </div>
@@ -345,7 +348,7 @@ function RouteComponent() {
               className="flex w-full flex-col rounded-lg border border-tertiary-300 p-5"
             >
               <span className="inline text-2xl font-bold">
-                Thông tin liên lạc
+                Contact Information
               </span>
               <div className="relative flex w-full flex-col gap-5 md:flex-row">
                 <div className="relative flex w-full flex-col">
@@ -371,7 +374,7 @@ function RouteComponent() {
                         htmlFor="phone"
                         className="text-xs font-bold xs:text-xs md:flex md:min-w-[11.5rem] md:items-center md:text-sm 2xl:min-w-[13.5rem] 2xl:text-base"
                       >
-                        Số điện thoại{" "}
+                        Phone Number{" "}
                         <span className="ml-1 text-primary">(*)</span>:
                       </label>
                       <input
@@ -382,7 +385,7 @@ function RouteComponent() {
                         onChange={contactInfoFormik.handleChange}
                         onBlur={contactInfoFormik.handleBlur}
                         value={contactInfoFormik.values.phone}
-                        placeholder="Nhập số điện thoại liên lạc của bạn"
+                        placeholder="Enter your contact phone number"
                         className={`${contactInfoFormik.touched.phone && contactInfoFormik.errors.phone ? "border-red" : "border-tertiary"} w-full rounded-lg border border-solid px-3 py-2 text-xs focus:!border-primary disabled:opacity-50 xs:text-xs md:text-sm 2xl:text-base`}
                       />
                     </div>
@@ -402,7 +405,7 @@ function RouteComponent() {
                         htmlFor="facebookName"
                         className="text-xs font-bold xs:text-xs md:flex md:min-w-[11.5rem] md:items-center md:text-sm 2xl:min-w-[13.5rem] 2xl:text-base"
                       >
-                        Tên tài khoản Facebook{" "}
+                        Facebook Account Name{" "}
                         <span className="ml-1 text-primary">(*)</span>:
                       </label>
                       <input
@@ -413,7 +416,7 @@ function RouteComponent() {
                         onChange={contactInfoFormik.handleChange}
                         onBlur={contactInfoFormik.handleBlur}
                         value={contactInfoFormik.values.facebookName}
-                        placeholder="Nhập tên tài khoản Facebook bạn dùng để tham gia nhóm Facebook"
+                        placeholder="Enter the Facebook account name you use to join the Facebook group"
                         className={`${contactInfoFormik.touched.facebookName && contactInfoFormik.errors.facebookName ? "border-red" : "border-tertiary"} w-full rounded-lg border border-solid px-3 py-2 text-xs focus:!border-primary disabled:opacity-50 xs:text-xs md:text-sm 2xl:text-base`}
                       />
                     </div>
@@ -433,7 +436,7 @@ function RouteComponent() {
                         htmlFor="facebookUrl"
                         className="text-xs font-bold xs:text-xs md:flex md:min-w-[11.5rem] md:items-center md:text-sm 2xl:min-w-[13.5rem] 2xl:text-base"
                       >
-                        Đường dẫn Facebook{" "}
+                        Facebook URL{" "}
                         <span className="ml-1 text-primary">(*)</span>:
                       </label>
                       <input
@@ -444,7 +447,7 @@ function RouteComponent() {
                         onChange={contactInfoFormik.handleChange}
                         onBlur={contactInfoFormik.handleBlur}
                         value={contactInfoFormik.values.facebookUrl}
-                        placeholder="Nhập đường dẫn đến trang cá nhân Facebook của bạn"
+                        placeholder="Enter the URL to your Facebook profile"
                         className={`${contactInfoFormik.touched.facebookUrl && contactInfoFormik.errors.facebookUrl ? "border-red" : "border-tertiary"} w-full rounded-lg border border-solid px-3 py-2 text-xs focus:!border-primary disabled:opacity-50 xs:text-xs md:text-sm 2xl:text-base`}
                       />
                     </div>
@@ -465,7 +468,7 @@ function RouteComponent() {
                 disabled={loading}
                 className="mt-6 flex w-32 items-center justify-center self-end rounded-lg bg-primary py-2 font-bold text-white duration-200 ease-in-out hover:bg-primary-700 disabled:bg-tertiary-300 lg:mt-8"
               >
-                Cập nhật
+                Update
               </button>
             </form>
           </div>

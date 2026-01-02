@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import {
   Next,
   ProfileIcon,
-  SidebarToggleIcon,
+  // SidebarToggleIcon,
   SignOut,
 } from "@/components/icons";
 // import vndFormat from '@/helpers/currency-format';
@@ -23,12 +23,7 @@ type HeaderProps = {
   toggleSidebarDesktop: () => void;
 };
 
-const Header = ({
-  user,
-  setUser,
-  toggleSidebarDesktop,
-  toggleSidebarMobile,
-}: HeaderProps) => {
+const Header = ({ user, setUser }: HeaderProps) => {
   const { setToken, setIsAuthenticated, isAuthenticated } = useAuthStore();
 
   const [dropdownOpened, setDropdownOpened] = useState(false);
@@ -44,7 +39,7 @@ const Header = ({
       setIsAuthenticated(false);
       setToken("");
       setUser(null);
-      navigate({ to: "/login" });
+      navigate({ to: "/" });
     } catch (error: unknown) {
       handleAxiosError(error, (message: string) => {
         toast.error(message);
@@ -59,14 +54,14 @@ const Header = ({
       id="study-layout-header"
       className="sticky top-0 z-[98] flex h-20 w-full flex-row items-center border-b border-solid border-tertiary-300 bg-white p-5 3xl:h-24 3xl:px-10"
     >
-      <SidebarToggleIcon
+      {/* <SidebarToggleIcon
         onClick={toggleSidebarMobile}
         className="relative flex size-8 cursor-pointer fill-tertiary xl:hidden"
       />
       <SidebarToggleIcon
         onClick={toggleSidebarDesktop}
         className="relative hidden size-8 cursor-pointer fill-tertiary xl:flex"
-      />
+      /> */}
       <div className="flex flex-1" />
       {isAuthenticated && user ? (
         <>
@@ -108,7 +103,7 @@ const Header = ({
               className="relative flex h-14 w-full flex-row items-center gap-2 rounded-lg px-2 duration-200 ease-in-out hover:bg-tertiary-300"
             >
               <ProfileIcon className="relative size-6 fill-tertiary" />
-              <span className="select-none">Hồ sơ cá nhân</span>
+              <span className="select-none">Profile</span>
             </Link>
             <div
               onClick={async () => {
@@ -118,7 +113,7 @@ const Header = ({
               className="relative flex h-14 w-full cursor-pointer flex-row items-center gap-2 rounded-lg px-2 text-red duration-200 ease-in-out hover:bg-red-300"
             >
               <SignOut className="relative size-6" />
-              <span className="select-none">Đăng xuất</span>
+              <span className="select-none">Log out</span>
             </div>
           </div>
         </>
