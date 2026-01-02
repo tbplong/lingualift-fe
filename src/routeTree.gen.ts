@@ -16,7 +16,6 @@ import { Route as QuizIndexRouteImport } from "./routes/quiz/index";
 import { Route as ProfileIndexRouteImport } from "./routes/profile/index";
 import { Route as PrivacyIndexRouteImport } from "./routes/privacy/index";
 import { Route as LoginIndexRouteImport } from "./routes/login/index";
-import { Route as HistoryIndexRouteImport } from "./routes/history/index";
 import { Route as ExamIndexRouteImport } from "./routes/exam/index";
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index";
 import { Route as AboutIndexRouteImport } from "./routes/about/index";
@@ -24,10 +23,8 @@ import { Route as QuizCreateRouteImport } from "./routes/quiz/create";
 import { Route as ExamCreateRouteImport } from "./routes/exam/create";
 import { Route as ExamIdRouteImport } from "./routes/exam/$id";
 import { Route as QuizQuizIdIndexRouteImport } from "./routes/quiz/$quizId/index";
-import { Route as HistoryQuizIdIndexRouteImport } from "./routes/history/$quizId/index";
 import { Route as QuizEditQuizIdRouteImport } from "./routes/quiz/edit/$quizId";
 import { Route as QuizQuizIdAttemptIdRouteImport } from "./routes/quiz/$quizId/$attemptId";
-import { Route as HistoryQuizIdAttemptIdRouteImport } from "./routes/history/$quizId/$attemptId";
 import { Route as ExamEditIdRouteImport } from "./routes/exam/edit/$id";
 
 const IndexRoute = IndexRouteImport.update({
@@ -65,11 +62,6 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   path: "/login/",
   getParentRoute: () => rootRouteImport,
 } as any);
-const HistoryIndexRoute = HistoryIndexRouteImport.update({
-  id: "/history/",
-  path: "/history/",
-  getParentRoute: () => rootRouteImport,
-} as any);
 const ExamIndexRoute = ExamIndexRouteImport.update({
   id: "/exam/",
   path: "/exam/",
@@ -105,11 +97,6 @@ const QuizQuizIdIndexRoute = QuizQuizIdIndexRouteImport.update({
   path: "/quiz/$quizId/",
   getParentRoute: () => rootRouteImport,
 } as any);
-const HistoryQuizIdIndexRoute = HistoryQuizIdIndexRouteImport.update({
-  id: "/history/$quizId/",
-  path: "/history/$quizId/",
-  getParentRoute: () => rootRouteImport,
-} as any);
 const QuizEditQuizIdRoute = QuizEditQuizIdRouteImport.update({
   id: "/quiz/edit/$quizId",
   path: "/quiz/edit/$quizId",
@@ -118,11 +105,6 @@ const QuizEditQuizIdRoute = QuizEditQuizIdRouteImport.update({
 const QuizQuizIdAttemptIdRoute = QuizQuizIdAttemptIdRouteImport.update({
   id: "/quiz/$quizId/$attemptId",
   path: "/quiz/$quizId/$attemptId",
-  getParentRoute: () => rootRouteImport,
-} as any);
-const HistoryQuizIdAttemptIdRoute = HistoryQuizIdAttemptIdRouteImport.update({
-  id: "/history/$quizId/$attemptId",
-  path: "/history/$quizId/$attemptId",
   getParentRoute: () => rootRouteImport,
 } as any);
 const ExamEditIdRoute = ExamEditIdRouteImport.update({
@@ -139,7 +121,6 @@ export interface FileRoutesByFullPath {
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
   "/exam": typeof ExamIndexRoute;
-  "/history": typeof HistoryIndexRoute;
   "/login": typeof LoginIndexRoute;
   "/privacy": typeof PrivacyIndexRoute;
   "/profile": typeof ProfileIndexRoute;
@@ -147,10 +128,8 @@ export interface FileRoutesByFullPath {
   "/signup": typeof SignupIndexRoute;
   "/terms": typeof TermsIndexRoute;
   "/exam/edit/$id": typeof ExamEditIdRoute;
-  "/history/$quizId/$attemptId": typeof HistoryQuizIdAttemptIdRoute;
   "/quiz/$quizId/$attemptId": typeof QuizQuizIdAttemptIdRoute;
   "/quiz/edit/$quizId": typeof QuizEditQuizIdRoute;
-  "/history/$quizId": typeof HistoryQuizIdIndexRoute;
   "/quiz/$quizId": typeof QuizQuizIdIndexRoute;
 }
 export interface FileRoutesByTo {
@@ -161,7 +140,6 @@ export interface FileRoutesByTo {
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
   "/exam": typeof ExamIndexRoute;
-  "/history": typeof HistoryIndexRoute;
   "/login": typeof LoginIndexRoute;
   "/privacy": typeof PrivacyIndexRoute;
   "/profile": typeof ProfileIndexRoute;
@@ -169,10 +147,8 @@ export interface FileRoutesByTo {
   "/signup": typeof SignupIndexRoute;
   "/terms": typeof TermsIndexRoute;
   "/exam/edit/$id": typeof ExamEditIdRoute;
-  "/history/$quizId/$attemptId": typeof HistoryQuizIdAttemptIdRoute;
   "/quiz/$quizId/$attemptId": typeof QuizQuizIdAttemptIdRoute;
   "/quiz/edit/$quizId": typeof QuizEditQuizIdRoute;
-  "/history/$quizId": typeof HistoryQuizIdIndexRoute;
   "/quiz/$quizId": typeof QuizQuizIdIndexRoute;
 }
 export interface FileRoutesById {
@@ -184,7 +160,6 @@ export interface FileRoutesById {
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
   "/exam/": typeof ExamIndexRoute;
-  "/history/": typeof HistoryIndexRoute;
   "/login/": typeof LoginIndexRoute;
   "/privacy/": typeof PrivacyIndexRoute;
   "/profile/": typeof ProfileIndexRoute;
@@ -192,10 +167,8 @@ export interface FileRoutesById {
   "/signup/": typeof SignupIndexRoute;
   "/terms/": typeof TermsIndexRoute;
   "/exam/edit/$id": typeof ExamEditIdRoute;
-  "/history/$quizId/$attemptId": typeof HistoryQuizIdAttemptIdRoute;
   "/quiz/$quizId/$attemptId": typeof QuizQuizIdAttemptIdRoute;
   "/quiz/edit/$quizId": typeof QuizEditQuizIdRoute;
-  "/history/$quizId/": typeof HistoryQuizIdIndexRoute;
   "/quiz/$quizId/": typeof QuizQuizIdIndexRoute;
 }
 export interface FileRouteTypes {
@@ -208,7 +181,6 @@ export interface FileRouteTypes {
     | "/about"
     | "/dashboard"
     | "/exam"
-    | "/history"
     | "/login"
     | "/privacy"
     | "/profile"
@@ -216,10 +188,8 @@ export interface FileRouteTypes {
     | "/signup"
     | "/terms"
     | "/exam/edit/$id"
-    | "/history/$quizId/$attemptId"
     | "/quiz/$quizId/$attemptId"
     | "/quiz/edit/$quizId"
-    | "/history/$quizId"
     | "/quiz/$quizId";
   fileRoutesByTo: FileRoutesByTo;
   to:
@@ -230,7 +200,6 @@ export interface FileRouteTypes {
     | "/about"
     | "/dashboard"
     | "/exam"
-    | "/history"
     | "/login"
     | "/privacy"
     | "/profile"
@@ -238,10 +207,8 @@ export interface FileRouteTypes {
     | "/signup"
     | "/terms"
     | "/exam/edit/$id"
-    | "/history/$quizId/$attemptId"
     | "/quiz/$quizId/$attemptId"
     | "/quiz/edit/$quizId"
-    | "/history/$quizId"
     | "/quiz/$quizId";
   id:
     | "__root__"
@@ -252,7 +219,6 @@ export interface FileRouteTypes {
     | "/about/"
     | "/dashboard/"
     | "/exam/"
-    | "/history/"
     | "/login/"
     | "/privacy/"
     | "/profile/"
@@ -260,10 +226,8 @@ export interface FileRouteTypes {
     | "/signup/"
     | "/terms/"
     | "/exam/edit/$id"
-    | "/history/$quizId/$attemptId"
     | "/quiz/$quizId/$attemptId"
     | "/quiz/edit/$quizId"
-    | "/history/$quizId/"
     | "/quiz/$quizId/";
   fileRoutesById: FileRoutesById;
 }
@@ -275,7 +239,6 @@ export interface RootRouteChildren {
   AboutIndexRoute: typeof AboutIndexRoute;
   DashboardIndexRoute: typeof DashboardIndexRoute;
   ExamIndexRoute: typeof ExamIndexRoute;
-  HistoryIndexRoute: typeof HistoryIndexRoute;
   LoginIndexRoute: typeof LoginIndexRoute;
   PrivacyIndexRoute: typeof PrivacyIndexRoute;
   ProfileIndexRoute: typeof ProfileIndexRoute;
@@ -283,10 +246,8 @@ export interface RootRouteChildren {
   SignupIndexRoute: typeof SignupIndexRoute;
   TermsIndexRoute: typeof TermsIndexRoute;
   ExamEditIdRoute: typeof ExamEditIdRoute;
-  HistoryQuizIdAttemptIdRoute: typeof HistoryQuizIdAttemptIdRoute;
   QuizQuizIdAttemptIdRoute: typeof QuizQuizIdAttemptIdRoute;
   QuizEditQuizIdRoute: typeof QuizEditQuizIdRoute;
-  HistoryQuizIdIndexRoute: typeof HistoryQuizIdIndexRoute;
   QuizQuizIdIndexRoute: typeof QuizQuizIdIndexRoute;
 }
 
@@ -341,13 +302,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof LoginIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
-    "/history/": {
-      id: "/history/";
-      path: "/history";
-      fullPath: "/history";
-      preLoaderRoute: typeof HistoryIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
     "/exam/": {
       id: "/exam/";
       path: "/exam";
@@ -397,13 +351,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof QuizQuizIdIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
-    "/history/$quizId/": {
-      id: "/history/$quizId/";
-      path: "/history/$quizId";
-      fullPath: "/history/$quizId";
-      preLoaderRoute: typeof HistoryQuizIdIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
     "/quiz/edit/$quizId": {
       id: "/quiz/edit/$quizId";
       path: "/quiz/edit/$quizId";
@@ -416,13 +363,6 @@ declare module "@tanstack/react-router" {
       path: "/quiz/$quizId/$attemptId";
       fullPath: "/quiz/$quizId/$attemptId";
       preLoaderRoute: typeof QuizQuizIdAttemptIdRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/history/$quizId/$attemptId": {
-      id: "/history/$quizId/$attemptId";
-      path: "/history/$quizId/$attemptId";
-      fullPath: "/history/$quizId/$attemptId";
-      preLoaderRoute: typeof HistoryQuizIdAttemptIdRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/exam/edit/$id": {
@@ -443,7 +383,6 @@ const rootRouteChildren: RootRouteChildren = {
   AboutIndexRoute: AboutIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   ExamIndexRoute: ExamIndexRoute,
-  HistoryIndexRoute: HistoryIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   PrivacyIndexRoute: PrivacyIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,
@@ -451,10 +390,8 @@ const rootRouteChildren: RootRouteChildren = {
   SignupIndexRoute: SignupIndexRoute,
   TermsIndexRoute: TermsIndexRoute,
   ExamEditIdRoute: ExamEditIdRoute,
-  HistoryQuizIdAttemptIdRoute: HistoryQuizIdAttemptIdRoute,
   QuizQuizIdAttemptIdRoute: QuizQuizIdAttemptIdRoute,
   QuizEditQuizIdRoute: QuizEditQuizIdRoute,
-  HistoryQuizIdIndexRoute: HistoryQuizIdIndexRoute,
   QuizQuizIdIndexRoute: QuizQuizIdIndexRoute,
 };
 export const routeTree = rootRouteImport
