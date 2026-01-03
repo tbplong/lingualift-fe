@@ -116,7 +116,7 @@ function RouteComponent() {
       userId,
       quizId,
       attemptId,
-      title: title || exam.title || "Quiz",
+      title: title || "Quiz",
       category: "Quiz",
       current: currentRef.current,
       questionsNo: exam.questionsNo,

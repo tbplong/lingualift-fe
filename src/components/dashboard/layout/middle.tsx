@@ -180,7 +180,11 @@ function ContinueHero({ item }: { item: ContinueItem | null }) {
           </div>
 
           <Link
-            to={`/quiz/${item.quizId}/${item.attemptId}`}
+            to="/quiz/$quizId/$attemptId"
+            params={{
+              quizId: item.quizId,
+              attemptId: item.attemptId,
+            }}
             className="shrink-0 inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-primary text-white font-semibold shadow-sm hover:opacity-95"
           >
             Continue <ArrowRight size={16} />
@@ -363,16 +367,28 @@ function RecentActivityPro({ items }: { items: RecentAttempt[] }) {
                         {x.scorePercent}%
                       </span>
 
-                      <Link
-                        to={
-                          isInProgress
-                            ? `/quiz/${x.quizId}/${x.id}`
-                            : `/quiz/${x.quizId}`
-                        }
-                        className="px-3 py-2 rounded-xl bg-white border border-slate-200/60 text-sm font-semibold text-slate-700 hover:border-primary-200 hover:text-primary transition"
-                      >
-                        {isInProgress ? "Continue" : "Review"}
-                      </Link>
+                      {isInProgress ? (
+                        <Link
+                          to="/quiz/$quizId/$attemptId"
+                          params={{
+                            quizId: x.quizId,
+                            attemptId: x.id,
+                          }}
+                          className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:shadow-md"
+                        >
+                          Continue
+                        </Link>
+                      ) : (
+                        <Link
+                          to="/quiz/$quizId"
+                          params={{
+                            quizId: x.quizId,
+                          }}
+                          className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:shadow-md"
+                        >
+                          Review
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>

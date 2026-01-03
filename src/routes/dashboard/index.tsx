@@ -306,7 +306,7 @@ function RouteComponent() {
             continueItem={continueItem}
             recent={recent}
             weeklyGoal={weeklyGoal}
-            seedKey={userId ?? "guest"}
+            weekly={null}
           />
         </div>
 
