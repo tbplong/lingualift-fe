@@ -4,6 +4,7 @@ import { QuizCreateREQ } from "@/services/quiz/request/quiz.request";
 import { Question } from "@/types";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import Loading from "@/components/ui/loading";
 
 export const Route = createFileRoute("/quiz/edit/$quizId")({
   component: EditRouteComponent,
@@ -192,7 +193,7 @@ function EditRouteComponent() {
   if (isLoading) {
     return (
       <div className="flex h-dvh w-full items-center justify-center">
-        Loading Quiz Data...
+        <Loading loop={true} className="size-40" />
       </div>
     );
   }
