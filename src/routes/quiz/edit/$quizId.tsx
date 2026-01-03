@@ -203,16 +203,16 @@ function EditRouteComponent() {
         backgroundImage:
           "url(https://cdn.fessior.com/content/english-teaching-public-assets/background.png)",
       }}
-      className="flex !text-white flex-col items-center h-dvh w-full bg-cover bg-center bg-no-repeat"
+      className="flex flex-col items-center h-dvh w-full bg-cover bg-center bg-no-repeat"
     >
       <div className="flex flex-col w-1/2 ml-3">
         <div className="flex flex-col">
-          <span className="font-bold text-4xl text-primary">Title:</span>
+          <span className="font-bold text-4xl text-white">Title:</span>
           <input
             type="text"
             value={baseTitle} // Bind value từ state
             onChange={(e) => setBaseTitle(e.target.value)}
-            className="input validator mt-2 text-xl font-semibold h-14 w-full border-2 border-tertiary rounded-lg"
+            className="input validator mt-2 text-white text-xl font-semibold h-14 w-full border-2 border-tertiary rounded-lg"
             required
             placeholder="Write your title here..."
             // pattern="[A-Za-z][A-Za-z0-9\-\ ]*"
@@ -225,14 +225,14 @@ function EditRouteComponent() {
           </p>
         </div>
         <div className="flex flex-row items-center gap-4 mb-4 text-2xl">
-          <div className="flex flex-row items-center flex-1 font-bold text-primary">
+          <div className="flex flex-row items-center flex-1 font-bold text-white">
             <span className="">Number of Questions: </span>
             <span className="text-secondary text-4xl font-semibold tabular-nums ml-2">
               {questions.length}
             </span>
           </div>
           <div className="flex flex-row items-center">
-            <span className="font-bold text-primary">Time:</span>
+            <span className="font-bold text-white">Time:</span>
             <input
               type="text"
               value={baseTime} // Bind value từ state
@@ -245,7 +245,7 @@ function EditRouteComponent() {
               maxLength={3}
               title="Only 3 numbers"
             />
-            <span className="font-bold text-primary"> mins</span>
+            <span className="font-bold text-white"> mins</span>
           </div>
         </div>
         <div className="flex flex-row w-full border-none gap-4">
