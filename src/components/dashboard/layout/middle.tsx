@@ -374,7 +374,8 @@ function RecentActivityPro({ items }: { items: RecentAttempt[] }) {
                             quizId: x.quizId,
                             attemptId: x.id,
                           }}
-                          className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:shadow-md"
+                          // 👇 CHÉP className cũ của bạn vào dòng dưới
+                          className="px-3 py-2 rounded-xl bg-white border border-slate-200/60 text-sm font-semibold text-slate-700 hover:border-primary-200 hover:text-primary transition"
                         >
                           Continue
                         </Link>
@@ -384,7 +385,8 @@ function RecentActivityPro({ items }: { items: RecentAttempt[] }) {
                           params={{
                             quizId: x.quizId,
                           }}
-                          className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:shadow-md"
+                          // 👇 CHÉP className cũ của bạn vào dòng dưới
+                          className="px-3 py-2 rounded-xl bg-white border border-slate-200/60 text-sm font-semibold text-slate-700 hover:border-primary-200 hover:text-primary transition"
                         >
                           Review
                         </Link>
