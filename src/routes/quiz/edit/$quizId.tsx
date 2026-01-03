@@ -198,7 +198,13 @@ function EditRouteComponent() {
   }
   // console.log("Current Base Title:", baseTitle);
   return (
-    <div className="flex flex-row items-center h-dvh w-full">
+    <div
+      style={{
+        backgroundImage:
+          "url(https://cdn.fessior.com/content/english-teaching-public-assets/background.png)",
+      }}
+      className="flex !text-white flex-col items-center h-dvh w-full bg-cover bg-center bg-no-repeat"
+    >
       <div className="flex flex-col w-1/2 ml-3">
         <div className="flex flex-col">
           <span className="font-bold text-4xl text-primary">Title:</span>

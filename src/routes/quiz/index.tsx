@@ -52,9 +52,9 @@ function RouteComponent() {
   //   }
   // };
 
-  const createExam = () => {
-    navigate({ to: `/quiz/create` });
-  };
+  // const createExam = () => {
+  //   navigate({ to: `/quiz/create` });
+  // };
   const editExam = (id: string) => {
     navigate({ to: `/quiz/edit/${id}` });
   };
@@ -86,7 +86,7 @@ function RouteComponent() {
     <>
       <StudyLayout>
         {" "}
-        {user?.isManager && (
+        {/* {user?.isManager && (
           <div className="flex flex-row px-10 py-4 justify-end">
             <div
               className="btn border-2 border-secondary text-white text-xl bg-secondary hover:shadow-md hover:-translate-y-0.5 transition-all w-fit p-2 rounded-lg font-semibold"
@@ -97,7 +97,7 @@ function RouteComponent() {
               Create New Exam
             </div>
           </div>
-        )}
+        )} */}
         {quizEntries.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 w-full">
             <div className="text-3xl font-bold text-tertiary-400 opacity-50">
