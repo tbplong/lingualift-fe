@@ -29,3 +29,8 @@ export const useUserStore = create<UserStore>()(
     },
   ),
 );
+
+// Helper to get current user id synchronously from the store
+export const getUserId = (): string | null => {
+  return useUserStore.getState().user?._id ?? null;
+};

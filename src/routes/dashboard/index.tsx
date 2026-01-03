@@ -1,11 +1,15 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import UserService from "@/services/user/user.service";
-import DashboardService from "@/services/dashboard/dashboard.service";
+import DashboardService, {
+  type DashboardWeekly,
+} from "@/services/dashboard/dashboard.service";
 import Sidebar from "@/components/dashboard/layout/sidebar";
 import RightSidebar from "@/components/dashboard/layout/rightsidebar";
 import MiddleContent from "@/components/dashboard/layout/middle";
 import { Search } from "lucide-react";
+import { loadPickup, calcProgressPercent } from "@/utils/pickup";
+import { loadRecent } from "@/utils/recent";
 
 export const Route = createFileRoute("/dashboard/")({
   beforeLoad: ({ context }) => {
@@ -55,6 +59,8 @@ type UserProfile = {
 };
 
 type ApiUser = {
+  _id?: string;
+  id?: string;
   firstName?: string;
   lastName?: string;
   email?: string;
@@ -74,25 +80,26 @@ type DashboardSummary = {
   accuracy?: number;
 };
 
-type Stats = {
-  timeThisWeekMin: number;
-  completed: number;
-  accuracyPercent: number;
-};
-
-type ContinueItem = {
-  quizId: string;
-  title: string;
-  category: string;
-  progressPercent: number;
-};
-
-type RecentAttempt = {
+export type RecentAttempt = {
   id: string;
   quizId: string;
   title: string;
   scorePercent: number;
   timeText: string;
+};
+
+export type Stats = {
+  timeThisWeekMin: number;
+  completed: number;
+  accuracyPercent: number;
+};
+
+export type ContinueItem = {
+  quizId: string;
+  attemptId: string;
+  title: string;
+  category: string;
+  progressPercent: number;
 };
 
 type WeeklyGoal = {
@@ -104,42 +111,17 @@ function RouteComponent() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // ✅ userKey ổn định để loadRecent/loadPickup
+  const [userKey, setUserKey] = useState<string | null>(null);
+
   const [stats, setStats] = useState<Stats>({
     timeThisWeekMin: 0,
     completed: 0,
     accuracyPercent: 0,
   });
 
-  const continueItem: ContinueItem | null = {
-    quizId: "quiz_grammar_ps_pc",
-    title: "Present Simple vs Present Continuous",
-    category: "Grammar",
-    progressPercent: 45,
-  };
-
-  const recent: RecentAttempt[] = [
-    {
-      id: "attempt_1",
-      quizId: "quiz_vocab_travel",
-      title: "Travel Vocabulary: Airports & Flights",
-      scorePercent: 82,
-      timeText: "2 hours ago",
-    },
-    {
-      id: "attempt_2",
-      quizId: "quiz_listening_daily",
-      title: "Daily Conversations – Listening Practice",
-      scorePercent: 74,
-      timeText: "Yesterday",
-    },
-    {
-      id: "attempt_3",
-      quizId: "quiz_grammar_tenses",
-      title: "Past Simple vs Past Continuous",
-      scorePercent: 91,
-      timeText: "3 days ago",
-    },
-  ];
+  const [continueItem, setContinueItem] = useState<ContinueItem | null>(null);
+  const [recent, setRecent] = useState<RecentAttempt[]>([]);
 
   const weeklyGoal: WeeklyGoal = useMemo(
     () => ({
@@ -150,13 +132,21 @@ function RouteComponent() {
   );
 
   useEffect(() => {
+    let mounted = true;
+
     const fetchDashboard = async () => {
       try {
-        const [profileRes, summary] = await Promise.all([
+        setIsLoading(true);
+
+        const [profileRes, summaryRes, weeklyRes] = await Promise.all([
           UserService.getUserProfile(),
           DashboardService.getSummary(),
+          DashboardService.getWeekly(),
         ]);
 
+        if (!mounted) return;
+
+        // ----- user -----
         const p = (profileRes?.data ?? {}) as ApiUser;
 
         setUser({
@@ -170,8 +160,42 @@ function RouteComponent() {
           avatarLetter: (p.firstName ?? "U").charAt(0).toUpperCase(),
         });
 
-        const s = (summary ?? {}) as DashboardSummary;
+        const key = String(p._id ?? p.id ?? p.email ?? "");
+        setUserKey(key || null);
 
+        // ----- weekly -----
+        setWeekly((weeklyRes ?? null) as DashboardWeekly | null);
+
+        // ----- pickup + recent từ localStorage -----
+        if (key) {
+          const pickup = loadPickup(key);
+          setContinueItem(
+            pickup
+              ? {
+                  quizId: pickup.quizId,
+                  attemptId: pickup.attemptId,
+                  title: pickup.title,
+                  category: pickup.category ?? "Quiz",
+                  progressPercent: calcProgressPercent(
+                    pickup.answeredCount,
+                    pickup.questionsNo,
+                  ),
+                }
+              : null,
+          );
+
+          const recentItems = loadRecent(key).map((x) => ({
+            id: x.id,
+            quizId: x.quizId,
+            title: x.title,
+            scorePercent: x.scorePercent,
+            timeText: x.timeText ?? "",
+          }));
+          setRecent(recentItems);
+        }
+
+        // ----- stats -----
+        const s = (summaryRes ?? {}) as DashboardSummary;
         setStats({
           timeThisWeekMin: s.timeThisWeekMin ?? s.weeklyMinutes ?? 0,
           completed: s.completed ?? s.quizzesCompleted ?? 0,
@@ -199,13 +223,38 @@ function RouteComponent() {
           completed: 0,
           accuracyPercent: 0,
         });
+
+        setWeekly(null);
+        setContinueItem(null);
+        setRecent([]);
       } finally {
-        setIsLoading(false);
+        if (mounted) setIsLoading(false);
       }
     };
 
     fetchDashboard();
+    return () => {
+      mounted = false;
+    };
   }, []);
+
+  // ✅ Khi alt-tab / đổi tab trình duyệt quay lại: reload recent (đúng key)
+  useEffect(() => {
+    const onFocus = () => {
+      if (!userKey) return;
+      const recentItems = loadRecent(userKey).map((x) => ({
+        id: x.id,
+        quizId: x.quizId,
+        title: x.title,
+        scorePercent: x.scorePercent,
+        timeText: x.timeText ?? "",
+      }));
+      setRecent(recentItems);
+    };
+
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [userKey]);
 
   if (isLoading) {
     return (
@@ -248,6 +297,7 @@ function RouteComponent() {
             continueItem={continueItem}
             recent={recent}
             weeklyGoal={weeklyGoal}
+            seedKey={userKey ?? "guest"}
           />
         </div>
 

@@ -6,6 +6,7 @@ import { timeFormat } from "@/pages/quiz/timer";
 import AttemptService from "@/services/attempt/attempt.service";
 import QuizService from "@/services/quiz/quiz.service";
 import { QuizContentRESP } from "@/services/quiz/response/quiz.response";
+import { getUserId } from "@/stores/user.store";
 import { UserAnswer, QuizAttempt } from "@/types/attempt.type";
 import { Question } from "@/types/quiz.type";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -18,6 +19,9 @@ import {
   Flag,
   Loader2,
 } from "lucide-react";
+
+import { savePickup, clearPickup } from "@/utils/pickup";
+import { pushRecent } from "@/utils/recent";
 
 export const Route = createFileRoute("/quiz/$quizId/$attemptId")({
   component: RouteComponent,
@@ -69,19 +73,58 @@ function RouteComponent() {
   const timer = useRef<HTMLDivElement | null>(null);
   const ansRef = useRef(ans);
   const reviewRef = useRef(review);
-  const isSubmittedRef = useRef(false); // Track submission status with a ref
+  const isSubmittedRef = useRef(false);
   const isSubmitted = score !== null;
+
+  // ✅ keep current + time in refs so persistPickup always has latest value
+  const currentRef = useRef(current);
+  const timeRef = useRef(time);
+
+  const userId = getUserId(); // must be stable string/id
 
   // Update refs when state changes
   useEffect(() => {
     ansRef.current = ans;
   }, [ans]);
+
   useEffect(() => {
     reviewRef.current = review;
   }, [review]);
+
   useEffect(() => {
     isSubmittedRef.current = isSubmitted;
   }, [isSubmitted]);
+
+  useEffect(() => {
+    currentRef.current = current;
+  }, [current]);
+
+  useEffect(() => {
+    timeRef.current = time;
+  }, [time]);
+
+  // ✅ Persist pickup helper
+  const persistPickup = () => {
+    if (!exam || !attemptId || !quizId) return;
+    if (!userId) return;
+
+    const answeredCount = Object.values(ansRef.current).filter(
+      (v) => v !== -1,
+    ).length;
+
+    savePickup({
+      userId,
+      quizId,
+      attemptId,
+      title: title || exam.title || "Quiz",
+      category: "Quiz",
+      current: currentRef.current,
+      questionsNo: exam.questionsNo,
+      answeredCount,
+      remainingTime: timeRef.current,
+      updatedAt: Date.now(),
+    });
+  };
 
   // Fetch data - determines if this is a completed or in-progress attempt
   useEffect(() => {
@@ -111,17 +154,18 @@ function RouteComponent() {
         if (attempt.isCompleted) {
           // Completed attempt - set score inView mode
           setScore(attempt.score ?? null);
-          // Initialize marked for review from attempt data
           if (attempt.markedForReview) {
             setMarkedForReview(new Set(attempt.markedForReview));
           }
+
+          // ✅ completed => clear pickup (avoid showing continue for done attempt)
+          if (userId) clearPickup(userId);
         } else {
           // In-progress attempt - resume quiz taking
           const initialAns: Record<number, number> = {};
           const initialReview: boolean[] = new Array(
             quizData.questionsNo + 1,
           ).fill(false);
-          let initialTime = quizData.time * 60;
 
           // Initialize all answers to -1
           for (let key = 1; key <= quizData.questionsNo; key++) {
@@ -144,11 +188,15 @@ function RouteComponent() {
 
           // Calculate remaining time
           const elapsed = attempt.timeTaken || 0;
-          initialTime = quizData.time * 60 - elapsed;
+          const initialTime = quizData.time * 60 - elapsed;
 
           setAns(initialAns);
           setReview(initialReview);
           setTime(initialTime > 0 ? initialTime : 0);
+
+          // ✅ persist initial pickup for dashboard
+          // wait a tick so refs update
+          setTimeout(persistPickup, 0);
         }
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -159,45 +207,8 @@ function RouteComponent() {
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attemptId, quizId]);
-
-  // Timer for in-progress quiz
-  useEffect(() => {
-    if (!exam || !attemptId || score !== null || attemptData?.isCompleted)
-      return;
-
-    const timerID = setInterval(() => {
-      setTime((prev) => {
-        if (prev <= 0) {
-          clearInterval(timerID);
-          handleFinalSubmit(
-            attemptId,
-            exam,
-            title,
-            ansRef.current,
-            reviewRef.current,
-            0,
-          );
-          if (timer.current) timer.current.innerHTML = timeFormat(0);
-          return 0;
-        }
-        const next = prev - 1;
-        // Auto-sync every 10 seconds (instead of every second to avoid race conditions)
-        if (next > 0 && next % 1 === 0) {
-          handleAutoSync(
-            attemptId,
-            exam,
-            title,
-            ansRef.current,
-            reviewRef.current,
-            next,
-          );
-        }
-        return next;
-      });
-    }, 1000);
-    return () => clearInterval(timerID);
-  }, [exam, attemptId, score, attemptData?.isCompleted, title]);
 
   // Auto-sync function
   const handleAutoSync = async (
@@ -208,15 +219,10 @@ function RouteComponent() {
     currentReview: boolean[],
     remainingTime: number,
   ) => {
-    // Don't auto-sync if already submitted (use ref to get current value)
-    if (isSubmittedRef.current) {
-      console.log("Auto-sync skipped - already submitted");
-      return;
-    }
+    if (isSubmittedRef.current) return;
     if (!currentAttemptId || !currentExam || !Array.isArray(currentReview))
       return;
 
-    // Only include valid answers (1-indexed, within question count, with valid values)
     const formattedAnswers = Object.entries(currentAns)
       .filter(([idx, selected]) => {
         const questionIndex = Number(idx);
@@ -231,7 +237,7 @@ function RouteComponent() {
       .map(([idx, selected]) => ({
         questionIndex: Number(idx),
         selectedAnswer: selected,
-        isCorrect: false, // Backend requires this field
+        isCorrect: false,
       }));
 
     const markedIndices = currentReview
@@ -246,11 +252,25 @@ function RouteComponent() {
 
     try {
       await AttemptService.updateAttemptById(currentAttemptId, syncData);
+
+      // ✅ pickup + recent in-progress
+      persistPickup();
+      if (userId) {
+        pushRecent(userId, {
+          id: currentAttemptId,
+          quizId,
+          title: currentTitle,
+          scorePercent: 0,
+          updatedAt: Date.now(),
+        });
+      }
+
       console.log("Auto-save successful");
     } catch (err: unknown) {
       console.error("Auto-save failed", err);
     }
   };
+
   // Final submit function
   const handleFinalSubmit = async (
     currentAttemptId: string,
@@ -262,7 +282,6 @@ function RouteComponent() {
   ) => {
     if (!currentAttemptId || !currentExam) return;
 
-    // Mark as submitted immediately to prevent auto-sync
     isSubmittedRef.current = true;
 
     let correctCount = 0;
@@ -270,7 +289,6 @@ function RouteComponent() {
       if (currentAns[i + 1] === q.answerKey) correctCount++;
     });
 
-    // Only include valid answers (1-indexed, within question count, with valid values)
     const formattedAnswers = Object.entries(currentAns)
       .filter(([idx, selected]) => {
         const questionIndex = Number(idx);
@@ -306,7 +324,23 @@ function RouteComponent() {
 
     try {
       await AttemptService.updateAttemptById(currentAttemptId, finalData);
+
       setScore(correctCount);
+
+      // ✅ recent completed + clear pickup
+      if (userId) {
+        pushRecent(userId, {
+          id: currentAttemptId,
+          quizId,
+          title: currentTitle,
+          scorePercent: Math.round(
+            (correctCount / currentExam.questionsNo) * 100,
+          ),
+          updatedAt: Date.now(),
+        });
+        clearPickup(userId);
+      }
+
       setOpenSub(false);
       alert(
         `Nộp bài thành công! Điểm: ${correctCount}/${currentExam.questionsNo}`,
@@ -316,20 +350,73 @@ function RouteComponent() {
     }
   };
 
+  const autoSyncRef = useRef(handleAutoSync);
+  const finalSubmitRef = useRef(handleFinalSubmit);
+
+  useEffect(() => {
+    if (!exam || !attemptId || score !== null || attemptData?.isCompleted)
+      return;
+
+    const timerID = setInterval(() => {
+      setTime((prev) => {
+        if (prev <= 0) {
+          clearInterval(timerID);
+
+          finalSubmitRef.current(
+            attemptId,
+            exam,
+            title,
+            ansRef.current,
+            reviewRef.current,
+            0,
+          );
+
+          if (timer.current) timer.current.innerHTML = timeFormat(0);
+          return 0;
+        }
+
+        const next = prev - 1;
+
+        // ✅ auto-sync every 10 seconds
+        if (next > 0 && next % 10 === 0) {
+          autoSyncRef.current(
+            attemptId,
+            exam,
+            title,
+            ansRef.current,
+            reviewRef.current,
+            next,
+          );
+        }
+
+        return next;
+      });
+    }, 1000);
+
+    return () => clearInterval(timerID);
+  }, [exam, attemptId, score, attemptData?.isCompleted, title]);
+
   const chooseAns = (chooseNo: number) => {
-    setAns((prev) => ({
-      ...prev,
-      [current]: chooseNo,
-    }));
+    setAns((prev) => {
+      const next = { ...prev, [currentRef.current]: chooseNo };
+      ansRef.current = next;
+      return next;
+    });
+
+    // ✅ persist immediately for pickup
+    persistPickup();
   };
 
   const loadQuiz = (quizNo: number) => {
     setCurrent(quizNo);
+    // ✅ persist after state updates
+    setTimeout(persistPickup, 0);
   };
 
   const loadQuestion = (questionNo: number) => {
     if (questionNo >= 1 && questionNo <= questions.length) {
       setCurrent(questionNo);
+      setTimeout(persistPickup, 0);
     }
   };
 
@@ -353,19 +440,20 @@ function RouteComponent() {
   // Toggle mark for review (for review mode) - with API call
   const toggleReview = async () => {
     const newSet = new Set(markedForReview);
-    if (newSet.has(current)) {
-      newSet.delete(current);
-    } else {
-      newSet.add(current);
-    }
+    if (newSet.has(current)) newSet.delete(current);
+    else newSet.add(current);
+
     setMarkedForReview(newSet);
 
-    // Call API to update the attempt
     try {
       await AttemptService.updateAttemptById(attemptId, {
         _id: attemptId,
         markedForReview: Array.from(newSet),
       });
+
+      // ✅ also persist pickup
+      persistPickup();
+
       console.log("Marked for review updated successfully");
     } catch (err) {
       console.error("Failed to update marked for review", err);
@@ -416,7 +504,7 @@ function RouteComponent() {
   const optList = question?.answerList || [];
 
   // Get passage for grouped questions
-  let passage: string | undefined = undefined; // Khởi tạo rỗng
+  let passage: string | undefined = undefined;
 
   if (question?.isGroupQ) {
     passage = question.passage;
@@ -438,18 +526,14 @@ function RouteComponent() {
     const { answers, score: finalScore, totalQuestions } = attemptData;
     const displayScore = score ?? finalScore;
 
-    // Use ans state as fallback if backend returns empty answer objects
-    // This happens because the backend has a serialization issue
     const hasValidAnswers =
       answers?.length > 0 && answers[0]?.questionIndex !== undefined;
 
-    // Create a lookup for user answers - prefer ans state if backend data is empty
     const getUserSelectedAnswer = (questionIndex: number): number => {
       if (hasValidAnswers) {
         const answer = answers.find((a) => a.questionIndex === questionIndex);
         return answer?.selectedAnswer ?? -1;
       }
-      // Fallback to ans state
       return ans[questionIndex] ?? -1;
     };
 
@@ -836,6 +920,8 @@ function RouteComponent() {
                   "Are you sure you want to leave? Your progress will be saved.",
                 )
               ) {
+                // ✅ persist before leaving
+                persistPickup();
                 navigate({ to: `/quiz/${quizId}` });
               }
             }}
@@ -844,6 +930,7 @@ function RouteComponent() {
             <BackArrow size={20} />
             <span className="hidden sm:inline">Exit Quiz</span>
           </button>
+
           <div className="flex flex-row items-center justify-center h-10">
             <div className="flex flex-col mr-2">
               <span
@@ -864,14 +951,16 @@ function RouteComponent() {
                   progress > 40 ? "bg-secondary-300" : "bg-quaternary-300",
                 )}
                 style={{ width: `${progress}%` }}
-              ></div>
+              />
             </div>
           </div>
+
           {isSubmitted && (
             <div className="text-4xl text-secondary-300 font-bold">
               Score: {score}/{numQ}
             </div>
           )}
+
           <div className="flex flex-row justify-between items-center w-52">
             <button
               onClick={async () => {
@@ -879,7 +968,6 @@ function RouteComponent() {
                 nextReview[current] = !nextReview[current];
                 setReview(nextReview);
 
-                // Call API to update the attempt
                 try {
                   const markedIndices = nextReview
                     .map((val, idx) => (val ? idx : -1))
@@ -888,6 +976,10 @@ function RouteComponent() {
                     _id: attemptId,
                     markedForReview: markedIndices,
                   });
+
+                  // ✅ persist pickup after mark
+                  persistPickup();
+
                   console.log("Marked for review updated successfully");
                 } catch (err) {
                   console.error("Failed to update marked for review", err);
@@ -902,17 +994,19 @@ function RouteComponent() {
                     : "/flag-outline-nocolor.svg",
                 )}
                 className="aspect-square h-full"
-              ></img>
+              />
             </button>
+
             <label
               htmlFor="my-drawer-4"
               className="drawer-button h-10 border-2 text-tertiary border-tertiary p-2 w-auto bg-white btn rounded-md drop-shadow-lg transition-colors duration-10 ease-in"
             >
               <span className="text-lg ">View progress</span>
-              <img src={clsx("/fire.png")} className="aspect-square h-7"></img>
+              <img src={"/fire.png"} className="aspect-square h-7" />
             </label>
           </div>
         </div>
+
         <div className="w-full h-full bg-white border-4 border-tertiary rounded-2xl p-6 pb-2 drop-shadow-2xl">
           <div className="flex flex-row justify-between items-center mb-2">
             <button
@@ -944,6 +1038,7 @@ function RouteComponent() {
             <span className="font-semibold flex justify-center items-center w-36 text-tertiary text-2xl">
               Quesion {current}
             </span>
+
             <button
               onClick={() => {
                 if (current !== numQ) loadQuiz(current + 1);
@@ -997,6 +1092,7 @@ function RouteComponent() {
                   status = "wrong";
                 }
               }
+
               return (
                 <Chosen
                   key={i}
@@ -1011,17 +1107,18 @@ function RouteComponent() {
           </div>
         </div>
       </div>
+
       <div className="drawer-side">
         <label
           htmlFor="my-drawer-4"
           aria-label="close sidebar"
           className="drawer-overlay"
-        ></label>
+        />
         <ul className="menu bg-white border-l-4 text-base-content min-h-full w-80 p-4 px-10">
-          {/* Sidebar content here */}
           <div className="w-full flex justify-center mb-4 text-primary text-justify text-4xl font-bold">
             Questions
           </div>
+
           <div className="grid grid-cols-5 gap-x-2.5 gap-y-2 h-fit">
             {Object.entries(ans).map(([key, ansVal]) => {
               return (
@@ -1040,6 +1137,7 @@ function RouteComponent() {
               );
             })}
           </div>
+
           <button
             onClick={() => setOpenSub(true)}
             disabled={isSubmitted}
@@ -1049,6 +1147,7 @@ function RouteComponent() {
           </button>
         </ul>
       </div>
+
       <ConfirmSubmission
         open={openSub}
         onClose={async () => {
@@ -1066,7 +1165,7 @@ function RouteComponent() {
             );
           }
         }}
-      ></ConfirmSubmission>
+      />
     </div>
   );
 }
