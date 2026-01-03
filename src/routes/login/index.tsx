@@ -281,12 +281,6 @@ function RouteComponent() {
                         ? "Password looks good!"
                         : "Please enter your Password!"}
                   </span>
-                  <a
-                    href="/forgot-password"
-                    className="text-sm font-medium text-primary hover:underline"
-                  >
-                    Forgot password?
-                  </a>
                 </div>
               </div>
 
