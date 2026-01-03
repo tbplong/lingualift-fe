@@ -22,7 +22,7 @@ export type CreateNationalExamRequestDTO = {
   questions: number;
   examBucket: string;
   examKey: string;
-  videoLink: string;
+  videoLink?: string | null;
 };
 
 export type GetNationalExamsResponseDTO = {

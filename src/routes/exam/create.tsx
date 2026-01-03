@@ -25,6 +25,7 @@ import { Footer } from "@/components/Footer";
 import { Modal, ModalHandler } from "@/components/ui/modal";
 import Loading from "@/components/ui/loading";
 import { FILENAME_REGEX } from "@/constants";
+import StorageService from "@/services/cdn/storage.service";
 
 export const Route = createFileRoute("/exam/create")({
   beforeLoad: ({ context }) => {
@@ -93,7 +94,7 @@ function RouteComponent() {
     const presignedUrl = await getPresignedUrl();
     if (presignedUrl && examFile) {
       try {
-        await CdnService.uploadToStorage(presignedUrl, examFile);
+        await StorageService.uploadToStorage(presignedUrl, examFile);
         return true;
       } catch (e) {
         handleAxiosError(e, (message) => {
@@ -107,14 +108,21 @@ function RouteComponent() {
   };
 
   const isAllRequirementMeet = () => {
-    return title.trim() !== "" && level !== 0 && questions >= 0;
+    return (
+      title.trim() !== "" &&
+      level !== 0 &&
+      questions >= 0 &&
+      examFile !== undefined &&
+      videoUrl !== undefined &&
+      videoUrl.trim() !== ""
+    );
   };
 
   const publishNewExam = async () => {
     setIsLoading(true);
     const embedYoutubeUrl = getEmbedYoutubeUrl(videoUrl);
     const isUploadToStorageSuccess = await uploadToStorage();
-    if (!isUploadToStorageSuccess || !embedYoutubeUrl.embedUrl) {
+    if (!isUploadToStorageSuccess) {
       toast.error("Uploading file fail");
       setIsLoading(false);
       return;
