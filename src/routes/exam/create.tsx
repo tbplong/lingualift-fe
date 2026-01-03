@@ -38,7 +38,6 @@ export const Route = createFileRoute("/exam/create")({
 });
 
 const DEFAULT_EXAM_FILE_CDN_BUCKET = "booking-classroom-assets";
-const DEFAULT_EXAM_FILE_FOLDER = "booking-database";
 
 function RouteComponent() {
   const navigate = useNavigate();
@@ -133,7 +132,7 @@ function RouteComponent() {
       status,
       questions,
       examBucket: DEFAULT_EXAM_FILE_CDN_BUCKET,
-      examKey: `${DEFAULT_EXAM_FILE_FOLDER}/${examFileName}`,
+      examKey: `${examFileName}`,
       videoLink: embedYoutubeUrl.embedUrl,
     };
 
