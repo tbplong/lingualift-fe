@@ -12,6 +12,7 @@ import { Search } from "lucide-react";
 import { loadPickup, calcProgressPercent } from "@/utils/pickup";
 import { loadRecent } from "@/utils/recent";
 import { loadLocalStats } from "@/utils/dashboardStats"; // ✅ IMPORT MỚI
+import Loading from "@/components/ui/loading";
 
 export const Route = createFileRoute("/dashboard/")({
   beforeLoad: ({ context }) => {
@@ -268,7 +269,7 @@ function RouteComponent() {
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center bg-slate-50">
-        <div className="h-12 w-12 animate-spin rounded-full border-b-4 border-indigo-600" />
+        <Loading loop={true} className="size-40" />
       </div>
     );
   }
