@@ -1,15 +1,17 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import {
+  createFileRoute,
+  redirect,
+  useRouterState,
+} from "@tanstack/react-router";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import UserService from "@/services/user/user.service";
-import DashboardService, {
-  type DashboardWeekly,
-} from "@/services/dashboard/dashboard.service";
 import Sidebar from "@/components/dashboard/layout/sidebar";
 import RightSidebar from "@/components/dashboard/layout/rightsidebar";
 import MiddleContent from "@/components/dashboard/layout/middle";
 import { Search } from "lucide-react";
 import { loadPickup, calcProgressPercent } from "@/utils/pickup";
 import { loadRecent } from "@/utils/recent";
+import { loadLocalStats } from "@/utils/dashboardStats"; // ✅ IMPORT MỚI
 
 export const Route = createFileRoute("/dashboard/")({
   beforeLoad: ({ context }) => {
@@ -70,16 +72,6 @@ type ApiUser = {
   streak?: number;
 };
 
-type DashboardSummary = {
-  timeThisWeekMin?: number;
-  completed?: number;
-  accuracyPercent?: number;
-
-  weeklyMinutes?: number;
-  quizzesCompleted?: number;
-  accuracy?: number;
-};
-
 export type RecentAttempt = {
   id: string;
   quizId: string;
@@ -110,9 +102,7 @@ type WeeklyGoal = {
 function RouteComponent() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  // ✅ userKey ổn định để loadRecent/loadPickup
-  const [userKey, setUserKey] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   const [stats, setStats] = useState<Stats>({
     timeThisWeekMin: 0,
@@ -131,6 +121,52 @@ function RouteComponent() {
     [stats.timeThisWeekMin],
   );
 
+  const locationHref = useRouterState({ select: (s) => s.location.href });
+
+  // --- LOGIC LOAD DỮ LIỆU LOCAL ---
+
+  const mapRecent = (id: string): RecentAttempt[] =>
+    loadRecent(id).map((x) => ({
+      id: x.id,
+      quizId: x.quizId,
+      title: x.title,
+      scorePercent: x.scorePercent,
+      timeText: x.timeText ?? "",
+    }));
+
+  const reloadLocal = useCallback((id: string) => {
+    // 1. Load Recent (Lịch sử làm bài)
+    setRecent(mapRecent(id));
+
+    // 2. Load Pickup (Bài đang làm dở)
+    const pickup = loadPickup(id);
+    setContinueItem(
+      pickup
+        ? {
+            quizId: pickup.quizId,
+            attemptId: pickup.attemptId,
+            title: pickup.title,
+            category: pickup.category ?? "Quiz",
+            progressPercent: calcProgressPercent(
+              pickup.answeredCount,
+              pickup.questionsNo,
+            ),
+          }
+        : null,
+    );
+  }, []);
+
+  // ✅ Hàm mới: Load 3 chỉ số Stats từ LocalStorage
+  const reloadStats = useCallback((id: string) => {
+    const localStats = loadLocalStats(id);
+    setStats({
+      timeThisWeekMin: localStats.timeThisWeekMin,
+      completed: localStats.completed,
+      accuracyPercent: localStats.accuracyPercent,
+    });
+  }, []);
+
+  // --- INITIAL LOAD ---
   useEffect(() => {
     let mounted = true;
 
@@ -138,15 +174,11 @@ function RouteComponent() {
       try {
         setIsLoading(true);
 
-        const [profileRes, summaryRes, weeklyRes] = await Promise.all([
-          UserService.getUserProfile(),
-          DashboardService.getSummary(),
-          DashboardService.getWeekly(),
-        ]);
+        // Chỉ gọi UserProfile để lấy ID, không gọi Summary API nữa
+        const profileRes = await UserService.getUserProfile();
 
         if (!mounted) return;
 
-        // ----- user -----
         const p = (profileRes?.data ?? {}) as ApiUser;
 
         setUser({
@@ -160,50 +192,21 @@ function RouteComponent() {
           avatarLetter: (p.firstName ?? "U").charAt(0).toUpperCase(),
         });
 
-        const key = String(p._id ?? p.id ?? p.email ?? "");
-        setUserKey(key || null);
+        const id = String(p._id ?? p.id ?? "");
+        setUserId(id || null);
 
-        // ----- weekly -----
-        setWeekly((weeklyRes ?? null) as DashboardWeekly | null);
-
-        // ----- pickup + recent từ localStorage -----
-        if (key) {
-          const pickup = loadPickup(key);
-          setContinueItem(
-            pickup
-              ? {
-                  quizId: pickup.quizId,
-                  attemptId: pickup.attemptId,
-                  title: pickup.title,
-                  category: pickup.category ?? "Quiz",
-                  progressPercent: calcProgressPercent(
-                    pickup.answeredCount,
-                    pickup.questionsNo,
-                  ),
-                }
-              : null,
-          );
-
-          const recentItems = loadRecent(key).map((x) => ({
-            id: x.id,
-            quizId: x.quizId,
-            title: x.title,
-            scorePercent: x.scorePercent,
-            timeText: x.timeText ?? "",
-          }));
-          setRecent(recentItems);
+        // ✅ Load dữ liệu từ LocalStorage ngay lần đầu
+        if (id) {
+          reloadLocal(id);
+          reloadStats(id); // <--- QUAN TRỌNG
+        } else {
+          setRecent([]);
+          setContinueItem(null);
+          setStats({ timeThisWeekMin: 0, completed: 0, accuracyPercent: 0 });
         }
-
-        // ----- stats -----
-        const s = (summaryRes ?? {}) as DashboardSummary;
-        setStats({
-          timeThisWeekMin: s.timeThisWeekMin ?? s.weeklyMinutes ?? 0,
-          completed: s.completed ?? s.quizzesCompleted ?? 0,
-          accuracyPercent: s.accuracyPercent ?? s.accuracy ?? 0,
-        });
       } catch (error) {
-        console.error("Failed to load dashboard", error);
-
+        console.error("Failed to load dashboard user", error);
+        // Fallback user ảo nếu lỗi mạng
         setUser(
           (prev) =>
             prev ?? {
@@ -217,16 +220,6 @@ function RouteComponent() {
               avatarLetter: "U",
             },
         );
-
-        setStats({
-          timeThisWeekMin: 0,
-          completed: 0,
-          accuracyPercent: 0,
-        });
-
-        setWeekly(null);
-        setContinueItem(null);
-        setRecent([]);
       } finally {
         if (mounted) setIsLoading(false);
       }
@@ -238,23 +231,39 @@ function RouteComponent() {
     };
   }, []);
 
-  // ✅ Khi alt-tab / đổi tab trình duyệt quay lại: reload recent (đúng key)
+  // --- EVENT LISTENERS (Tự động cập nhật khi làm xong bài) ---
   useEffect(() => {
-    const onFocus = () => {
-      if (!userKey) return;
-      const recentItems = loadRecent(userKey).map((x) => ({
-        id: x.id,
-        quizId: x.quizId,
-        title: x.title,
-        scorePercent: x.scorePercent,
-        timeText: x.timeText ?? "",
-      }));
-      setRecent(recentItems);
+    if (!userId) return;
+
+    // Hàm xử lý chung: reload mọi thứ
+    const handleDataChange = () => {
+      reloadLocal(userId);
+      reloadStats(userId);
+    };
+
+    // 1. Khi route thay đổi (quay lại từ trang làm bài)
+    handleDataChange();
+
+    // 2. Lắng nghe sự kiện tùy chỉnh
+    window.addEventListener("recent:changed", handleDataChange);
+    window.addEventListener("stats:changed", handleDataChange); // ✅ Sự kiện mới từ Bước 1
+
+    // 3. Lắng nghe khi tab được focus lại
+    const onFocus = () => handleDataChange();
+    const onVis = () => {
+      if (document.visibilityState === "visible") handleDataChange();
     };
 
     window.addEventListener("focus", onFocus);
-    return () => window.removeEventListener("focus", onFocus);
-  }, [userKey]);
+    document.addEventListener("visibilitychange", onVis);
+
+    return () => {
+      window.removeEventListener("recent:changed", handleDataChange);
+      window.removeEventListener("stats:changed", handleDataChange);
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, [userId, locationHref]);
 
   if (isLoading) {
     return (
@@ -297,7 +306,7 @@ function RouteComponent() {
             continueItem={continueItem}
             recent={recent}
             weeklyGoal={weeklyGoal}
-            seedKey={userKey ?? "guest"}
+            seedKey={userId ?? "guest"}
           />
         </div>
 

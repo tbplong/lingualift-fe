@@ -19,7 +19,7 @@ import {
   Flag,
   Loader2,
 } from "lucide-react";
-
+import { saveQuizStats } from "@/utils/dashboardStats";
 import { savePickup, clearPickup } from "@/utils/pickup";
 import { pushRecent } from "@/utils/recent";
 
@@ -263,6 +263,8 @@ function RouteComponent() {
           scorePercent: 0,
           updatedAt: Date.now(),
         });
+        console.log("QUIZ saved key =", `recent:${userId}`);
+        console.log("QUIZ raw =", localStorage.getItem(`recent:${userId}`));
       }
 
       console.log("Auto-save successful");
@@ -284,11 +286,13 @@ function RouteComponent() {
 
     isSubmittedRef.current = true;
 
+    // Tính số câu đúng
     let correctCount = 0;
     currentExam.questions.forEach((q, i) => {
       if (currentAns[i + 1] === q.answerKey) correctCount++;
     });
 
+    // Format câu trả lời để gửi API
     const formattedAnswers = Object.entries(currentAns)
       .filter(([idx, selected]) => {
         const questionIndex = Number(idx);
@@ -314,8 +318,11 @@ function RouteComponent() {
       .map((val, idx) => (val ? idx : -1))
       .filter((idx) => idx > 0);
 
+    // Tính thời gian đã làm (giây)
+    const timeTakenSeconds = currentExam.time * 60 - currentTime;
+
     const finalData = {
-      timeTaken: currentExam.time * 60 - currentTime,
+      timeTaken: timeTakenSeconds,
       answers: formattedAnswers,
       markedForReview: markedIndices,
       score: correctCount,
@@ -323,22 +330,38 @@ function RouteComponent() {
     };
 
     try {
+      // Gọi API lưu lên server (Backend)
       await AttemptService.updateAttemptById(currentAttemptId, finalData);
 
       setScore(correctCount);
 
-      // ✅ recent completed + clear pickup
       if (userId) {
+        // 1. Lưu vào lịch sử Recent (Code cũ của bạn)
+        const scorePercent = Math.round(
+          (correctCount / currentExam.questionsNo) * 100,
+        );
+
         pushRecent(userId, {
           id: currentAttemptId,
           quizId,
           title: currentTitle,
-          scorePercent: Math.round(
-            (correctCount / currentExam.questionsNo) * 100,
-          ),
+          scorePercent: scorePercent,
           updatedAt: Date.now(),
         });
+
         clearPickup(userId);
+
+        // -----------------------------------------------------------
+        // 2. ✅ THÊM ĐOẠN NÀY ĐỂ CẬP NHẬT 3 THẺ STATS TRÊN DASHBOARD
+        // -----------------------------------------------------------
+
+        // Quy đổi giây sang phút (làm tròn lên để ít nhất là 1 phút)
+        const timeSpentMinutes = Math.ceil(timeTakenSeconds / 60);
+
+        // Lưu vào LocalStorage -> Dashboard sẽ tự nhảy số
+        saveQuizStats(userId, scorePercent, timeSpentMinutes);
+
+        // -----------------------------------------------------------
       }
 
       setOpenSub(false);

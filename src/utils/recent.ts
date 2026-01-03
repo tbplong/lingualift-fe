@@ -7,7 +7,7 @@ export type RecentAttemptItem = {
   updatedAt: number;
 };
 
-const key = (userKey: string) => `recent:${userKey}`;
+const recentKey = (userKey: string) => `recent:${userKey}`;
 
 function toTimeText(ms: number) {
   const diff = Date.now() - ms;
@@ -19,12 +19,27 @@ function toTimeText(ms: number) {
   return d === 1 ? "Yesterday" : `${d} days ago`;
 }
 
+function safeReadList(userKey: string): RecentAttemptItem[] {
+  try {
+    const raw = localStorage.getItem(recentKey(userKey));
+    const list: RecentAttemptItem[] = raw ? JSON.parse(raw) : [];
+    return Array.isArray(list) ? list : [];
+  } catch {
+    // nếu data bẩn thì reset luôn cho sạch
+    try {
+      localStorage.removeItem(recentKey(userKey));
+    } catch {
+      // ignore error
+    }
+    return [];
+  }
+}
+
 export function pushRecent(
   userKey: string,
   item: Omit<RecentAttemptItem, "timeText">,
 ) {
-  const raw = localStorage.getItem(key(userKey));
-  const list: RecentAttemptItem[] = raw ? JSON.parse(raw) : [];
+  const list = safeReadList(userKey);
 
   const next = [
     { ...item, timeText: toTimeText(item.updatedAt) },
@@ -33,11 +48,14 @@ export function pushRecent(
     .sort((a, b) => b.updatedAt - a.updatedAt)
     .slice(0, 10);
 
-  localStorage.setItem(key(userKey), JSON.stringify(next));
+  try {
+    localStorage.setItem(recentKey(userKey), JSON.stringify(next));
+  } catch {
+    // ignore error
+  }
 }
 
 export function loadRecent(userKey: string): RecentAttemptItem[] {
-  const raw = localStorage.getItem(key(userKey));
-  const list: RecentAttemptItem[] = raw ? JSON.parse(raw) : [];
+  const list = safeReadList(userKey);
   return list.map((x) => ({ ...x, timeText: toTimeText(x.updatedAt) }));
 }
