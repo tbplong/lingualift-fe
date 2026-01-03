@@ -1,5 +1,4 @@
-// src/features/dashboard/components/MiddleContent.tsx
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -10,23 +9,20 @@ import {
   BarChart3,
 } from "lucide-react";
 
-import DashboardService, {
-  DashboardSummary,
-  DashboardWeekly,
-} from "@/services/dashboard/dashboard.service";
+import type { DashboardWeekly } from "@/services/dashboard/dashboard.service";
 
-// ✅ Khớp với stats trong dashboard route
+export type ContinueItem = {
+  quizId: string;
+  attemptId: string;
+  title: string;
+  category: string;
+  progressPercent: number;
+};
+
 export type Stats = {
   timeThisWeekMin: number;
   completed: number;
   accuracyPercent: number; // 0-100
-};
-
-export type ContinueItem = {
-  quizId: string;
-  title: string;
-  category: string;
-  progressPercent: number; // 0-100
 };
 
 export type RecentAttempt = {
@@ -42,115 +38,58 @@ export default function MiddleContent({
   continueItem,
   recent,
   weeklyGoal,
+  weekly,
 }: {
   stats: Stats;
   continueItem: ContinueItem | null;
   recent: RecentAttempt[];
   weeklyGoal: { targetMinutes: number; currentMinutes: number };
+  weekly: DashboardWeekly | null;
 }) {
-  const [summary, setSummary] = useState<DashboardSummary | null>(null);
-  const [weekly, setWeekly] = useState<DashboardWeekly | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let mounted = true;
-
-    (async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const [s, w] = await Promise.all([
-          DashboardService.getSummary(),
-          DashboardService.getWeekly(),
-        ]);
-
-        if (!mounted) return;
-        setSummary(s);
-        setWeekly(w);
-      } catch (e: unknown) {
-        if (!mounted) return;
-
-        const err = e as {
-          message?: string;
-          response?: { data?: { message?: string } };
-        };
-
-        setError(
-          err?.response?.data?.message ??
-            err?.message ??
-            "Không tải được dữ liệu dashboard",
-        );
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    })();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  // ✅ Ưu tiên API. Nếu chưa có (null) fallback sang props.
-  const uiStats: Stats = useMemo(() => {
-    if (!summary) return stats;
-
-    return {
-      timeThisWeekMin: summary.timeThisWeekMin ?? 0,
-      completed: summary.completed ?? 0,
-      accuracyPercent: summary.accuracyPercent ?? 0,
-    };
-  }, [stats, summary]);
-
+  // Sparkline series (fallback nếu API chưa có)
   const timeSeries = weekly?.sparklines?.minutes ?? [];
   const completedSeries = weekly?.sparklines?.completed ?? [];
   const accuracySeries = weekly?.sparklines?.accuracy ?? [];
 
-  const goalForUI = useMemo(() => {
-    const currentFromApi = summary?.timeThisWeekMin ?? null;
-
-    return {
+  // Weekly goal hiển thị theo props
+  const goalForUI = useMemo(
+    () => ({
       targetMinutes: weeklyGoal.targetMinutes,
-      currentMinutes:
-        currentFromApi !== null ? currentFromApi : weeklyGoal.currentMinutes,
-    };
-  }, [summary, weeklyGoal]);
+      currentMinutes: weeklyGoal.currentMinutes,
+    }),
+    [weeklyGoal],
+  );
 
   return (
     <section className="flex-1 overflow-y-auto p-6 lg:p-10 space-y-6 max-w-[1100px] mx-auto w-full">
       <ContinueHero item={continueItem} />
 
-      {error ? (
-        <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
-          {error}
-        </div>
-      ) : null}
-
+      {/* Stats row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatCardSpark
           title="Time"
-          value={`${uiStats.timeThisWeekMin} min`}
+          value={`${stats.timeThisWeekMin} min`}
           hint="This week"
           icon={<Clock size={16} />}
-          series={loading ? [0, 0, 0, 0, 0, 0, 0] : timeSeries}
+          series={timeSeries}
         />
         <StatCardSpark
           title="Completed"
-          value={`${uiStats.completed}`}
+          value={`${stats.completed}`}
           hint="Quizzes finished"
           icon={<CheckCircle2 size={16} />}
-          series={loading ? [0, 0, 0, 0, 0, 0, 0] : completedSeries}
+          series={completedSeries}
         />
         <StatCardSpark
           title="Accuracy"
-          value={`${uiStats.accuracyPercent}%`}
+          value={`${stats.accuracyPercent}%`}
           hint="Avg score"
           icon={<BarChart3 size={16} />}
-          series={loading ? [0, 0, 0, 0, 0, 0, 0] : accuracySeries}
+          series={accuracySeries}
         />
       </div>
 
+      {/* Recent + right column */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2">
           <RecentActivityPro items={recent} />
@@ -241,7 +180,11 @@ function ContinueHero({ item }: { item: ContinueItem | null }) {
           </div>
 
           <Link
-            to={`/`}
+            to="/quiz/$quizId/$attemptId"
+            params={{
+              quizId: item.quizId,
+              attemptId: item.attemptId,
+            }}
             className="shrink-0 inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-primary text-white font-semibold shadow-sm hover:opacity-95"
           >
             Continue <ArrowRight size={16} />
@@ -325,9 +268,9 @@ function RecentActivityPro({ items }: { items: RecentAttempt[] }) {
   return (
     <Card>
       <div className="p-6">
-        <div className="flex items-start justify-between">
-          <div>
-            <h3 className="text-sm font-black text-slate-800">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <h3 className="text-sm font-black text-slate-900">
               Recent activity
             </h3>
             <p className="text-xs text-slate-500 mt-1">Your latest attempts</p>
@@ -335,55 +278,124 @@ function RecentActivityPro({ items }: { items: RecentAttempt[] }) {
 
           <Link
             to="/"
-            className="text-xs font-bold text-primary hover:underline"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline shrink-0"
           >
-            View all
+            View all{" "}
+            <span aria-hidden className="text-slate-400">
+              →
+            </span>
           </Link>
         </div>
 
         {items.length === 0 ? (
-          <div className="text-sm text-slate-400 mt-5">
-            No recent attempts yet.
-          </div>
-        ) : (
-          <div className="mt-5 space-y-3">
-            {items.map((x) => (
-              <div
-                key={x.id}
-                className="group flex items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50/70 border border-slate-200/60 hover:bg-white transition"
-              >
-                <div className="min-w-0 flex items-center gap-3">
-                  <span
-                    className={`w-2.5 h-2.5 rounded-full ${scoreTone(x.scorePercent).dot}`}
-                  />
+          <div className="mt-5 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-5">
+            <div className="flex items-start gap-4">
+              <div className="h-10 w-10 rounded-2xl bg-white border border-slate-200/70 flex items-center justify-center">
+                <Clock size={18} className="text-slate-500" />
+              </div>
 
-                  <div className="min-w-0">
-                    <div className="font-bold text-slate-900 line-clamp-1 group-hover:text-primary transition-colors">
-                      {x.title}
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
-                      <Clock size={12} />
-                      {x.timeText}
-                    </div>
-                  </div>
+              <div className="min-w-0">
+                <div className="text-sm font-bold text-slate-800">
+                  No recent attempts yet
+                </div>
+                <div className="text-xs text-slate-500 mt-1">
+                  Start a quiz and your activity will show up here.
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <span
-                    className={`text-xs font-black px-2.5 py-1 rounded-full ${scoreTone(x.scorePercent).badge}`}
-                  >
-                    {x.scorePercent}%
-                  </span>
-
+                <div className="mt-4">
                   <Link
-                    to={`/`}
-                    className="px-3 py-2 rounded-xl bg-white border border-slate-200/60 text-sm font-semibold text-slate-700 hover:border-primary-200 hover:text-primary transition"
+                    to="/quiz"
+                    className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 hover:border-primary-200 hover:text-primary transition"
                   >
-                    Retry
+                    Explore quizzes <span aria-hidden>→</span>
                   </Link>
                 </div>
               </div>
-            ))}
+            </div>
+          </div>
+        ) : (
+          <div className="mt-5 space-y-3">
+            {items.map((x) => {
+              const tone = scoreTone(x.scorePercent);
+              const isInProgress = x.scorePercent === 0; // (tạm) nếu bạn chưa có status
+
+              return (
+                <div
+                  key={x.id}
+                  className="group rounded-2xl border border-slate-200/60 bg-slate-50/60 hover:bg-white hover:shadow-sm transition-all"
+                >
+                  <div className="flex items-center justify-between gap-4 p-4">
+                    <div className="min-w-0 flex items-start gap-3">
+                      <div className="mt-1 flex items-center gap-2">
+                        <span
+                          className={`w-2.5 h-2.5 rounded-full ${tone.dot}`}
+                        />
+                      </div>
+
+                      <div className="min-w-0">
+                        <div className="font-black text-slate-900 line-clamp-1 group-hover:text-primary transition-colors">
+                          {x.title}
+                        </div>
+
+                        <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
+                          <Clock size={12} />
+                          <span>{x.timeText}</span>
+                          <span className="text-slate-300">•</span>
+                          <span className="font-semibold text-slate-500">
+                            {isInProgress ? "In progress" : "Completed"}
+                          </span>
+                        </div>
+
+                        <div className="mt-2 h-1.5 w-full max-w-[360px] rounded-full bg-slate-200/70 overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all ${tone.bar}`}
+                            style={{
+                              width: `${Math.max(3, Math.min(100, x.scorePercent))}%`,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 shrink-0">
+                      <span
+                        className={`inline-flex items-center gap-1 text-xs font-black px-2.5 py-1 rounded-full ${tone.badge}`}
+                        title={isInProgress ? "Progress" : "Score"}
+                      >
+                        {isInProgress ? "Progress" : "Score"}
+                        <span className="opacity-80">·</span>
+                        {x.scorePercent}%
+                      </span>
+
+                      {isInProgress ? (
+                        <Link
+                          to="/quiz/$quizId/$attemptId"
+                          params={{
+                            quizId: x.quizId,
+                            attemptId: x.id,
+                          }}
+                          // 👇 CHÉP className cũ của bạn vào dòng dưới
+                          className="px-3 py-2 rounded-xl bg-white border border-slate-200/60 text-sm font-semibold text-slate-700 hover:border-primary-200 hover:text-primary transition"
+                        >
+                          Continue
+                        </Link>
+                      ) : (
+                        <Link
+                          to="/quiz/$quizId"
+                          params={{
+                            quizId: x.quizId,
+                          }}
+                          // 👇 CHÉP className cũ của bạn vào dòng dưới
+                          className="px-3 py-2 rounded-xl bg-white border border-slate-200/60 text-sm font-semibold text-slate-700 hover:border-primary-200 hover:text-primary transition"
+                        >
+                          Review
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
@@ -392,11 +404,23 @@ function RecentActivityPro({ items }: { items: RecentAttempt[] }) {
 }
 
 function scoreTone(score: number) {
-  if (score >= 85)
-    return { dot: "bg-emerald-500", badge: "bg-emerald-50 text-emerald-700" };
-  if (score >= 70)
-    return { dot: "bg-secondary", badge: "bg-secondary/10 text-secondary" };
-  return { dot: "bg-rose-500", badge: "bg-rose-50 text-rose-700" };
+  if (score >= 80)
+    return {
+      dot: "bg-success",
+      badge: "bg-success/10 text-success",
+      bar: "bg-success",
+    };
+  if (score >= 60)
+    return {
+      dot: "bg-secondary",
+      badge: "bg-secondary/10 text-secondary-700",
+      bar: "bg-secondary",
+    };
+  return {
+    dot: "bg-quaternary",
+    badge: "bg-quaternary/10 text-quaternary",
+    bar: "bg-quaternary",
+  };
 }
 
 /* ===================== WEEKLY goal ring ===================== */

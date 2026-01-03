@@ -29,3 +29,12 @@ export const useUserStore = create<UserStore>()(
     },
   ),
 );
+
+// Helper to get current user id synchronously from the store
+export const getUserId = (): string | null => {
+  return useUserStore.getState().user?._id ?? null;
+};
+
+export function getUserKey(p: { _id?: string; id?: string; email?: string }) {
+  return String(p._id ?? p.id ?? p.email ?? "");
+}
