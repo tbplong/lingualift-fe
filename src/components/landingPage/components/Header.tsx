@@ -168,10 +168,10 @@ export function Header() {
                           />
                         </svg>
                         <a
-                          href="mailto:thanhluancongviec123@gmail.com"
+                          href="mailto:lingualift@gmail.com"
                           className="truncate hover:text-blue-700"
                         >
-                          thanhluancongviec123@gmail.com
+                          lingualift@gmail.com
                         </a>
                       </li>
                       <li className="flex items-center gap-3">

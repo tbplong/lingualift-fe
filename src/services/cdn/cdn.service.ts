@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "@/utils/custom-axios";
 
 import { API_URL } from "@/config/env";
 
@@ -14,13 +14,6 @@ const CdnService = {
   getPresignedUrl: async (key: string) => {
     return axios.post<{ url: string }>(`${api_url}/v1/storage/`, {
       key,
-    });
-  },
-  uploadToStorage: async (presignedUrl: string, file: Blob) => {
-    return axios.put(presignedUrl, file, {
-      headers: {
-        "Content-Type": file.type || "application/octet-stream",
-      },
     });
   },
 };

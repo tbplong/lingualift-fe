@@ -18,9 +18,9 @@ export function Footer() {
               <li>
                 <a
                   className="text-white transition"
-                  href="mailto:thanhluancongviec123@gmail.com"
+                  href="mailto:lingualift@gmail.com"
                 >
-                  thanhluancongviec123@gmail.com
+                  lingualift@gmail.com
                 </a>
               </li>
               <li>Việt Nam</li>
