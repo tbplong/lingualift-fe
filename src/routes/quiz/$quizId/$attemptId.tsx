@@ -1090,12 +1090,24 @@ function RouteComponent() {
           </div>
 
           <span className="font-semibold">{questionType}</span>
-          <p className="w-full h-69 mt-2 mb-6 border-x-0 text-lg overflow-y-auto content-center text-justify pr-1 whitespace-pre-line">
-            {passage}
-          </p>
-          <span className="font-bold text-xl text-justify wrap-normal w-full h-14 mb-4 content-center block">
-            {content}
-          </span>
+
+          {passage ? (
+            <>
+              <p className="w-full h-69 mt-2 mb-6 border-x-0 text-lg overflow-y-auto content-center text-justify pr-1 whitespace-pre-line">
+                {passage}
+              </p>
+              <span className="font-bold text-xl text-justify wrap-normal w-full h-14 mb-4 content-center block">
+                {content}
+              </span>
+            </>
+          ) : (
+            /* Layout khi KHÔNG CÓ bài đọc: Phóng to, căn giữa và chiếm diện tích của passage */
+            <div className="w-full h-[calc(69/4*1rem+3.5rem)] flex items-center justify-center px-10 mb-6 text-center">
+              <span className="font-extrabold text-3xl leading-relaxed text-slate-800">
+                {content}
+              </span>
+            </div>
+          )}
 
           <div className="w-full grid grid-cols-2 gap-4 h-40">
             {optList.map((value, i) => {

@@ -213,6 +213,7 @@ function RouteComponent() {
           {/* <button
             className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl"
             onClick={async () => {
+              for (let i: number = 0; i < 20; i++)
               console.log((await QuizService.createQuiz(mockQuiz)).data);
               backToQuiz();
             }}
