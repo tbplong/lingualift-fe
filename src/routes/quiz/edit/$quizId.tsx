@@ -202,18 +202,18 @@ function EditRouteComponent() {
     <div
       style={{
         backgroundImage:
-          "url(https://cdn.fessior.com/content/english-teaching-public-assets/background.png)",
+          "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(https://cdn.fessior.com/content/english-teaching-public-assets/background.png)",
       }}
-      className="flex flex-col items-center h-dvh w-full bg-cover bg-center bg-no-repeat"
+      className="flex flex-col items-start h-dvh w-full bg-cover bg-center bg-no-repeat"
     >
-      <div className="flex flex-col w-1/2 ml-3">
+      <div className="flex flex-col w-[70%] mx-auto my-4 px-4">
         <div className="flex flex-col">
           <span className="font-bold text-4xl text-white">Title:</span>
           <input
             type="text"
             value={baseTitle} // Bind value từ state
             onChange={(e) => setBaseTitle(e.target.value)}
-            className="input validator mt-2 text-white text-xl font-semibold h-14 w-full border-2 border-tertiary rounded-lg"
+            className="input validator mt-2 text-secondary text-2xl font-semibold h-14 w-full border-2 border-white rounded-lg"
             required
             placeholder="Write your title here..."
             // pattern="[A-Za-z][A-Za-z0-9\-\ ]*"
@@ -251,14 +251,14 @@ function EditRouteComponent() {
         </div>
         <div className="flex flex-row w-full border-none gap-4">
           <button
-            className="btn flex-1 border-none text-xl bg-secondary text-white rounded-2xl"
+            className="btn flex-1 border-none text-xl bg-secondary hover:bg-secondary-700 text-white rounded-2xl"
             onClick={addDummy}
           >
             New Question
           </button>
 
           <button
-            className="btn flex-1 border-none text-xl bg-gray-400 text-white rounded-2xl"
+            className="btn flex-1 border-none text-xl bg-gray-400 hover:bg-gray-500 text-white rounded-2xl"
             onClick={backToQuiz}
           >
             Cancel
@@ -274,7 +274,7 @@ function EditRouteComponent() {
       </div>
       <div
         ref={listRef}
-        className="w-1/2 m-4 pl-4 border-l-0 border-r-4 h-24/25 overflow-y-scroll border-y-20 border-primary-200 bg-primary-200 rounded-2xl flex flex-col gap-2"
+        className="w-[70%] backdrop-blur-sm mx-auto pl-4 pr-1 border-l-0 border-r-4 h-24/25 overflow-y-scroll border-y-20 border-primary-200 bg-primary-200 rounded-2xl flex flex-col gap-2"
       >
         {questions.map((q, index) => (
           <QuestionItem
