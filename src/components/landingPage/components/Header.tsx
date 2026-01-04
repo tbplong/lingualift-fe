@@ -192,9 +192,6 @@ export function Header() {
                     </ul>
 
                     <div className="mt-8">
-                      <h4 className="text-lg font-semibold text-slate-800 mb-4">
-                        Kết nối với thầy Luân
-                      </h4>
                       <div className="flex flex-wrap gap-3">
                         {[
                           {
