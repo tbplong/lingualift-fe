@@ -49,9 +49,6 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="!text-yellow-400 font-semibold mb-3">
-              Kết nối với thầy Luân
-            </h3>
             <div className="flex gap-3 mb-4">
               <a
                 href="#"
@@ -90,9 +87,6 @@ export function Footer() {
                 </svg>
               </a>
             </div>
-            <p className="text-sm">
-              Đối tác: <span className="font-medium">Fessior Community</span>
-            </p>
           </div>
 
           {/* Cột 4 */}
