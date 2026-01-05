@@ -53,12 +53,11 @@ export function Header() {
             <Link
               to="/login"
               className="
-          sm:inline-flex
-          px-5 py-2 text-sm
-          sm:px-7 sm:py-3 sm:text-base
-          md:px-10 md:py-4 md:text-[25px]
-          rounded bg-primary text-white font-semibold
-          hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 
+         px-4 py-2 text-sm font-bold
+          sm:px-6 sm:py-3 sm:text-base
+          md:px-8 md:py-3 md:text-[25px]
+          border bg-blue-600 border-blue-600 text-white
+          rounded-full
           shadow-md hover:shadow-lg whitespace-nowrap cursor-pointer
         "
             >
@@ -83,12 +82,11 @@ export function Header() {
             <Link
               to="/login"
               className="
-          sm:inline-flex
-          px-5 py-2 text-sm
-          sm:px-7 sm:py-3 sm:text-base
-          md:px-10 md:py-4 md:text-[25px]
-          rounded bg-primary text-white font-semibold
-          hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 
+       px-4 py-2 text-sm font-bold
+          sm:px-6 sm:py-3 sm:text-base
+          md:px-8 md:py-3 md:text-[25px]
+          border bg-blue-600 border-blue-600 text-white
+          rounded-full
           shadow-md hover:shadow-lg whitespace-nowrap cursor-pointer
         "
             >
@@ -101,9 +99,9 @@ export function Header() {
             className="
           px-4 py-2 text-sm font-bold
           sm:px-6 sm:py-3 sm:text-base
-          md:px-10 md:py-4 md:text-[25px]
+          md:px-8 md:py-3 md:text-[25px]
           border border-blue-600 text-blue-600
-          rounded-l-full rounded-br-full
+          rounded-full 
           hover:bg-primary hover:text-white
           shadow-md hover:shadow-lg whitespace-nowrap cursor-pointer
         "
