@@ -304,7 +304,10 @@ function RouteComponent() {
                   <div className="flex items-center gap-3">
                     <Clock className="text-secondary" size={18} />
                     <span className="text-slate-700">
-                      Started {formatDate(attempt.startTime ?? "")}
+                      Started{" "}
+                      {formatDate(
+                        attempt.startTime ?? new Date().toDateString(),
+                      )}
                     </span>
                   </div>
                   <ChevronRight className="text-secondary" size={20} />
@@ -439,7 +442,7 @@ function RouteComponent() {
                           <Calendar size={14} />
                           {attempt.endTime
                             ? formatDate(attempt.endTime)
-                            : "Unknown date"}
+                            : new Date().toDateString()}
                         </span>
                         <span className="flex items-center gap-1 text-sm text-slate-400">
                           <Clock size={14} />
