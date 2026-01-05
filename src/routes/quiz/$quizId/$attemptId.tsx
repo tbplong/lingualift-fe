@@ -915,7 +915,7 @@ function RouteComponent() {
               <div className="mt-4 p-3 bg-slate-50 rounded-xl">
                 <p className="text-xs text-slate-400 mb-1">Completed on</p>
                 <p className="text-sm font-medium text-slate-600">
-                  {formatDate(attemptData.endTime ?? "")}
+                  {formatDate(attemptData.endTime ?? new Date().toDateString())}
                 </p>
               </div>
             </div>
